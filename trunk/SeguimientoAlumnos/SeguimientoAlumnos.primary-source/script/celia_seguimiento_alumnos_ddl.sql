@@ -1,5 +1,17 @@
 create database seguimiento_alumnos;
 
+create view vw_alumnos_activos as
+select * from mdl_user usr
+where 1=1
+and deleted <> 1
+and suspended <> 1
+and exists (select 1 from mdl_role_assignments ra where ra.userid=usr.id and ra.roleid=5)
+;
+
+create or replace view vw_indicadores_alumnos as
+select CONCAT(usr.id,'1') id,usr.id usr_id,'1' codigo_indicador,'Ingresó al Moodle' desc_indicador,1 valor_indicador from mdl_user usr
+union select CONCAT(usr.id,'2'),usr.id,'2','Presentó trabajo práctico',1 from mdl_user usr;
+
   CREATE TABLE CEL_USUARIO 
    (	USR_ID  bigint default NULL auto_increment primary key,
     	USR_USUARIO VARCHAR(50), 
