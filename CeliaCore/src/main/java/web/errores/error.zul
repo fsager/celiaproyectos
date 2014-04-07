@@ -1,0 +1,69 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<window title="Error ${requestScope['javax.servlet.error.status_code']}" border="normal" mode="modal" closable="true" onCreate="logError()" ctrlKeys="@e" width="700px">
+	<grid width="100%">
+		<rows>
+			<row>
+				<html id="msg" style="font-size:100%"/>
+			</row>
+			<row id="rowDetalle" visible="false">
+				<textbox id="detalle" readonly="true" rows="25" width="100%"/>
+			</row>
+		</rows>
+	</grid>
+	
+    <zscript>  
+    <![CDATA[
+    	import ar.com.celia.common.utils.HashGenerator;
+    	import ar.com.celia.core.domain.CeliaError;
+    	
+    	org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog("error.zul");
+    	    	
+    	public void logError(){
+    		
+    		Object [] col = desktop.getComponents().toArray();
+            Exception ex = requestScope.get("javax.servlet.error.exception");
+    
+            java.io.StringWriter sw = new java.io.StringWriter();
+    		java.io.PrintWriter pw = new java.io.PrintWriter(sw);
+    		
+    		ex.printStackTrace(pw);
+    		
+    		String ipCliente="Ip Cliente: "+session.getRemoteAddr();
+    		String ipbalanceador="Ip Balanceador: "+session.getLocalAddr();
+    		String ipAppServer="Ip Application Server: "+java.net.InetAddress.getLocalHost().getHostAddress();
+
+    		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy hh:mm:ss.SSS");
+    		String stringTime = "Timestamp: " + sdf.format(new Date());
+    		
+    		String ips = ipCliente + " - " + ipbalanceador + " - " + ipAppServer + " - " + stringTime;
+
+    		String moreInfo = ar.com.celia.core.log.JDBCAppender.getMoreInfoMessage(ex);
+    		pw.append(moreInfo);
+        	
+    		String logMessage = ips + " " + ex.getMessage();
+
+        	// Precalculamos el hash previo a la generacion del log de error, asi luego se puede buscar por ese hash
+        	String hashId = HashGenerator.getHash(logMessage);
+        	
+        	//CeliaError celiaError = celiaErrorService.getByErrHashId(hashId);
+        	msg.setContent("Se detectó un error. Este error será registrado y buscaremos la solución para resolverlo pronto. " + "<br><b>Error Hash: "+hashId+"</b>");
+        	detalle.setText(logMessage);
+        	try
+        	{
+        		log.error(logMessage,ex);
+        	}
+        	catch(Exception e)
+        	{
+        		String texto=msg.getContent();
+        		msg.setContent(texto+"<BR> No se pudo registrar el error.");
+        		
+        	}
+    	}
+    ]]>
+    </zscript>
+	<hbox style="margin-left:auto; margin-right:auto">
+		<button label="Ver Detalle" onClick="rowDetalle.setVisible(true)"/>
+		<button label="Continuar" onClick="spaceOwner.detach()"/>
+		<button label="Recargar la página" onClick="Executions.sendRedirect(null)"/>
+	</hbox>
+</window>

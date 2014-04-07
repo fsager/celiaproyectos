@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+	<artifactId>SeguimientoAlumnos.war</artifactId>
+	<packaging>war</packaging>
+	<name>SeguimientoAlumnos.war</name>
+
+	<parent>
+		<groupId>ar.com.celia</groupId>
+		<artifactId>SeguimientoAlumnos</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<profiles>
+		<profile>
+			<id>jboss</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<db.datasource>java:jboss/datasources/SeguimientoAlumnosDS</db.datasource>
+				<db.native.jdbc.extractor>JBoss</db.native.jdbc.extractor>
+				<show_sql>true</show_sql>
+				<logs.location>/log/celia</logs.location>
+				<logs.rootCategoryLevel>WARN</logs.rootCategoryLevel>
+				<logs.errorfile.threshold>WARN</logs.errorfile.threshold>
+				<logs.db.threshold>ERROR</logs.db.threshold>
+				<logs.console.threshold>WARN</logs.console.threshold>
+				<logs.monitorfile.threshold>TRACE</logs.monitorfile.threshold>
+				<logs.enableAppender>CONSOLE,ERRORFILE,DB</logs.enableAppender>
+				<logs.perfInterceptor.threshold>TRACE</logs.perfInterceptor.threshold>
+			</properties>
+		</profile>
+		<profile>
+			<id>weblogic</id>
+			<properties>
+				<db.datasource>jdbc/SeguimientoAlumnos-DS</db.datasource>
+				<db.native.jdbc.extractor>WebLogic</db.native.jdbc.extractor>
+				<show_sql>false</show_sql>
+				<logs.location>/log/celia</logs.location>
+				<logs.rootCategoryLevel>WARN</logs.rootCategoryLevel>
+				<logs.errorfile.threshold>WARN</logs.errorfile.threshold>
+				<logs.db.threshold>ERROR</logs.db.threshold>
+				<logs.console.threshold>WARN</logs.console.threshold>
+				<logs.enableAppender>CONSOLE,ERRORFILE,DB</logs.enableAppender>
+				<logs.perfInterceptor.threshold>TRACE</logs.perfInterceptor.threshold>
+				<logs.monitorfile.threshold>TRACE</logs.monitorfile.threshold>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<sourceDirectory>\${basedir}/src/main/java</sourceDirectory>
+		<outputDirectory>\${basedir}/target/classes</outputDirectory>
+		<resources>
+			<resource>
+				<directory>\${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+					<exclude>**/*.sql</exclude>
+					<exclude>**/*SVN</exclude>
+					<exclude>**/*.jrxml</exclude>
+				</excludes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.zkoss.theme</groupId>
+			<artifactId>silvertail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkplus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkplus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zhtml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkbind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zkmax</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.common</groupId>
+			<artifactId>zcommon</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.common</groupId>
+			<artifactId>zel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.common</groupId>
+			<artifactId>zweb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zkoss.zk</groupId>
+			<artifactId>zul</artifactId>
+		</dependency>
+		<!-- dependency>
+			<groupId>org.zkoss.addons</groupId>
+			<artifactId>zk-bootstrap</artifactId>
+		</dependency-->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+			<artifactId>SeguimientoAlumnos.primary-source</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+			<artifactId>SeguimientoAlumnos.api</artifactId>
+		</dependency>
+
+	</dependencies>
+
+</project>

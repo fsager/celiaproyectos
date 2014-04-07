@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false">
+
+	<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+		<property name="beans">
+			<map>
+				<entry key="VersionInfo.SeguimientoAlumnos:name=SeguimientoAlumnos" value-ref="versionSeguimientoAlumnos" />
+				<entry key="VersionInfo.SeguimientoAlumnos:name=CeliaCore" value-ref="versionInfoCeliaCore" />
+				<entry key="SeguimientoAlumnos:name=PerfomanceMonitor" value-ref="performanceMonitor" />
+				<entry key="SeguimientoAlumnos:name=Log4jLevelChanger" value-ref="log4jLevelChanger" />
+			</map>
+		</property>
+		<property name="assembler" ref="assembler" />
+	</bean>
+
+	<bean class="ar.com.celia.core.mbean.Log4jLevelChanger" id="log4jLevelChanger"/>
+
+	<bean id="jmxAttributeSource"
+		class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource" />
+
+	<!-- will create management interface using annotation metadata -->
+	<bean id="assembler"
+		class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
+		<property name="attributeSource" ref="jmxAttributeSource" />
+	</bean>
+
+	<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+		<property name="locateExistingServerIfPossible" value="true" />
+	</bean>
+
+	<bean id="mbeanVersionInfo" class="ar.com.celia.core.mbean.MBeanServerReader">
+		<property name="mBeanServer" ref="mbeanServer" />
+	</bean>
+	
+	<bean id="versionSeguimientoAlumnos" class="ar.com.celia.core.mbean.VersionInfo">
+		<constructor-arg index="0" type="java.lang.String" value="${buildNumber}" />
+	</bean>
+
+	<!-- will pick up the ObjectName from the annotation -->
+	<!-- bean id="namingStrategy" class="org.springframework.jmx.export.naming.MetadataNamingStrategy"> 
+		<property name="attributeSource" ref="jmxAttributeSource"/> </bean -->
+</beans>

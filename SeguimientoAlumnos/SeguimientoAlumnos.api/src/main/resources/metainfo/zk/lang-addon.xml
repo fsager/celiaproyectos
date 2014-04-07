@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>${rootArtifactId-component}</addon-name>
+	<language-name>xul/html</language-name>
+	
+<!-- 	<component> -->
+<!-- 		<component-name>portletNoticia</component-name> -->
+<!-- 		<macro-uri>~./noticias_portlet.zul</macro-uri> -->
+<!-- 	</component> -->
+
+</language-addon>
+
+ 

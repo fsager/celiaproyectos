@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+	<!--Datasouce que se utiliza para registrar los errores en la base de datos-->
+    <bean id="dataSourceJDBCAppender" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true">
+        <property name="jndiName">
+            <value>${db.datasource.jdbc.appender}</value>
+        </property>
+	</bean>
+  
+  	<!--Datasouce que se utiliza para acceder a la tabla de propiedades del cliente-->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true">
+        <property name="jndiName">
+            <value>${db.datasource.propiedades}</value>
+        </property>
+	</bean>
+
+	<bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.${db.native.jdbc.extractor}NativeJdbcExtractor" lazy-init="true"/>
+	
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" lazy-init="true">
+        <property name="configLocations">
+        	<list>
+				<value>classpath:hibernateCeliaCore.cfg.xml</value>
+			</list>
+		</property>
+        <property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle9Dialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+        <property name="dataSource" ref="dataSource"/>
+		<property name="lobHandler">
+            <ref bean="oracleLobHandler"/>
+        </property>
+    </bean>
+
+    <bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init="true">
+        <property name="nativeJdbcExtractor">
+            <ref local="nativeJdbcExtractor"/>
+        </property>
+    </bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="true"> 
+        <property name="dataSource"> 
+            <ref bean="dataSource"/> 
+        </property>
+    </bean>
+
+	<bean id="baseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true" lazy-init="true">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributes">
+			<props>
+                <prop key="blanquear*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="send*">PROPAGATION_REQUIRED,-Exception</prop>                
+                <prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="get*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
