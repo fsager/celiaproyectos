@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>CommonComponnets</addon-name>
+	<language-name>xul/html</language-name>
+
+	<component>
+		<component-name>showerror</component-name>
+		<macro-uri>~./errores/error.zul</macro-uri> 
+		<inline>true</inline>
+	</component>
+	
+	<component>
+		<component-name>showversion</component-name>
+		<macro-uri>~./versions.zul</macro-uri>
+		<inline>true</inline>
+	</component>
+	
+</language-addon>

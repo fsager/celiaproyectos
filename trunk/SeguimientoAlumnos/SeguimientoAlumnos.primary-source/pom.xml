@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+	<artifactId>SeguimientoAlumnos.primary-source</artifactId>
+	<packaging>jar</packaging>
+	<name>SeguimientoAlumnos.primary-source</name>
+
+	<parent>
+		<groupId>ar.com.celia</groupId>
+		<artifactId>SeguimientoAlumnos</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<build>
+		<sourceDirectory>\${basedir}/src/main/java</sourceDirectory>
+		<outputDirectory>\${basedir}/target/classes</outputDirectory>
+		<resources>
+			<resource>
+				<directory>\${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>**/*java</exclude>
+					<exclude>**/*SVN</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<finalName>SeguimientoAlumnos-SRC</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<finalName>SeguimientoAlumnos-SRC</finalName>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>True</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>ar.com.celia</groupId>
+			<artifactId>CeliaCore</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javassist</groupId>
+		    <artifactId>javassist</artifactId>
+		    <version>3.12.1.GA</version>
+		</dependency> 
+	</dependencies>
+
+</project>

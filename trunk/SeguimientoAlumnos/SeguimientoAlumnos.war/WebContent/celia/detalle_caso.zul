@@ -1,0 +1,166 @@
+<zk  xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:ca="client/attribute"
+	 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
+		xmlns:n="native">
+	
+	<window border="normal" closable="true" title="Detalle del contacto" width="70%">
+		<n:html lang="en">
+			  <n:head>
+			    <n:meta charset="utf-8"/>
+			    <n:meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+			    <n:meta name="apple-mobile-web-app-capable" content="yes"/>
+			    <style src="/css/bootstrap.css" ></style>
+			    <style src="/css/bootstrap-responsive.min.css" ></style>
+			    <style src="/css/google.font.css"></style>
+			    <style src="/css/font-awesome.min.css" >        </style>
+			    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style>
+			    <style src="/css/custom.css" ></style>
+		    	<style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style>
+			  </n:head>
+			</n:html>
+	    <zscript>
+	         
+	        java.util.List indicadores=new java.util.ArrayList();
+	        indicadores.add("Todos");
+	        indicadores.add("Ingresó al moodle");
+	        indicadores.add("Rindió exámen");
+	        indicadores.add("Prensentó trabajo prático");
+	        indicadores.add("Falta mucho");
+	         
+	        org.zkoss.zul.ListModel model =new org.zkoss.zul.ListModelList(indicadores);
+	        
+	        java.util.List roles=new java.util.ArrayList();
+	        roles.add("Alumnos");
+	        roles.add("Docentes");
+	         
+	        org.zkoss.zul.ListModel modelRoles =new org.zkoss.zul.ListModelList(roles);
+	        
+	        
+	    </zscript>
+		<h:div class="row resultForm" style="margin:0px;height: 120px;">
+			<h:div class="col-md-4">
+				<h:div >
+					<h:div style="margin:auto;">
+						<image src="/img/foto2.jpg" width="70px;" zclass="img-thumbnail"/>												
+					</h:div>
+					<n:h5 style="font-weight:bold;">
+						Cipriani, Gustavo
+					</n:h5>											
+				</h:div>
+			</h:div>
+			<h:div class="col-md-4">
+				<n:spans style="font-weight:bold;">Legajo:</n:spans> 351
+				<h:br/>
+				<n:spans style="font-weight:bold;">Carrera:</n:spans> Chef
+			</h:div>
+			<h:div class="col-md-4">
+				<n:spans style="font-weight:bold;">Telefono:</n:spans> 351-7013131
+				<h:br/>
+				<n:spans style="font-weight:bold;">Contactos:</n:spans> 33
+				<h:br/>
+			</h:div>
+		</h:div>
+	   <tabbox>
+	        <tabs>
+	            <tab label="Contacto Actual" />
+	            <tab label="Histórico" />
+	        </tabs>
+			 <tabpanels>
+	            <tabpanel>
+					<grid>
+						<columns>
+							<column/>
+							<column width="50px"/>
+							<column width="80px"/>
+							<column width="200px"/>
+							<column width="250px"/>
+							<column/>
+							<column/>
+						</columns>
+						<rows>
+							<row>				
+								Ingresó al moodle: 
+								<image src="/img/red.jpg" zclass="img-thumbnail"/>
+								Respuesta:
+								<listbox mold="select">
+									<listitem label="No tuvo tiempo para hacerlo"/>
+									<listitem label="No sabe cómo hacerlo"/>
+									<listitem label="Otra razón"/>
+								</listbox>					
+								<div class="input-group">
+									<checkbox class="input-group-addon"/>
+									<label value="Ignorar hasta" width="100px" class="form-control"/>
+									<datebox class="input-group-addon"></datebox>
+								</div>
+								Observaciones:
+								<textbox rows="2" width="100%"/>
+							</row>
+							<row>				
+								Prensentó trabajo práctico: 
+								<image src="/img/red.jpg" zclass="img-thumbnail"/>
+								Respuesta:
+								<listbox mold="select">
+									<listitem label="Respuesta 1"/>
+									<listitem label="Respuesta 2"/>
+									<listitem label="Respuesta 3"/>
+								</listbox>					
+								<div class="input-group">
+									<checkbox class="input-group-addon"/>
+									<label value="Ignorar hasta" width="100px" class="form-control"/>
+									<datebox class="input-group-addon"></datebox>
+								</div>
+								Observaciones:
+								<textbox rows="2" width="100%"/>
+							</row>
+							<row>				
+								Falta mucho: 
+								<image src="/img/red.jpg" zclass="img-thumbnail"/>
+								Respuesta:
+								<listbox mold="select">
+									<listitem label="Respuesta 1"/>
+									<listitem label="Respuesta 2"/>
+									<listitem label="Respuesta 3"/>
+								</listbox>					
+								<div class="input-group">
+									<checkbox class="input-group-addon"/>
+									<label value="Ignorar hasta" width="100px" class="form-control"/>
+									<datebox class="input-group-addon"></datebox>
+								</div>
+								Observaciones:
+								<textbox rows="2" width="100%"/>
+							</row>
+							<row>				
+								Otro indicador:
+								<image src="/img/red.jpg" zclass="img-thumbnail"/>
+								Respuesta:
+								<listbox mold="select">
+									<listitem label="Respuesta 1"/>
+									<listitem label="Respuesta 2"/>
+									<listitem label="Respuesta 3"/>
+								</listbox>					
+								<div class="input-group">
+									<checkbox class="input-group-addon"/>
+									<label value="Ignorar hasta" width="100px" class="form-control"/>
+									<datebox class="input-group-addon"></datebox>
+								</div>
+								Observaciones:
+								<textbox rows="2" width="100%"/>
+							</row>
+							<row spans="1,6">
+								Observaciones generales:
+								<textbox rows="2" width="100%"/>
+							</row>
+						</rows>
+					</grid>
+				</tabpanel>
+	            <tabpanel>This is panel 2</tabpanel>
+	        </tabpanels>
+	    </tabbox>
+	    <h:center>
+	    	<button label="Guardar"/>
+	    	<button label="Cancelar"/>
+	    </h:center>
+	</window>
+</zk>

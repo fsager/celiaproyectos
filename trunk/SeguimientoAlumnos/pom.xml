@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ar.com.celia</groupId>
+	<artifactId>SeguimientoAlumnos</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+
+	<name>SeguimientoAlumnos</name>
+
+	<modules>
+		<module>SeguimientoAlumnos.primary-source</module>
+		<module>SeguimientoAlumnos.api</module>
+		<module>SeguimientoAlumnos.war</module>
+		<module>SeguimientoAlumnos.ear</module>
+		
+	</modules>
+
+	<distributionManagement>
+		<!-- repository>
+			<id>celia-repository</id>
+			<url>http://</url>
+		</repository-->
+	</distributionManagement>
+
+	<properties>
+		<project.build.sourceEncoding>ISO8859_1</project.build.sourceEncoding>
+
+		<zk.version>7.0.0</zk.version>
+		<zk-bootstrap.version>1.0.0</zk-bootstrap.version>
+
+		<hibernate.core.version>3.6.10.Final</hibernate.core.version>
+		<hibernate-validator.version>4.0.2.GA</hibernate-validator.version>
+		<javassist.version>3.12.1.GA</javassist.version>
+
+		<slf4j-api.version>1.6.1</slf4j-api.version>
+		<slf4j-log4j12.version>1.6.1</slf4j-log4j12.version>
+		
+		<spring-framework.version>3.2.6.RELEASE</spring-framework.version>
+		<aspectjweaver.version>1.5.4</aspectjweaver.version>
+
+		<commons-logging.version>1.1.3</commons-logging.version>
+		<log4j.version>1.2.16</log4j.version>
+
+		<servlet.version>2.5</servlet.version>
+
+		<maven-war-plugin.version>2.4</maven-war-plugin.version>
+		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-ear-plugin.version>2.6</maven-ear-plugin.version>
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+
+		<celiacore.version>1.0</celiacore.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>ZK Repository</id>
+			<url>http://mavensync.zkoss.org/maven2</url>
+		</repository>
+		<repository>
+			<id>JBoss Maven Repository</id>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>ZK EE Evaluation</id>
+			<url>http://mavensync.zkoss.org/zk/ee-eval</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven-jar-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven-war-plugin.version}</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Implementation-Build>${buildNumber}</Implementation-Build>
+							</manifestEntries>
+						</archive>
+						<webXml>${basedir}/WebContent/WEB-INF/web.xml</webXml>
+						<webResources>
+							<resource>
+								<directory>${basedir}/WebContent</directory>
+							</resource>
+						</webResources>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-ear-plugin</artifactId>
+					<version>${maven-ear-plugin.version}</version>
+					<configuration>
+						<earSourceDirectory>${basedir}/EarContent</earSourceDirectory>
+						<displayName>SeguimientoAlumnos</displayName>
+						<finalName>SeguimientoAlumnos</finalName>
+						<modules>
+							<webModule>
+								<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+								<bundleFileName>SeguimientoAlumnos.war</bundleFileName>
+								<contextRoot>/SeguimientoAlumnos</contextRoot>
+								<artifactId>SeguimientoAlumnos.war</artifactId>
+							</webModule>
+						</modules>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>org.codehaus.mojo</groupId> -->
+			<!-- <artifactId>buildnumber-maven-plugin</artifactId> -->
+			<!-- <version>1.1</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <phase>validate</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>create</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <configuration> -->
+			<!-- <doCheck>${produccion}</doCheck> -->
+			<!-- <doUpdate>${produccion}</doUpdate> -->
+			<!-- <useLastCommittedRevision>true</useLastCommittedRevision> -->
+			<!-- <username>${svnUser}</username> -->
+			<!-- <password>${svnPassword}</password> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<minmemory>128m</minmemory>
+					<maxmemory>512m</maxmemory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.zkoss.theme</groupId>
+				<artifactId>silvertail</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.addons</groupId>
+				<artifactId>zk-bootstrap</artifactId>
+				<version>${zk-bootstrap.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.zk</groupId>
+				<artifactId>zkplus</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.zk</groupId>
+				<artifactId>zhtml</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.zk</groupId>
+				<artifactId>zkbind</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.zk</groupId>
+				<artifactId>zkmax</artifactId>
+				<version>${zk.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>xml-apis</artifactId>
+						<groupId>xml-apis</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>stax-api</artifactId>
+						<groupId>stax</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.common</groupId>
+				<artifactId>zcommon</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.common</groupId>
+				<artifactId>zel</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.common</groupId>
+				<artifactId>zweb</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.zkoss.zk</groupId>
+				<artifactId>zul</artifactId>
+				<version>${zk.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-api</artifactId>
+			    <version>${slf4j-api.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.slf4j</groupId>
+			    <artifactId>slf4j-log4j12</artifactId>
+			    <version>${slf4j-log4j12.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring-framework.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectjweaver.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${commons-logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+				<artifactId>SeguimientoAlumnos.primary-source</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
+				<artifactId>SeguimientoAlumnos.api</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.26</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>ar.com.celia</groupId>
+				<artifactId>CeliaCore</artifactId>
+				<!--packaging>jar</packaging-->
+				<version>${celiacore.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

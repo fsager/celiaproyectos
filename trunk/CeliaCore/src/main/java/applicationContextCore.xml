@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans
+	default-lazy-init="true">
+    
+	<bean id="contextManager" class="java.lang.String">
+		<constructor-arg index="0" value="ar.com.celia.core.business.ContextManagerCore"/>
+	</bean>
+<!-- 	<import resource="applicationContextCoreDB.xml"/> -->
+	
+    <bean id="celiaErrorDao" class="ar.com.celia.core.persistence.impl.CeliaErrorHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celiaErrorBusiness" class="ar.com.celia.core.business.CeliaErrorBiz">
+        <property name="dao" ref="celiaErrorDao"/>
+    </bean>
+    <bean id="celiaErrorBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celiaErrorBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celiaErrorService" class="ar.com.celia.core.service.impl.CeliaErrorService">
+        <property name="businessObject" ref="celiaErrorBiz"/>
+    </bean>
+    
+    
+    <!-- Inicio configuración para el envío de mails -->
+    
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.googlemail.com"/>
+		<property name="port" value="465"/>
+
+		<property name="username" value="errores@.com.ar"/>
+		<property name="password" value="3rr0r3s."/>
+
+        <property name="javaMailProperties">
+			<value>
+					mail.debug=false
+					mail.smtp.auth=true
+					mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
+					mail.smtp.socketFactory.fallback=false
+			</value>
+		</property>
+	</bean>
+	
+	<!--Fin configuración para el envío de mails -->
+</beans>
