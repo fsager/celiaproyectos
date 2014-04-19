@@ -1,4 +1,8 @@
+drop database seguimiento_alumnos;
+
 create database seguimiento_alumnos;
+USE seguimiento_alumnos;
+
 
 create view vw_alumnos_activos as
 select * from celiacie_moodle2.mdl_user usr
@@ -12,7 +16,8 @@ create or replace view vw_indicadores_alumnos as
 select CONCAT(usr.id,'1') id,usr.id usr_id,'1' codigo_indicador,'Ingresó al Moodle' desc_indicador,1 valor_indicador from celiacie_moodle2.mdl_user usr
 union select CONCAT(usr.id,'2'),usr.id,'2','Presentó trabajo práctico',1 from celiacie_moodle2.mdl_user usr;
 
-  CREATE TABLE CEL_USUARIO 
+
+  CREATE TABLE seguimiento_alumnos.cel_usuario
    (	USR_ID  bigint default NULL auto_increment primary key,
     	USR_USUARIO VARCHAR(50), 
     	USR_CLAVE VARCHAR(100), 
@@ -27,7 +32,7 @@ union select CONCAT(usr.id,'2'),usr.id,'2','Presentó trabajo práctico',1 from ce
    );
 
 
-  CREATE TABLE CEL_GRUPO 
+CREATE TABLE seguimiento_alumnos.cel_grupo
    (	GRP_ID bigint default NULL auto_increment primary key,
     	GRP_NOMBRE VARCHAR(50), 
     	GRP_DESCRIPCION VARCHAR(4000), 
@@ -38,15 +43,96 @@ union select CONCAT(usr.id,'2'),usr.id,'2','Presentó trabajo práctico',1 from ce
    );
 
 
-  CREATE TABLE CEL_GRUPO_USUARIO 
+  CREATE TABLE seguimiento_alumnos.cel_grupo_usuario
    (	GRU_ID bigint default NULL auto_increment primary key,
     	GRP_ID bigint, 
     	USR_ID bigint
    );
 
-ALTER TABLE CEL_GRUPO_USUARIO ADD CONSTRAINT CEL_GRU_GRP_ID FOREIGN KEY (GRP_ID)
-    REFERENCES CEL_GRUPO (GRP_ID);
+ALTER TABLE seguimiento_alumnos.cel_grupo_usuario ADD CONSTRAINT CEL_GRU_GRP_ID FOREIGN KEY (GRP_ID)
+    REFERENCES seguimiento_alumnos.cel_grupo (GRP_ID);
 
 
-ALTER TABLE CEL_GRUPO_USUARIO ADD CONSTRAINT CEL_GRU_USR_ID FOREIGN KEY (USR_ID)
-    REFERENCES CEL_USUARIO (USR_ID);
+ALTER TABLE seguimiento_alumnos.cel_grupo_usuario ADD CONSTRAINT CEL_GRU_USR_ID FOREIGN KEY (USR_ID)
+    REFERENCES seguimiento_alumnos.cel_usuario (USR_ID);
+
+
+  CREATE TABLE seguimiento_alumnos.cel_propiedad
+   (	PRO_CLAVE varchar(250),
+		PRO_TIPO varchar(100),
+		PRO_VALOR varchar(4000) not null,
+		PRO_DESCRIPCION varchar(4000) not null,
+		PRIMARY KEY (PRO_CLAVE, PRO_TIPO)
+   );
+
+
+  CREATE TABLE seguimiento_alumnos.cel_dominio
+   (	DOM_ID bigint default NULL auto_increment primary key,
+		DOM_DOMINIO varchar(100),
+		DOM_CLAVE varchar(250) not null,
+		DOM_EDITABLE smallint not null,
+		DOM_TEXTO varchar(4000) not null,
+		DOM_ORDEN smallint not null
+   );
+
+
+  CREATE TABLE seguimiento_alumnos.cel_indicador
+   (	IND_ID bigint default NULL auto_increment primary key, 
+		IND_NOMBRE varchar(250) not null,
+		IND_DESCRIPCION varchar(250) not null,
+    	AUD_FECHA_INS TIMESTAMP not null, 
+    	AUD_FECHA_UPD TIMESTAMP not null, 
+    	AUD_USR_INS VARCHAR(250) not null, 
+    	AUD_USR_UPD VARCHAR(250) not null
+   );
+
+
+  CREATE TABLE seguimiento_alumnos.cel_interaccion_caso
+   (	CAS_ID  bigint default NULL auto_increment primary key, 
+		CAS_OBSERVACIONES_GRALES varchar(250),    	
+		ALU_ID bigint(10) unsigned not null,
+    	AUD_FECHA_INS TIMESTAMP not null, 
+    	AUD_FECHA_UPD TIMESTAMP not null, 
+    	AUD_USR_INS VARCHAR(250) not null, 
+    	AUD_USR_UPD VARCHAR(250) not null
+   );
+
+
+ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO_ALU_ID FOREIGN KEY (ALU_ID)
+    REFERENCES celiacie_moodle2.mdl_user (id);
+
+
+
+  CREATE TABLE seguimiento_alumnos.cel_interaccion_caso_detalle
+   (	ICD_ID bigint default NULL auto_increment primary key, 
+		ICD_RTA_TIPO varchar(250) not null,
+		ICD_IGNORAR_HASTA TIMESTAMP not null,
+		ICD_OBSERVACIONES varchar(250) not null,
+		CAS_ID bigint not null,
+		IND_ID bigint not null,
+    	AUD_FECHA_INS TIMESTAMP not null, 
+    	AUD_FECHA_UPD TIMESTAMP not null, 
+    	AUD_USR_INS VARCHAR(250) not null, 
+    	AUD_USR_UPD VARCHAR(250) not null
+   );
+
+ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso_detalle ADD CONSTRAINT CEL_INT_CASO_IND_ID FOREIGN KEY (IND_ID)
+    REFERENCES seguimiento_alumnos.cel_indicador (IND_ID);
+
+
+ CREATE TABLE seguimiento_alumnos.cel_indicador_usuario_estado
+   (	IUE_ID bigint default NULL auto_increment primary key, 
+		IND_ID bigint not null,
+		IUE_IGNORAR_HASTA TIMESTAMP not null,
+		IUE_OBSERVACIONES varchar(250) not null,
+    	AUD_FECHA_INS TIMESTAMP not null, 
+    	AUD_FECHA_UPD TIMESTAMP not null, 
+    	AUD_USR_INS VARCHAR(250) not null, 
+    	AUD_USR_UPD VARCHAR(250) not null
+   );
+
+
+ ALTER TABLE seguimiento_alumnos.cel_indicador_usuario_estado ADD CONSTRAINT CEL_IND_USR_EST_IND_ID FOREIGN KEY (IND_ID)
+    REFERENCES seguimiento_alumnos.cel_indicador (IND_ID);
+
+  
