@@ -35,7 +35,7 @@ public class CelUsuario implements java.io.Serializable {
 	private Date audFechaUpd;
 	private String audUsrIns;
 	private String audUsrUpd;
-	private Set celGrupoUsuarios = new HashSet(0);
+//	private Set celGrupoUsuarios = new HashSet(0);
 
 	public CelUsuario() {
 	}
@@ -59,7 +59,7 @@ public class CelUsuario implements java.io.Serializable {
 		this.audFechaUpd = audFechaUpd;
 		this.audUsrIns = audUsrIns;
 		this.audUsrUpd = audUsrUpd;
-		this.celGrupoUsuarios = celGrupoUsuarios;
+//		this.celGrupoUsuarios = celGrupoUsuarios;
 	}
 
 	@Id
@@ -165,13 +165,13 @@ public class CelUsuario implements java.io.Serializable {
 		this.audUsrUpd = audUsrUpd;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celUsuario")
-	public Set getCelGrupoUsuarios() {
-		return this.celGrupoUsuarios;
-	}
-
-	public void setCelGrupoUsuarios(Set celGrupoUsuarios) {
-		this.celGrupoUsuarios = celGrupoUsuarios;
-	}
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celUsuario")
+//	public Set getCelGrupoUsuarios() {
+//		return this.celGrupoUsuarios;
+//	}
+//
+//	public void setCelGrupoUsuarios(Set celGrupoUsuarios) {
+//		this.celGrupoUsuarios = celGrupoUsuarios;
+//	}
 
 }

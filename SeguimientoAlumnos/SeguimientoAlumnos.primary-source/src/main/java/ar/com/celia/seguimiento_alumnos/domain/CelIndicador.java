@@ -31,8 +31,8 @@ public class CelIndicador implements java.io.Serializable {
 	private Date audFechaUpd;
 	private String audUsrIns;
 	private String audUsrUpd;
-	private Set celInteraccionCasoDetalles = new HashSet(0);
-	private Set celIndicadorUsuarioEstados = new HashSet(0);
+//	private Set celInteraccionCasoDetalles = new HashSet(0);
+//	private Set celIndicadorUsuarioEstados = new HashSet(0);
 
 	public CelIndicador() {
 	}
@@ -58,8 +58,8 @@ public class CelIndicador implements java.io.Serializable {
 		this.audFechaUpd = audFechaUpd;
 		this.audUsrIns = audUsrIns;
 		this.audUsrUpd = audUsrUpd;
-		this.celInteraccionCasoDetalles = celInteraccionCasoDetalles;
-		this.celIndicadorUsuarioEstados = celIndicadorUsuarioEstados;
+//		this.celInteraccionCasoDetalles = celInteraccionCasoDetalles;
+//		this.celIndicadorUsuarioEstados = celIndicadorUsuarioEstados;
 	}
 
 	@Id
@@ -129,22 +129,22 @@ public class CelIndicador implements java.io.Serializable {
 		this.audUsrUpd = audUsrUpd;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celIndicador")
-	public Set getCelInteraccionCasoDetalles() {
-		return this.celInteraccionCasoDetalles;
-	}
-
-	public void setCelInteraccionCasoDetalles(Set celInteraccionCasoDetalles) {
-		this.celInteraccionCasoDetalles = celInteraccionCasoDetalles;
-	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celIndicador")
-	public Set getCelIndicadorUsuarioEstados() {
-		return this.celIndicadorUsuarioEstados;
-	}
-
-	public void setCelIndicadorUsuarioEstados(Set celIndicadorUsuarioEstados) {
-		this.celIndicadorUsuarioEstados = celIndicadorUsuarioEstados;
-	}
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celIndicador")
+//	public Set getCelInteraccionCasoDetalles() {
+//		return this.celInteraccionCasoDetalles;
+//	}
+//
+//	public void setCelInteraccionCasoDetalles(Set celInteraccionCasoDetalles) {
+//		this.celInteraccionCasoDetalles = celInteraccionCasoDetalles;
+//	}
+//
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celIndicador")
+//	public Set getCelIndicadorUsuarioEstados() {
+//		return this.celIndicadorUsuarioEstados;
+//	}
+//
+//	public void setCelIndicadorUsuarioEstados(Set celIndicadorUsuarioEstados) {
+//		this.celIndicadorUsuarioEstados = celIndicadorUsuarioEstados;
+//	}
 
 }
