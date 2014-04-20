@@ -3,6 +3,133 @@
 
 <beans default-lazy-init="false">
 
+    <bean id="celDominioDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelDominioHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celDominioBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelDominioBiz">
+        <property name="dao" ref="celDominioDao"/>
+    </bean>
+    <bean id="celDominioBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celDominioBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celDominioService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelDominioService">
+        <property name="businessObject" ref="celDominioBiz"/>
+    </bean>
+    <bean id="celGrupoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelGrupoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celGrupoBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelGrupoBiz">
+        <property name="dao" ref="celGrupoDao"/>
+    </bean>
+    <bean id="celGrupoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celGrupoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celGrupoService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelGrupoService">
+        <property name="businessObject" ref="celGrupoBiz"/>
+    </bean>
+    <bean id="celGrupoUsuarioDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelGrupoUsuarioHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celGrupoUsuarioBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelGrupoUsuarioBiz">
+        <property name="dao" ref="celGrupoUsuarioDao"/>
+    </bean>
+    <bean id="celGrupoUsuarioBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celGrupoUsuarioBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celGrupoUsuarioService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelGrupoUsuarioService">
+        <property name="businessObject" ref="celGrupoUsuarioBiz"/>
+    </bean>
+    <bean id="celIndicadorDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelIndicadorHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celIndicadorBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelIndicadorBiz">
+        <property name="dao" ref="celIndicadorDao"/>
+    </bean>
+    <bean id="celIndicadorBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celIndicadorBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celIndicadorService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelIndicadorService">
+        <property name="businessObject" ref="celIndicadorBiz"/>
+    </bean>
+    <bean id="celIndicadorUsuarioEstadoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelIndicadorUsuarioEstadoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celIndicadorUsuarioEstadoBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelIndicadorUsuarioEstadoBiz">
+        <property name="dao" ref="celIndicadorUsuarioEstadoDao"/>
+    </bean>
+    <bean id="celIndicadorUsuarioEstadoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celIndicadorUsuarioEstadoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celIndicadorUsuarioEstadoService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelIndicadorUsuarioEstadoService">
+        <property name="businessObject" ref="celIndicadorUsuarioEstadoBiz"/>
+    </bean>
+    <bean id="celInteraccionCasoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelInteraccionCasoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celInteraccionCasoBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelInteraccionCasoBiz">
+        <property name="dao" ref="celInteraccionCasoDao"/>
+    </bean>
+    <bean id="celInteraccionCasoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celInteraccionCasoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celInteraccionCasoService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelInteraccionCasoService">
+        <property name="businessObject" ref="celInteraccionCasoBiz"/>
+    </bean>
+    <bean id="celInteraccionCasoDetalleDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelInteraccionCasoDetalleHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celInteraccionCasoDetalleBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelInteraccionCasoDetalleBiz">
+        <property name="dao" ref="celInteraccionCasoDetalleDao"/>
+    </bean>
+    <bean id="celInteraccionCasoDetalleBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celInteraccionCasoDetalleBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celInteraccionCasoDetalleService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelInteraccionCasoDetalleService">
+        <property name="businessObject" ref="celInteraccionCasoDetalleBiz"/>
+    </bean>
+    <bean id="celPropiedadDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelPropiedadHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celPropiedadBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelPropiedadBiz">
+        <property name="dao" ref="celPropiedadDao"/>
+    </bean>
+    <bean id="celPropiedadBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celPropiedadBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celPropiedadService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelPropiedadService">
+        <property name="businessObject" ref="celPropiedadBiz"/>
+    </bean>
+    <bean id="celUsuarioDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelUsuarioHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celUsuarioBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelUsuarioBiz">
+        <property name="dao" ref="celUsuarioDao"/>
+    </bean>
+    <bean id="celUsuarioBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celUsuarioBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celUsuarioService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelUsuarioService">
+        <property name="businessObject" ref="celUsuarioBiz"/>
+    </bean>
+
     <bean id="vwAlumnosActivosDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwAlumnosActivosHome">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

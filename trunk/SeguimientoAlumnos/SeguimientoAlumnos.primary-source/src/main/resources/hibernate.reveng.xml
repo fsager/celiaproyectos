@@ -2,6 +2,15 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
-  <table-filter match-catalog="celiacie_moodle2" match-name="vw_alumnos_activos"/>    
-  <table-filter match-catalog="celiacie_moodle2" match-name="vw_indicadores_alumnos"/>
+  <table-filter match-name="cel_dominio"/>
+  <table-filter match-name="cel_grupo"/>
+  <table-filter match-name="cel_grupo_usuario"/>
+  <table-filter match-name="cel_indicador"/>
+  <table-filter match-name="cel_indicador_usuario_estado"/>
+  <table-filter match-name="cel_interaccion_caso"/>
+  <table-filter match-name="cel_interaccion_caso_detalle"/>
+  <table-filter match-name="cel_propiedad"/>
+  <table-filter match-name="cel_usuario"/>  
+  <table-filter match-name="vw_alumnos_activos"/>    
+  <table-filter match-name="vw_indicadores_alumnos"/>
 </hibernate-reverse-engineering>
