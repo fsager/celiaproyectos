@@ -5,7 +5,7 @@
 		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
 		xmlns:n="native">
 	
-	<window border="normal" closable="true" title="Detalle del contacto" width="70%">
+	<window id="wdsDetalleCaso" border="normal" closable="true" title="Detalle del contacto" width="70%" apply="ar.com.celia.seguimiento_alumnos.controllers.DetalleCasoController">
 		<n:html lang="en">
 			  <n:head>
 			    <n:meta charset="utf-8"/>
@@ -45,20 +45,18 @@
 					<h:div style="margin:auto;">
 						<image src="/img/foto2.jpg" width="70px;" zclass="img-thumbnail"/>												
 					</h:div>
-					<n:h5 style="font-weight:bold;">
-						Cipriani, Gustavo
-					</n:h5>											
+						<label id="lblNombreUsuario" value="" style="font-weight:bold;font-size:medium"></label>											
 				</h:div>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Legajo:</n:spans> 351
+				<n:spans style="font-weight:bold;">Legajo:</n:spans> <label id="lblLegajo" value="" style="font-weight:bold;"></label>
 				<h:br/>
-				<n:spans style="font-weight:bold;">Carrera:</n:spans> Chef
+				<n:spans style="font-weight:bold;">Carrera:</n:spans> Chef <label id="lblCarrera" value="" style="font-weight:bold;"></label>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Telefono:</n:spans> 351-7013131
+				<n:spans style="font-weight:bold;">Telefono:</n:spans> 351-7013131 <label id="lbltelefono" value="" style="font-weight:bold;"></label>
 				<h:br/>
-				<n:spans style="font-weight:bold;">Contactos:</n:spans> 33
+				<n:spans style="font-weight:bold;">Contactos:</n:spans> 33 <label id="lblContatos" value="" style="font-weight:bold;"></label>
 				<h:br/>
 			</h:div>
 		</h:div>
@@ -68,6 +66,7 @@
 	            <tab label="Histórico" />
 	        </tabs>
 			 <tabpanels>
+			 	<tabpanel id="tbpContactoActual" />
 	            <tabpanel>
 					<grid>
 						<columns>

@@ -39,7 +39,7 @@ Assigned to:	You
 
 .alert-help{
   font-size:10px;
-  line-height:12px;
+  line-height:0px;
   text-align:left;
 }
 
@@ -208,4 +208,11 @@ Assigned to:	You
 body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
 	margin-right: 0px;
 	overflow:auto;
+}
+
+.pagination {
+display: inline-block;
+padding-left: 0;
+margin: 5px 0;
+border-radius: 4px;
 }
