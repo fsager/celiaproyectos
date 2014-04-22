@@ -12,22 +12,22 @@
 	    <n:meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	    <n:meta name="apple-mobile-web-app-capable" content="yes"/>    
 <!-- 	    <style src="/css/zk.overwrite.css.dsp" ></style>	         -->
-		    <style src="/css/bootstrap.css" ></style>
-		    <style src="/css/bootstrap-responsive.min.css" ></style>
-		    <style src="/css/google.font.css"></style>
-		    <style src="/css/font-awesome.min.css" >        </style>
-		    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style>
+<!-- 		    <style src="/css/bootstrap.css" ></style> -->
+<!-- 		    <style src="/css/bootstrap-responsive.min.css" ></style> -->
+<!-- 		    <style src="/css/google.font.css"></style> -->
+<!-- 		    <style src="/css/font-awesome.min.css" >        </style> -->
+<!-- 		    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style> -->
 <!-- 	    <style src="/css/base-admin-3.css" ></style> -->
 <!-- 	    <style src="/css/base-admin-3-responsive.css" ></style> -->
 <!-- 	    <style src="/css/pages/dashboard.css" >   </style> -->
 	    <style src="/css/custom.css" ></style>
-	    <style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style>
+<!-- 	    <style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style> -->
 	  </n:head>
 	</n:html>
-	<window id="wndIndex" border="none" height="100%" width="100%">
+	<window id="wndIndex" border="none" height="100%" width="100%" apply="ar.com.celia.seguimiento_alumnos.controllers.BandejaCasosController">
 	    <zscript>
 	    <![CDATA[
-	         import ar.com.celia.seguimiento_alumnos.domain.*;
+	         /*import ar.com.celia.seguimiento_alumnos.domain.*;
 	        java.util.List indicadores=new java.util.ArrayList();
 	        indicadores.add("Todos");
 	        indicadores.add("Ingresó al Moodle");
@@ -81,7 +81,7 @@
 	        		System.out.println("indicador.getValorIndicador(): "+indicador.getValorIndicador());
 	        	}
 	        	
-	        }
+	        }*/
 	        ]]>
 	    </zscript>
 	<groupbox>
@@ -114,9 +114,19 @@
 						<chosenbox id="lbxThree" width="100%" model="${model}" height="24px"/>
 					</cell>
 				</row>
+				<row>
+				 	<cell colspan="7" align="center">
+						<button id="btnFiltrar" label="Filtrar"/>
+					</cell>
+				</row>
 			</rows>
 		</grid>
 	</groupbox>	
+	<groupbox>
+		<caption label="Casos" style="font-weight:bold;"/>
+			<listbox id="lstBandejaCasos" mold="paging" pageSize="2" width="100%">
+			</listbox>
+	</groupbox>
 		
 	<groupbox>
 		<caption label="Casos" style="font-weight:bold;"/>
