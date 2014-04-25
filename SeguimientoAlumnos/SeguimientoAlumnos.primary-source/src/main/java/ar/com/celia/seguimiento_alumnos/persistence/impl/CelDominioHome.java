@@ -130,4 +130,29 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
             throw re;
         }
     }
+    
+    public List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception {
+        log.debug("finding CelDominio instance by example");
+        try {
+            Criteria cri = getSession().createCriteria(CelDominio.class);
+            cri.add(Restrictions.eq("domDominio", p_example));
+            
+            addDependenciesFilters(p_example, cri);
+        	if(falseLazy != null) {
+        		for(int i=0; i<falseLazy.length; i++) {
+        			cri.setFetchMode(falseLazy[i], FetchMode.JOIN);
+            	}
+        	}
+        	            
+            cri.addOrder(Order.asc("domId"));
+            List<CelDominio> results = cri.list();
+            log.debug("find by example successful, result size: " + results.size());
+            return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
 }
