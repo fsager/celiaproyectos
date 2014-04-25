@@ -1,4 +1,6 @@
 package ar.com.celia.seguimiento_alumnos.service;
+import java.util.List;
+
 import ar.com.celia.seguimiento_alumnos.domain.CelDominio;
 
 /**
@@ -46,5 +48,12 @@ public interface CelDominioDefinition {
 	 * @param p_domain    p_domain
 	 */
 	public abstract void update(CelDominio p_domain) throws Exception;
+	
+	/**
+	 * Buscar dominios en función de valor seteado en el campo DOM_DOMINIO.
+	 * 
+	 * @param p_domain    p_domain
+	 */
+	public abstract List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception;
 
 }
