@@ -17,6 +17,9 @@ public class DetalleCasoController extends GenericForwardComposer {
 	private Label lblCarrera;
 	private Label lblNombreUsuario;
 	private Tabpanel tbpContactoActual;
+	private Window wdsDetalleCaso;
+	
+	private TabContactoActualController tabContactoActualController=null;
 	
 	public void onCreate$wdsDetalleCaso(Event evt) throws Exception {
 		
@@ -45,8 +48,21 @@ public class DetalleCasoController extends GenericForwardComposer {
 			params.put("alumno", alumno);
 			Window win = (Window) Executions.createComponents(
 					"/celia/tab_Contacto_actual.zul", tbpContactoActual,params);
+			
+			tabContactoActualController=(TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
+			
 		}
 
 	}
-
+	
+	
+	public void onClick$btnGuardar(Event evt) throws Exception {
+		
+		tabContactoActualController.guardarInteraccion();
+		
+	}
+	
+	public void onClick$btnCancelar(Event evt) throws Exception {
+		wdsDetalleCaso.detach();
+	}
 }

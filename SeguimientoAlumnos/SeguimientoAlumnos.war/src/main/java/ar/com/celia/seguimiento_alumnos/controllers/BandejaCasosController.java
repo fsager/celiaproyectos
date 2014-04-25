@@ -5,6 +5,7 @@ import org.zkoss.zk.ui.event.CreateEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
+import org.zkoss.zkplus.acegi.ShowWindowEventListener;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Hbox;
@@ -13,6 +14,7 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Space;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
@@ -21,6 +23,7 @@ import com.sun.xml.bind.v2.runtime.reflect.Lister;
 
 import ar.com.celia.core.business.ContextManagerCore;
 import ar.com.celia.seguimiento_alumnos.domain.*;
+import ar.com.celia.seguimiento_alumnos.persistence.VwIndicadoresAlumnosDao;
 import ar.com.celia.seguimiento_alumnos.service.VwAlumnosActivosDefinition;
 import ar.com.celia.seguimiento_alumnos.service.impl.*;
 
@@ -113,8 +116,8 @@ public class BandejaCasosController extends GenericForwardComposer {
         	{
         		VwAlumnosActivos alumno=(VwAlumnosActivos)alumnos.get(i);
         		java.util.Set <VwIndicadoresAlumnos> indicadoresSet=alumno.getIndicadoresAlumnos();
-        		
-        		if(!indicadoresSet.isEmpty())
+
+        		if(!indicadoresSet.isEmpty() /*&& poseeIndicadoresIrregulares(alumno)*/)
         		{
 	        		Listitem row=new Listitem();
 	        		
@@ -189,7 +192,6 @@ public class BandejaCasosController extends GenericForwardComposer {
 	        		btnNuevoContacto.addEventListener("onClick", new EventListener() {
 	        		    public void onEvent(Event event) throws Exception {
 	        		    	
-	        		        //alert("abrir ventana para "+((VwAlumnosActivos)event.getTarget().getAttribute("alumno")).getLastname());
 	        		        abrirVentanDetalle((VwAlumnosActivos)event.getTarget().getAttribute("alumno"));
 	        		    }
 	        		});
@@ -250,10 +252,31 @@ public class BandejaCasosController extends GenericForwardComposer {
    
     public void abrirVentanDetalle(VwAlumnosActivos alumno)
     {
-        java.util.Properties params = new java.util.Properties();
-        params.put("alumno", alumno);
-		Window win = (Window) Executions.createComponents("/celia/detalle_caso.zul", null,params);
-		win.doModal();
+    	
+//    	if(poseeIndicadoresIrregulares(alumno))
+//    	{
+	        java.util.Properties params = new java.util.Properties();
+	        params.put("alumno", alumno);
+			Window win = (Window) Executions.createComponents("/celia/detalle_caso.zul", null,params);
+			win.doModal();
+//    	}
+//    	else
+//    	{
+//    		Messagebox.show("El alumno no posee Indicadores Irregulares para mostrar.",
+//					"Estado de Indicadores", Messagebox.OK,
+//					Messagebox.INFORMATION);
+//    	}
+    }
+    
+    public boolean poseeIndicadoresIrregulares(VwAlumnosActivos alumno){
+    	    	
+    	for(VwIndicadoresAlumnos indicador:alumno.getIndicadoresAlumnos()){
+    		if(indicador.getValorIndicador()==2){
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
     
     public String getCarreraAlumno(){
