@@ -1,5 +1,7 @@
 package ar.com.celia.seguimiento_alumnos.controllers;
 
+import javax.persistence.Column;
+
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.CreateEvent;
 import org.zkoss.zk.ui.event.Event;
@@ -62,7 +64,7 @@ public class BandejaCasosController extends GenericForwardComposer {
         
         VwAlumnosActivos vwAlumnosActivos=new VwAlumnosActivos();
     	String[] lazyFalse={"indicadoresAlumnos"};
-        java.util.List alumnos=vwAlumnosActivosService.getAll(vwAlumnosActivos,lazyFalse);
+    	java.util.List alumnos=vwAlumnosActivosService.p_alumnos_activos_con_indicadores(null, null,null,null);
         
         System.out.println("alumnos.size(): "+alumnos.size());
         
@@ -74,7 +76,7 @@ public class BandejaCasosController extends GenericForwardComposer {
         	
         	for(VwIndicadoresAlumnos indicador:indicadoresSet){
         	
-        		System.out.println("indicador.getCodigoIndicador(): "+indicador.getCodigoIndicador());
+        		System.out.println("indicador.getCodigoIndicador(): "+indicador.getIdIndicador());
         		System.out.println("indicador.getValorIndicador(): "+indicador.getValorIndicador());
         	}
         	
@@ -87,7 +89,7 @@ public class BandejaCasosController extends GenericForwardComposer {
         	
         	for(VwIndicadoresAlumnos indicador:indicadoresSet){
         	
-        		System.out.println("indicador.getCodigoIndicador(): "+indicador.getCodigoIndicador());
+        		System.out.println("indicador.getCodigoIndicador(): "+indicador.getIdIndicador());
         		System.out.println("indicador.getValorIndicador(): "+indicador.getValorIndicador());
         	}
         	
@@ -109,7 +111,7 @@ public class BandejaCasosController extends GenericForwardComposer {
     public void cargarBandeja() throws Exception{
     	VwAlumnosActivos vwAlumnosActivos=new VwAlumnosActivos();
     	String[] lazyFalse={"indicadoresAlumnos"};
-        java.util.List alumnos=vwAlumnosActivosService.getAll(vwAlumnosActivos,lazyFalse);
+        java.util.List alumnos=vwAlumnosActivosService.p_alumnos_activos_con_indicadores("1", "12",null,null);
         
         if(!alumnos.isEmpty())
         {	
@@ -135,15 +137,15 @@ public class BandejaCasosController extends GenericForwardComposer {
 	        		//agrupo verticalmente nombre e imagen
 	        		Vbox vBoxImageName=new Vbox();
 	        		vBoxImageName.setStyle("line-height:0px;align:stretch;width:150px;");
-	        		Image img=new Image();
-	        		img.setSrc("/img/imgPerfil.jpg");
+//	        		Image img=new Image();
+//	        		img.setSrc("/img/imgPerfil.jpg");
 	        		String nombre=alumno.getLastname()+", "+alumno.getFirstname();
 	        		Label lblnombre= new Label();
 	        		lblnombre.setValue(nombre);
 	        		lblnombre.setStyle("font-weight:bold;");
 	        		
 	        		//agrego la imagen y el nombre al vbox correspondiente
-	        		img.setParent(vBoxImageName);
+	        		//img.setParent(vBoxImageName); NO AGREGAR LA IMAGEN, no tenemos acceso a la misma
 	        		lblnombre.setParent(vBoxImageName);
 	        		vBoxImageName.setParent(hBoxDatosPersonales);
 	        		
@@ -215,6 +217,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 	        		celdaIndicadores.setStyle("width:50%;");
 	        		Hbox hBoxIndicador=new Hbox();
 
+	        		//TODO ordenar el set de indicadorres antes de mostrarlos
 	        		//hBoxIndicador.setSclass("resultForm");
 	        		for(VwIndicadoresAlumnos indicador:indicadoresSet){
 	                	
