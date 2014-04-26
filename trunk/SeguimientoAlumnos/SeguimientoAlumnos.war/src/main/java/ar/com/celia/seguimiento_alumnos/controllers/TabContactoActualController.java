@@ -1,8 +1,10 @@
 package ar.com.celia.seguimiento_alumnos.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
@@ -15,11 +17,13 @@ import org.zkoss.zul.Textbox;
 
 import ar.com.celia.core.business.ContextManagerCore;
 import ar.com.celia.seguimiento_alumnos.domain.CelDominio;
+import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCaso;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 import ar.com.celia.seguimiento_alumnos.domain.VwIndicadoresAlumnos;
 import ar.com.celia.seguimiento_alumnos.service.CelDominioDefinition;
+import ar.com.celia.seguimiento_alumnos.service.CelIndicadorDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDetalleDefinition;
 
@@ -29,6 +33,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 	private CelDominioDefinition celDominioService=(CelDominioDefinition)ContextManagerCore.getBizObject("celDominioService");
 	private CelInteraccionCasoDefinition celInteraccionCasoService=(CelInteraccionCasoDefinition)ContextManagerCore.getBizObject("celInteraccionCasoService");
 	private CelInteraccionCasoDetalleDefinition celInteraccionCasoDetalleService=(CelInteraccionCasoDetalleDefinition)ContextManagerCore.getBizObject("celInteraccionCasoDetalleService");
+	private CelIndicadorDefinition celIndicadorService=(CelIndicadorDefinition)ContextManagerCore.getBizObject("celIndicadorService");
 	private String dominioRespuestas="INDICADOR_CASO_RESPUESTA";
 	private VwAlumnosActivos alumno=null;
 	private Textbox tbxObservacionesGenerales;
@@ -66,6 +71,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 				lblindicador.setHeight("3");
 				lblindicador.setMaxlength(10);
 				lblindicador.setValue(indicador.getDescIndicador());
+				row.setAttribute("indicador", indicador.getCodigoIndicador());//EL CODIGO DEL INDICADOR ES LO MISMO QUE EL ID DE CEL_INDICADOR ??
 				
 				//Celda de Imagen Indicador
 				Listcell celdaImagen=new Listcell();
@@ -139,22 +145,23 @@ public class TabContactoActualController extends GenericForwardComposer {
 	//¿que pasa si no hay cambios se guarda la interaccion en blanco o se le muestra un cartel que le recuerde que modifique algo y sino se sale?
 	public void guardarInteraccion() throws Exception
 	{
-		alert("Entro  guardar la interaccion");
-		
 		List<Listitem> filas=lbIndicadores.getItems();
 		
 		if(!filas.isEmpty())
 		{
-//			CelInteraccionCaso cic=new CelInteraccionCaso();
-//			cic.setAluId(alumno.getId());
+			CelInteraccionCaso cic=new CelInteraccionCaso();
+			cic.setAluId(alumno.getId());
 			Date fecha=new Date();
-//			cic.setAudFechaIns(fecha);
-//			cic.setAudFechaUpd(fecha);
-//			cic.setAudUsrIns("Usuario_logueado");
-//			cic.setAudUsrUpd("Usuario_logueado");
-//			cic.setCasObservacionesGrales(tbxObservacionesGenerales.getText());
+			cic.setAudFechaIns(fecha);
+			cic.setAudFechaUpd(fecha);
+			cic.setAudUsrIns("Usuario_logueado");
+			cic.setAudUsrUpd("Usuario_logueado");
+			cic.setCasObservacionesGrales(tbxObservacionesGenerales.getText());
 			
-//			celInteraccionCasoService.insert(cic);
+			Long idInteraccionCaso=celInteraccionCasoService.insertInteraccionCaso(cic);
+			
+			boolean hayCasosDetallesCargados=false;
+			
 			for (int i = 0; i < filas.size(); i++) 
 			{
 				Listitem fila=filas.get(i);
@@ -163,21 +170,34 @@ public class TabContactoActualController extends GenericForwardComposer {
 				
 				if((txtObservaciones!=null && txtObservaciones.getValue().compareTo("")!=0)
 				||(ltbrespuestas!=null && ltbrespuestas.getSelectedItem()!=null && ltbrespuestas.getSelectedItem().getValue()!=null)){
+					
+					hayCasosDetallesCargados=true;
 					CelInteraccionCasoDetalle cicd=new CelInteraccionCasoDetalle();
 					cicd.setAudFechaIns(fecha);
 					cicd.setAudFechaUpd(fecha);
 					cicd.setAudUsrIns("Usuario_logueado");
 					cicd.setAudUsrUpd("Usuario_logueado");
-					
 					cicd.setIcdObservaciones(txtObservaciones.getValue());
-					
+					String idIndicador=(String)fila.getAttribute("indicador");
+					CelIndicador celIndicador=celIndicadorService.get(Long.valueOf(idIndicador));
+					cicd.setCelIndicador(celIndicador);
 					CelDominio dom=(CelDominio)ltbrespuestas.getSelectedItem().getValue();
 					cicd.setIcdRtaTipo(dom.getDomClave());
+					cicd.setCasId(idInteraccionCaso);
+					celInteraccionCasoDetalleService.insert(cicd);
 				}
-				else
-				{
-					alert("No se carga cambios en la fila");
-				}
+			}
+			
+			//si no hay nada cargado en un indicador ni a nivel gral no debo insertar nada
+			if(!hayCasosDetallesCargados && tbxObservacionesGenerales.getText().compareTo("")==0){ 
+				celInteraccionCasoService.delete(cic);
+				Messagebox.show("No se cargó ningún campo", "Información",
+						Messagebox.OK, Messagebox.INFORMATION);
+			}
+			else
+			{
+				Messagebox.show("La Interacción se guardó con éxito", "Información",
+						Messagebox.OK, Messagebox.INFORMATION);
 			}
 		}
 		

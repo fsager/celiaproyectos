@@ -24,6 +24,7 @@ import com.sun.xml.bind.v2.runtime.reflect.Lister;
 import ar.com.celia.core.business.ContextManagerCore;
 import ar.com.celia.seguimiento_alumnos.domain.*;
 import ar.com.celia.seguimiento_alumnos.persistence.VwIndicadoresAlumnosDao;
+import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.VwAlumnosActivosDefinition;
 import ar.com.celia.seguimiento_alumnos.service.impl.*;
 
@@ -31,6 +32,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 	
 	private Window wndIndex;
 	private VwAlumnosActivosDefinition vwAlumnosActivosService=(VwAlumnosActivosDefinition)ContextManagerCore.getBizObject("vwAlumnosActivosService");
+	CelInteraccionCasoDefinition celInteraccionCasoService=(CelInteraccionCasoDefinition)ContextManagerCore.getBizObject("celInteraccionCasoService");
 	private Button btnFiltrar;
 	private Listbox lstBandejaCasos;
 	
@@ -181,7 +183,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 	        		Div divContacto= new Div();
 	        		Label lblcontactos=new Label();
 	        		String contactos="";
-	        		contactos=getContactosAlumno();
+	        		contactos=getContactosAlumno(alumno.getId());
 	        		lblcontactos.setValue("Contacto: "+contactos);
 	        		lblcontactos.setStyle("font-weight:bold;margin-right:20px;");
 	        		
@@ -216,13 +218,13 @@ public class BandejaCasosController extends GenericForwardComposer {
 	        		//hBoxIndicador.setSclass("resultForm");
 	        		for(VwIndicadoresAlumnos indicador:indicadoresSet){
 	                	
-	        			Vbox vBoxIndicadorEspesifico=new Vbox();	
+	        			Vbox vBoxIndicadorEspesifico=new Vbox();
+	        			vBoxIndicadorEspesifico.setAlign("center");
+	        			vBoxIndicadorEspesifico.setPack("center");
 	        			Label lblindicador= new Label();
-	        			lblindicador.setMultiline(true);
 	        			lblindicador.setPre(true);
-	        			lblindicador.setHeight("3");
 	        			lblindicador.setMaxlength(10);
-	        			lblindicador.setValue(indicador.getDescIndicador()+": "+indicador.getValorIndicador());
+	        			lblindicador.setValue(indicador.getDescIndicador());
 	        			Image imgIndicador=new Image();
 	        			if(indicador.getValorIndicador()==1)imgIndicador.setSrc("/img/green.jpg");
 	        			else if(indicador.getValorIndicador()==2)imgIndicador.setSrc("/img/red.jpg");
@@ -250,13 +252,14 @@ public class BandejaCasosController extends GenericForwardComposer {
     } 
     
    
-    public void abrirVentanDetalle(VwAlumnosActivos alumno)
+    public void abrirVentanDetalle(VwAlumnosActivos alumno) throws Exception
     {
     	
 //    	if(poseeIndicadoresIrregulares(alumno))
 //    	{
 	        java.util.Properties params = new java.util.Properties();
 	        params.put("alumno", alumno);
+	        params.put("contactos", getContactosAlumno(alumno.getId()));
 			Window win = (Window) Executions.createComponents("/celia/detalle_caso.zul", null,params);
 			win.doModal();
 //    	}
@@ -286,10 +289,10 @@ public class BandejaCasosController extends GenericForwardComposer {
     	return carrera;
     }
     
-    public String getContactosAlumno(){
+    public String getContactosAlumno(Long aluId) throws Exception{
     	String contactos="-";
-    	//TODO obtener este valor de una tabla que de deberá crear en el esquema seguimientos_alumno
-    	
+    	int cantidadContactos=celInteraccionCasoService.getCantidadContactos(aluId);
+    	contactos=String.valueOf(cantidadContactos);
     	return contactos;
     }
     
