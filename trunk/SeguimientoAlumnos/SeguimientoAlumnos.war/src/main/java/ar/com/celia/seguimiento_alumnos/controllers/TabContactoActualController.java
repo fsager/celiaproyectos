@@ -71,7 +71,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 				lblindicador.setHeight("3");
 				lblindicador.setMaxlength(10);
 				lblindicador.setValue(indicador.getDescIndicador());
-				row.setAttribute("indicador", indicador.getCodigoIndicador());//EL CODIGO DEL INDICADOR ES LO MISMO QUE EL ID DE CEL_INDICADOR ??
+				row.setAttribute("indicador", indicador.getIdIndicador());//EL CODIGO DEL INDICADOR ES LO MISMO QUE EL ID DE CEL_INDICADOR ??
 				
 				//Celda de Imagen Indicador
 				Listcell celdaImagen=new Listcell();

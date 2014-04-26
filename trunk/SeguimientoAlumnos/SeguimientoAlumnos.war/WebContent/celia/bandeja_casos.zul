@@ -44,9 +44,7 @@
 					<textbox width="100%"/>
 					<label value="Apellido:"/>
 					<textbox width="100%"/>
-					<label value="Dni:"/>
-					<textbox width="100%"/>
-					<label value="Legajo:"/>
+					<label value="Matricula"/>
 					<textbox width="100%"/>
 				</row>
 				<row>
