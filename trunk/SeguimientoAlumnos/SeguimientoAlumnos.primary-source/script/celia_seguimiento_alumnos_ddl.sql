@@ -3,6 +3,38 @@ drop database seguimiento_alumnos;
 create database seguimiento_alumnos;
 USE seguimiento_alumnos;
 
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS p_alumnos_activos_con_indicadores $$
+CREATE PROCEDURE p_alumnos_activos_con_indicadores ()
+BEGIN
+	TRUNCATE TABLE tmp_indicadores_alumnos;
+
+	INSERT INTO tmp_indicadores_alumnos
+		select ia.* 
+		  from vw_alumnos_activos ac,vw_indicadores_alumnos ia
+		 where ac.id=ia.usr_id;
+
+	SET @s = CONCAT('select alu.*,ind.* 
+	  from vw_alumnos_activos alu,tmp_indicadores_alumnos ind ', ' where alu.id=ind.usr_id');
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+
+	
+	
+
+
+END $$
+
+CREATE TABLE tmp_indicadores_alumnos
+(
+ina_id	varchar(21) not null,
+usr_id	bigint(20) not null,
+codigo_indicador	varchar(1) not null,
+desc_indicador	varchar(25) not null,
+valor_indicador	bigint(20) not null
+);
 
 create view vw_alumnos_activos as
 select * from celiacie_moodle2.mdl_user usr
@@ -13,9 +45,8 @@ and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.user
 ;
 
 create or replace view vw_indicadores_alumnos as
-select CONCAT(usr.id,'1') id,usr.id usr_id,'1' codigo_indicador,'Ingresó al Moodle' desc_indicador,1 valor_indicador from celiacie_moodle2.mdl_user usr
-union select CONCAT(usr.id,'2'),usr.id,'2','Presentó trabajo práctico',1 from celiacie_moodle2.mdl_user usr;
-
+select CONCAT(usr.id,'1') ina_id,usr.id usr_id,'1' codigo_indicador,'Ingresó al Moodle' desc_indicador,1 valor_indicador from celiacie_moodle2.mdl_user usr
+union select CONCAT(usr.id,'2') ina_id,usr.id,'2','Presentó trabajo práctico',1 from celiacie_moodle2.mdl_user usr;
 
   CREATE TABLE seguimiento_alumnos.cel_usuario
    (	USR_ID  bigint default NULL auto_increment primary key,
@@ -135,4 +166,5 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
  ALTER TABLE seguimiento_alumnos.cel_indicador_usuario_estado ADD CONSTRAINT CEL_IND_USR_EST_IND_ID FOREIGN KEY (IND_ID)
     REFERENCES seguimiento_alumnos.cel_indicador (IND_ID);
 
-  
+ALTER TABLE CEL_GRUPO_USUARIO ADD CONSTRAINT CEL_GRU_USR_ID FOREIGN KEY (USR_ID)
+    REFERENCES CEL_USUARIO (USR_ID);

@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "vw_indicadores_alumnos", schema = "seguimiento_alumnos")
 public class VwIndicadoresAlumnos implements java.io.Serializable {
 
-	private Long id;
+	private Long inaId;
 	private VwAlumnosActivos vwAlumnosActivos;
 	private String codigoIndicador;
 	private String descIndicador;
@@ -28,13 +28,13 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 	
 	
 	@Id
-	@Column(name = "id", nullable = false)
-	public Long getId() {
-		return this.id;
+	@Column(name = "ina_id", nullable = false)
+	public Long getInaId() {
+		return this.inaId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setInaId(Long inaId) {
+		this.inaId = inaId;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
