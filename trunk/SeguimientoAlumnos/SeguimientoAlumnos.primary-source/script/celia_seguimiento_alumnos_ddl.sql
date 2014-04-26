@@ -3,50 +3,21 @@ drop database seguimiento_alumnos;
 create database seguimiento_alumnos;
 USE seguimiento_alumnos;
 
-DELIMITER $$
-
-DROP PROCEDURE IF EXISTS p_alumnos_activos_con_indicadores $$
-CREATE PROCEDURE p_alumnos_activos_con_indicadores ()
-BEGIN
-	TRUNCATE TABLE tmp_indicadores_alumnos;
-
-	INSERT INTO tmp_indicadores_alumnos
-		select ia.* 
-		  from vw_alumnos_activos ac,vw_indicadores_alumnos ia
-		 where ac.id=ia.usr_id;
-
-	SET @s = CONCAT('select alu.*,ind.* 
-	  from vw_alumnos_activos alu,tmp_indicadores_alumnos ind ', ' where alu.id=ind.usr_id');
-    PREPARE stmt FROM @s;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
-
-	
-	
-
-
-END $$
 
 CREATE TABLE tmp_indicadores_alumnos
 (
 ina_id	varchar(21) not null,
 usr_id	bigint(20) not null,
-codigo_indicador	varchar(1) not null,
-desc_indicador	varchar(25) not null,
+id_indicador	varchar(1) not null,
+nombre_indicador	varchar(250) not null,
+desc_indicador varchar(250) not null,		
 valor_indicador	bigint(20) not null
 );
 
-create view vw_alumnos_activos as
-select * from celiacie_moodle2.mdl_user usr
-where 1=1
-and deleted <> 1
-and suspended <> 1
-and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.userid=usr.id and ra.roleid=5)
-;
+CREATE INDEX tmp_ind_alu_index
+    ON tmp_indicadores_alumnos (usr_id);
 
-create or replace view vw_indicadores_alumnos as
-select CONCAT(usr.id,'1') ina_id,usr.id usr_id,'1' codigo_indicador,'Ingresó al Moodle' desc_indicador,1 valor_indicador from celiacie_moodle2.mdl_user usr
-union select CONCAT(usr.id,'2') ina_id,usr.id,'2','Presentó trabajo práctico',1 from celiacie_moodle2.mdl_user usr;
+
 
   CREATE TABLE seguimiento_alumnos.cel_usuario
    (	USR_ID  bigint default NULL auto_increment primary key,
@@ -86,7 +57,7 @@ ALTER TABLE seguimiento_alumnos.cel_grupo_usuario ADD CONSTRAINT CEL_GRU_GRP_ID 
 
 ALTER TABLE seguimiento_alumnos.cel_grupo_usuario ADD CONSTRAINT CEL_GRU_USR_ID FOREIGN KEY (USR_ID)
     REFERENCES seguimiento_alumnos.cel_usuario (USR_ID);
-
+    
 
   CREATE TABLE seguimiento_alumnos.cel_propiedad
    (	PRO_CLAVE varchar(250),
@@ -166,5 +137,99 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
  ALTER TABLE seguimiento_alumnos.cel_indicador_usuario_estado ADD CONSTRAINT CEL_IND_USR_EST_IND_ID FOREIGN KEY (IND_ID)
     REFERENCES seguimiento_alumnos.cel_indicador (IND_ID);
 
-ALTER TABLE CEL_GRUPO_USUARIO ADD CONSTRAINT CEL_GRU_USR_ID FOREIGN KEY (USR_ID)
-    REFERENCES CEL_USUARIO (USR_ID);
+
+    
+-- VIEWS
+create or replace view vw_alumnos_activos as
+select *,(select data from celiacie_moodle2.mdl_user_info_data where fieldid=1 and userid=usr.id) matricula from celiacie_moodle2.mdl_user usr
+where 1=1
+and deleted <> 1
+and suspended <> 1
+and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.userid=usr.id and ra.roleid=5)
+;
+
+-- VIEWS   
+
+
+DROP function IF EXISTS `fn_getValorIndicador`;
+DELIMITER $$
+USE `seguimiento_alumnos`$$
+CREATE FUNCTION `fn_getValorIndicador` (p_usr_id bigint,p_ind_id bigint)
+RETURNS INTEGER
+BEGIN
+
+RETURN 2;
+END$$
+
+DELIMITER ;
+
+
+    
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS p_alumnos_activos_con_indicadores $$
+CREATE PROCEDURE p_alumnos_activos_con_indicadores(IN p_list_indicadores varchar(300),
+												   IN p_matricula varchar(300),
+												   IN p_apellido varchar(300),
+												   IN p_nombre varchar(300))
+BEGIN
+	TRUNCATE TABLE tmp_indicadores_alumnos;
+
+	INSERT INTO tmp_indicadores_alumnos
+	select	CONCAT(ac.id,ind.IND_ID) ina_id,
+				ac.id usr_id,
+				ind.IND_ID id_indicador,
+				ind.IND_NOMBRE nombre_indicador,
+				ind.IND_DESCRIPCION desc_indicador,
+				fn_getValorIndicador(ac.id,ind.IND_ID) valor_indicador
+		  from vw_alumnos_activos ac,cel_indicador ind;
+
+
+	SET @primeraParte =  'select alu.*,ind.*, (select sum(valor_indicador) from tmp_indicadores_alumnos indsuma where indsuma.usr_id=alu.id) criticidad
+				 from vw_alumnos_activos alu,tmp_indicadores_alumnos ind
+				 where alu.id=ind.usr_id
+				  and exists (select 1 
+								from tmp_indicadores_alumnos sind 
+							   where sind.usr_id=alu.id 
+								 and sind.valor_indicador=2';
+
+       IF p_list_indicadores is not NULL
+      THEN
+         SET @filtroIndicadores = CONCAT(' and sind.id_indicador in(', p_list_indicadores,')) ');
+		 SET @filtroIndicadores2 = CONCAT(' and ind.id_indicador in(', p_list_indicadores,') ');
+	  ELSE
+		SET @filtroIndicadores = ')';
+		SET @filtroIndicadores2 = '';
+      END IF; 
+
+       IF p_matricula is not NULL
+      THEN
+         SET @filtroMatricula = CONCAT(' and LOWER(matricula) like''',p_matricula,'%''');
+	  ELSE
+		SET @filtroMatricula = '';
+      END IF; 
+
+       IF p_apellido is not NULL
+      THEN
+         SET @filtroApellido = CONCAT(' and LOWER(lastname) like''',p_apellido,'%''');
+	  ELSE
+		SET @filtroApellido = '';
+      END IF; 
+
+       IF p_nombre is not NULL
+      THEN
+         SET @filtroNombre = CONCAT(' and LOWER(firstname) like''',p_nombre,'%''');
+	  ELSE
+		SET @filtroNombre = '';
+      END IF;
+
+
+	SET @Query = CONCAT(@primeraParte, @filtroIndicadores,@filtroIndicadores2,@filtroMatricula,@filtroApellido,@filtroNombre);
+
+    PREPARE stmt FROM @Query;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+	
+
+
+END $$

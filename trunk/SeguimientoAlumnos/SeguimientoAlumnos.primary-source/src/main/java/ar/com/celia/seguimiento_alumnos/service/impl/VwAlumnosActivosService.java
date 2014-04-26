@@ -45,4 +45,8 @@ public class VwAlumnosActivosService implements VwAlumnosActivosDefinition {
 	public void update(VwAlumnosActivos p_domain) throws Exception {
 		biz.update(p_domain);
 	}
+	
+	public List<VwAlumnosActivos> p_alumnos_activos_con_indicadores(String list_indicadores, String matricula, String apellido, String nombre) throws Exception {
+		return biz.p_alumnos_activos_con_indicadores(list_indicadores, matricula, apellido, nombre);
+    }
 }

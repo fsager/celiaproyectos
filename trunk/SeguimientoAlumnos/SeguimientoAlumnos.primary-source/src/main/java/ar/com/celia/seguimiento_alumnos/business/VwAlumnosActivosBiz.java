@@ -38,4 +38,7 @@ public class VwAlumnosActivosBiz implements VwAlumnosActivosDefinition {
 		dao.update(p_domain);
 	}
 
+	public List<VwAlumnosActivos> p_alumnos_activos_con_indicadores(String list_indicadores, String matricula, String apellido, String nombre) throws Exception {
+		return dao.p_alumnos_activos_con_indicadores(list_indicadores, matricula, apellido, nombre);
+    }
 }

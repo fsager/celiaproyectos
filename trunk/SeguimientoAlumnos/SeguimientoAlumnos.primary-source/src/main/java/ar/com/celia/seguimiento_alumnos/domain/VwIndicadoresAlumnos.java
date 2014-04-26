@@ -22,10 +22,13 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 
 	private Long inaId;
 	private VwAlumnosActivos vwAlumnosActivos;
-	private String codigoIndicador;
+	private Long idIndicador;
+	private String nombreIndicador;
 	private String descIndicador;
 	private Long valorIndicador;
 	
+
+	//private String informacionAdicional;
 	
 	@Id
 	@Column(name = "ina_id", nullable = false)
@@ -48,18 +51,25 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 		this.vwAlumnosActivos = vwAlumnosActivos;
 	}
 
+	@Column(name = "id_indicador", nullable = false, length = 1)
+	public Long getIdIndicador() {
+		return idIndicador;
+	}
 	
-
-	@Column(name = "codigo_indicador", nullable = false, length = 1)
-	public String getCodigoIndicador() {
-		return this.codigoIndicador;
+	public void setIdIndicador(Long idIndicador) {
+		this.idIndicador = idIndicador;
 	}
 
-	public void setCodigoIndicador(String codigoIndicador) {
-		this.codigoIndicador = codigoIndicador;
+	@Column(name = "nombre_indicador", nullable = false, length = 250)
+	public String getNombreIndicador() {
+		return nombreIndicador;
 	}
-
-	@Column(name = "desc_indicador", nullable = false, length = 25)
+	
+	public void setNombreIndicador(String nombreIndicador) {
+		this.nombreIndicador = nombreIndicador;
+	}
+	
+	@Column(name = "desc_indicador", nullable = false, length = 250)
 	public String getDescIndicador() {
 		return this.descIndicador;
 	}
@@ -76,4 +86,14 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 	public void setValorIndicador(Long valorIndicador) {
 		this.valorIndicador = valorIndicador;
 	}
+	
+	/*@Column(name = "informacion_adicional", nullable = true, length = 4000)
+	public String getInformacionAdicional() {
+		return informacionAdicional;
+	}
+	
+	public void setInformacionAdicional(String informacionAdicional) {
+		this.informacionAdicional = informacionAdicional;
+	}*/	
+	
 }

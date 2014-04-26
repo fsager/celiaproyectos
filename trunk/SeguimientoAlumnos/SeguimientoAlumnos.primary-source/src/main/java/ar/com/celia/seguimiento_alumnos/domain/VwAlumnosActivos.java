@@ -70,7 +70,7 @@ public class VwAlumnosActivos implements java.io.Serializable {
 	private Long trustbitmask;
 	private String imagealt;
 	private Boolean screenreader;
-	
+	private String matricula;
 	private Set<VwIndicadoresAlumnos> indicadoresAlumnos = new HashSet<VwIndicadoresAlumnos>(0);
 
 	public VwAlumnosActivos() {
@@ -518,6 +518,15 @@ public class VwAlumnosActivos implements java.io.Serializable {
 		this.trustbitmask = trustbitmask;
 	}
 
+	@Column(name = "matricula")
+	public String getMatricula() {
+		return matricula;
+	}
+	
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+		
 	@Column(name = "imagealt")
 	public String getImagealt() {
 		return this.imagealt;

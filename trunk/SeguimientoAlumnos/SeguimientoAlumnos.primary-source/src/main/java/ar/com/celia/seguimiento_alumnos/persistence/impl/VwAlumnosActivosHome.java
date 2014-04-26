@@ -114,24 +114,6 @@ public class VwAlumnosActivosHome extends DAOObject implements VwAlumnosActivosD
         log.debug("finding VwAlumnosActivos instance by example");
         try {
         	
-        	Query query = getSession().createSQLQuery(
-        			"CALL p_alumnos_activos_con_indicadores()")
-        			.addEntity("alu",VwAlumnosActivos.class)
-        			.addJoin("ind", "alu.indicadoresAlumnos")
-        			.addEntity("alu",VwAlumnosActivos.class)
-        			.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        	
-        			//.setParameter("stockCode", "7277");
-        		 
-        	return query.list();
-        		
-        /*	session.createSQLQuery("select personid, name, code, description from person_books")  
-        	       .addEntity("person", Person.class)
-        	       .addJoin("ind", "person.indicadoresAlumnos")
-        	       .list();
-        		
-        	
-        	
             Criteria cri = getSession().createCriteria(VwAlumnosActivos.class);
             cri.add(Example.create(p_example).enableLike().ignoreCase());
             cri.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -146,7 +128,32 @@ public class VwAlumnosActivosHome extends DAOObject implements VwAlumnosActivosD
             cri.addOrder(Order.asc("firstname"));
             List<VwAlumnosActivos> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
-            return results;*/
+            return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
+    public List<VwAlumnosActivos> p_alumnos_activos_con_indicadores(String list_indicadores, String matricula, String apellido, String nombre) throws Exception {
+        log.debug("finding VwAlumnosActivos instance by example");
+        try {
+        	Query query = getSession().createSQLQuery(
+        			"CALL p_alumnos_activos_con_indicadores(?,?,?,?)")
+        			.addEntity("alu",VwAlumnosActivos.class)
+        			.addJoin("ind", "alu.indicadoresAlumnos")
+        			.addEntity("alu",VwAlumnosActivos.class)
+        			.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        	
+        	query.setString(0, list_indicadores);
+        	query.setString(1, matricula);
+        	query.setString(2, apellido);
+        	query.setString(3, nombre);
+        		 
+        	return query.list();
+        		
+       
         }
         catch (RuntimeException re) {
             log.error("find by example failed", re);
