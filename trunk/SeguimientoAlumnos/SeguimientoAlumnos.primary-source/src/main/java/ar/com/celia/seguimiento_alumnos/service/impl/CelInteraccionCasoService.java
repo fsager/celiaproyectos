@@ -45,4 +45,12 @@ public class CelInteraccionCasoService implements CelInteraccionCasoDefinition {
 	public void update(CelInteraccionCaso p_domain) throws Exception {
 		biz.update(p_domain);
 	}
+	
+	public Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception{
+		return biz.insertInteraccionCaso(transientInstance);
+	}
+	
+	public int getCantidadContactos(Long aluId) throws Exception {
+		return biz.getCantidadContactos(aluId) ;
+	}
 }
