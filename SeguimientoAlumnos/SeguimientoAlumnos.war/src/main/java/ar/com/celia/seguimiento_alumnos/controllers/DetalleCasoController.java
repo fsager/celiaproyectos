@@ -11,8 +11,7 @@ import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 
 public class DetalleCasoController extends GenericForwardComposer {
 	
-	private Label lblLegajo;
-	private Label lblContacto;
+	private Label lblContatos;
 	private Label lblTelefono;
 	private Label lblCarrera;
 	private Label lblNombreUsuario;
@@ -28,9 +27,9 @@ public class DetalleCasoController extends GenericForwardComposer {
 		if(alumno!= null)
 		{
 			lblNombreUsuario.setValue(alumno.getLastname()+", "+alumno.getFirstname());
-			lblLegajo.setValue(alumno.getIdnumber());
-			lblLegajo.setValue(alumno.getPhone1()+" - "+alumno.getPhone2());
-			lblLegajo.setValue(alumno.getIdnumber());
+			lblTelefono.setValue(alumno.getPhone1()+" - "+alumno.getPhone2());
+			String contactos=(String)arg.get("contactos");
+			lblContatos.setValue(contactos);
 			cargarTabContactoActual(alumno);
 		}
 
