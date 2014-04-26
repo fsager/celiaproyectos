@@ -1,14 +1,21 @@
 package ar.com.celia.seguimiento_alumnos.persistence.impl;
 
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
+
 import ar.com.celia.seguimiento_alumnos.domain.*;
 import ar.com.celia.seguimiento_alumnos.persistence.CelInteraccionCasoDao;
 import ar.com.celia.common.persistence.util.DAOObject;
+
 import org.hibernate.criterion.Order;
 import org.hibernate.FetchMode;
 
@@ -129,5 +136,47 @@ public class CelInteraccionCasoHome extends DAOObject implements CelInteraccionC
             log.error("find by example failed", re);
             throw re;
         }
+    }
+    
+    public Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception {
+    	
+	    Session session = this.getSession();
+	    try{
+	    	
+		    Transaction tran=session.beginTransaction();
+		    session.save(transientInstance);  
+		    session.flush(); // I forgot this from the previous post  
+		    Long idTransacionCaso = transientInstance.getCasId(); // returns the id Hibernate assigned for your car
+		    tran.commit();
+		    
+		    return idTransacionCaso;
+	    
+    	}catch(Exception e)
+    	{
+    		throw e; 
+    	}finally{
+    		//if(session!=null)session.close();
+    	}
+    }
+    
+    public int getCantidadContactos(Long aluId) throws Exception {
+    	 try {
+    	   	
+	    	 Criteria cri = getSession().createCriteria(CelInteraccionCaso.class);
+	         cri.add(Restrictions.eq("aluId", aluId));
+	         List<CelInteraccionCaso> results = cri.list();
+	         
+	         if(results!=null && !results.isEmpty()){
+	        	 return results.size(); 
+	         }
+	         else
+	         {
+	        	 return 0;
+	         }
+    	 }
+         catch (RuntimeException re) {
+             log.error("find by example failed", re);
+             throw re;
+         }
     }
 }

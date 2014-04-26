@@ -46,5 +46,19 @@ public interface CelInteraccionCasoDao {
 	 * @param p_domain    p_domain
 	 */
 	public abstract void update(CelInteraccionCaso p_domain) throws Exception;
+	
+	/**
+	 * inserta un registro y devuelve el id del objeto insertado.
+	 * 
+	 * @param p_domain    p_domain
+	 */
+	public abstract Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception;
+	
+	/**
+	 * Devuelve la cantidad de contactos o interacciones con un alumno.
+	 * 
+	 * @param p_domain    p_domain
+	 */
+	public abstract int getCantidadContactos(Long aluId) throws Exception;
 
 }

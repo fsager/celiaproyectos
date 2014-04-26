@@ -37,5 +37,13 @@ public class CelInteraccionCasoBiz implements CelInteraccionCasoDefinition {
 	public void update(CelInteraccionCaso p_domain) throws Exception {
 		dao.update(p_domain);
 	}
+	
+	public Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception{
+		return dao.insertInteraccionCaso(transientInstance);
+	}
+	
+	public int getCantidadContactos(Long aluId) throws Exception{
+		return dao.getCantidadContactos(aluId);
+	}
 
 }
