@@ -5,15 +5,15 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import ar.com.celia.seguimiento_alumnos.domain.*;
-import ar.com.celia.seguimiento_alumnos.persistence.VwAlumnosActivosDao;
 import ar.com.celia.common.persistence.util.DAOObject;
-
-import org.hibernate.criterion.Order;
-import org.hibernate.FetchMode;
+import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
+import ar.com.celia.seguimiento_alumnos.persistence.VwAlumnosActivosDao;
 
 
 /**
@@ -113,6 +113,25 @@ public class VwAlumnosActivosHome extends DAOObject implements VwAlumnosActivosD
     public List<VwAlumnosActivos> getAll(VwAlumnosActivos p_example, String[] falseLazy) throws Exception {
         log.debug("finding VwAlumnosActivos instance by example");
         try {
+        	
+        	Query query = getSession().createSQLQuery(
+        			"CALL p_alumnos_activos_con_indicadores()")
+        			.addEntity("alu",VwAlumnosActivos.class)
+        			.addJoin("ind", "alu.indicadoresAlumnos")
+        			.addEntity("alu",VwAlumnosActivos.class)
+        			.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        	
+        			//.setParameter("stockCode", "7277");
+        		 
+        	return query.list();
+        		
+        /*	session.createSQLQuery("select personid, name, code, description from person_books")  
+        	       .addEntity("person", Person.class)
+        	       .addJoin("ind", "person.indicadoresAlumnos")
+        	       .list();
+        		
+        	
+        	
             Criteria cri = getSession().createCriteria(VwAlumnosActivos.class);
             cri.add(Example.create(p_example).enableLike().ignoreCase());
             cri.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -127,7 +146,7 @@ public class VwAlumnosActivosHome extends DAOObject implements VwAlumnosActivosD
             cri.addOrder(Order.asc("firstname"));
             List<VwAlumnosActivos> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
-            return results;
+            return results;*/
         }
         catch (RuntimeException re) {
             log.error("find by example failed", re);
