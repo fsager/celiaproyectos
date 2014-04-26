@@ -1,4 +1,6 @@
 package ar.com.celia.seguimiento_alumnos.service;
+import java.util.List;
+
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 
 /**
@@ -47,4 +49,5 @@ public interface VwAlumnosActivosDefinition {
 	 */
 	public abstract void update(VwAlumnosActivos p_domain) throws Exception;
 
+	public List<VwAlumnosActivos> p_alumnos_activos_con_indicadores(String list_indicadores, String matricula, String apellido, String nombre) throws Exception;
 }
