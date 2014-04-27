@@ -163,7 +163,39 @@ END$$
 
 DELIMITER ;
 
+-- FUNCTIONS
 
+DROP FUNCTION IF EXISTS f_tpsvencidos;
+DELIMITER |
+CREATE FUNCTION f_tpsvencidos (alu_id bigint(10) unsigned)
+ RETURNS VARCHAR(2)
+ NOT DETERMINISTIC
+ BEGIN
+  DECLARE select_var smallint default 0;
+  SET select_var = (select count(a.name)
+	from mdl_assignment a
+	join mdl_course c on c.id = a.course
+	join mdl_enrol e on e.courseid=c.id
+	join mdl_user_enrolments ue on e.id=ue.enrolid
+	join mdl_user u on ue.userid=u.id
+	where FROM_UNIXTIME(a.timedue) < now()
+	and ue.userid=alu_id
+	and not exists (select 1 from mdl_assignment_submissions asu where asu.userid=ue.userid and asu.assignment=a.id) -- Comprobamos si fue enviado
+	and not exists (select 1 from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=ue.userid and cdet.ind_id=2 and DATE_ADD(cdet.AUD_FECHA_INS, INTERVAL 7 DAY) > now())-- Si pasaron 7 días o más desde que se habló con el alumno, el indicador debe comprobarse nuevamente.
+	);
+
+	IF select_var = 0 THEN RETURN 1;-- El indicador es correcto, no hay TPs vencidos.
+	ELSEIF (select_var > 0) THEN RETURN 2;-- El indicador devuelve al menos un TP vencido.
+	ELSE RETURN 0;
+	END IF;
+  RETURN select_var;
+END;
+|
+
+DELIMITER ;
+
+
+-- PROCEDURES
     
 DELIMITER $$
 
