@@ -163,6 +163,8 @@ END$$
 
 DELIMITER ;
 
+
+
 -- FUNCTIONS
 
 DROP FUNCTION IF EXISTS f_tpsvencidos;
@@ -193,6 +195,32 @@ END;
 |
 
 DELIMITER ;
+
+
+
+DROP FUNCTION IF EXISTS f_ingreso_moodle_cie;
+DELIMITER |
+CREATE FUNCTION f_ingreso_moodle_cie (alu_id bigint(10) unsigned)
+ RETURNS VARCHAR(2)
+ NOT DETERMINISTIC
+ BEGIN
+  DECLARE select_var smallint default 0;
+  SET select_var = (
+	select count(*) from mdl_user u
+	where DATE_ADD(FROM_UNIXTIME(u.lastaccess), INTERVAL 7 DAY) < now()
+	and u.id=alu_id
+	);
+
+	IF select_var = 0 THEN RETURN 1;-- El indicador es correcto, el usuario ingresó al CIE en los últimos 7 días.
+	ELSEIF (select_var > 0) THEN RETURN 2;-- El usuario no ingresó al CIE en los últimos 7 días.
+	ELSE RETURN 0;
+	END IF;
+  RETURN select_var;
+END;
+|
+
+DELIMITER ;
+
 
 
 -- PROCEDURES
