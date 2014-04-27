@@ -157,8 +157,22 @@ USE `seguimiento_alumnos`$$
 CREATE FUNCTION `fn_getValorIndicador` (p_usr_id bigint,p_ind_id bigint)
 RETURNS INTEGER
 BEGIN
-
-RETURN 2;
+	DECLARE result bigint;
+  IF p_ind_id = 1 -- No ingresa al CIE
+	THEN 
+		set result=f_ingreso_moodle_cie(p_usr_id);
+  ELSEIF p_ind_id = 2 -- Trabajo práctico vencido
+	THEN
+		set result=f_tpsvencidos(p_usr_id);
+  ELSEIF p_ind_id = 3 -- Examen reprobado
+	THEN
+		set result=f_ingreso_moodle_cie(p_usr_id);
+  ELSEIF p_ind_id = 4 -- Quedó libre en una materia
+	THEN
+		set result=f_ingreso_moodle_cie(p_usr_id);
+   END IF;
+	
+RETURN result; 
 END$$
 
 DELIMITER ;
@@ -175,14 +189,14 @@ CREATE FUNCTION f_tpsvencidos (alu_id bigint(10) unsigned)
  BEGIN
   DECLARE select_var smallint default 0;
   SET select_var = (select count(a.name)
-	from mdl_assignment a
-	join mdl_course c on c.id = a.course
-	join mdl_enrol e on e.courseid=c.id
-	join mdl_user_enrolments ue on e.id=ue.enrolid
-	join mdl_user u on ue.userid=u.id
+	from celiacie_moodle2.mdl_assignment a
+	join celiacie_moodle2.mdl_course c on c.id = a.course
+	join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
+	join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
+	join celiacie_moodle2.mdl_user u on ue.userid=u.id
 	where FROM_UNIXTIME(a.timedue) < now()
 	and ue.userid=alu_id
-	and not exists (select 1 from mdl_assignment_submissions asu where asu.userid=ue.userid and asu.assignment=a.id) -- Comprobamos si fue enviado
+	and not exists (select 1 from celiacie_moodle2.mdl_assignment_submissions asu where asu.userid=ue.userid and asu.assignment=a.id) -- Comprobamos si fue enviado
 	and not exists (select 1 from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=ue.userid and cdet.ind_id=2 and DATE_ADD(cdet.AUD_FECHA_INS, INTERVAL 7 DAY) > now())-- Si pasaron 7 días o más desde que se habló con el alumno, el indicador debe comprobarse nuevamente.
 	);
 
@@ -206,7 +220,7 @@ CREATE FUNCTION f_ingreso_moodle_cie (alu_id bigint(10) unsigned)
  BEGIN
   DECLARE select_var smallint default 0;
   SET select_var = (
-	select count(*) from mdl_user u
+	select count(*) from celiacie_moodle2.mdl_user u
 	where DATE_ADD(FROM_UNIXTIME(u.lastaccess), INTERVAL 7 DAY) < now()
 	and u.id=alu_id
 	);
@@ -283,8 +297,8 @@ BEGIN
 		SET @filtroNombre = '';
       END IF;
 
-
-	SET @Query = CONCAT(@primeraParte, @filtroIndicadores,@filtroIndicadores2,@filtroMatricula,@filtroApellido,@filtroNombre,' LIMIT 0,50 ');
+	SET @orderBy =  ' order by criticidad desc,alu.id,ind.id_indicador,lastname,firstname ';
+	SET @Query = CONCAT(@primeraParte, @filtroIndicadores,@filtroIndicadores2,@filtroMatricula,@filtroApellido,@filtroNombre,@orderBy,' LIMIT 0,200');
 
     PREPARE stmt FROM @Query;
     EXECUTE stmt;
