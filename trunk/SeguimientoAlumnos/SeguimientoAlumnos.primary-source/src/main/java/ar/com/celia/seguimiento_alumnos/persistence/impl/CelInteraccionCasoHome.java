@@ -162,6 +162,7 @@ public class CelInteraccionCasoHome extends DAOObject implements CelInteraccionC
     public int getCantidadContactos(Long aluId) throws Exception {
     	 try {
     	   	
+    		 //TODO mejorar no hace falta traer todo los registros para mostrar la cantidad!!!!
 	    	 Criteria cri = getSession().createCriteria(CelInteraccionCaso.class);
 	         cri.add(Restrictions.eq("aluId", aluId));
 	         List<CelInteraccionCaso> results = cri.list();

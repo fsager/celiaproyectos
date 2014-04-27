@@ -18,7 +18,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "vw_indicadores_alumnos", schema = "seguimiento_alumnos")
-public class VwIndicadoresAlumnos implements java.io.Serializable {
+public class VwIndicadoresAlumnos implements java.io.Serializable, Comparable {
 
 	private Long inaId;
 	private VwAlumnosActivos vwAlumnosActivos;
@@ -86,6 +86,12 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 	public void setValorIndicador(Long valorIndicador) {
 		this.valorIndicador = valorIndicador;
 	}
+
+	@Override
+	public int compareTo(Object o) {		
+		VwIndicadoresAlumnos indicadorAlumno=(VwIndicadoresAlumnos)o;		
+		return this.getIdIndicador().compareTo(indicadorAlumno.getIdIndicador());
+	}
 	
 	/*@Column(name = "informacion_adicional", nullable = true, length = 4000)
 	public String getInformacionAdicional() {
@@ -95,5 +101,8 @@ public class VwIndicadoresAlumnos implements java.io.Serializable {
 	public void setInformacionAdicional(String informacionAdicional) {
 		this.informacionAdicional = informacionAdicional;
 	}*/	
+	
+	
+	
 	
 }
