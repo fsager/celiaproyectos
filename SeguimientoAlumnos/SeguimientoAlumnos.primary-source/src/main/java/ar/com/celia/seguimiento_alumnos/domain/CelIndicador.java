@@ -2,17 +2,15 @@ package ar.com.celia.seguimiento_alumnos.domain;
 
 // Generated 20/04/2014 02:51:20 PM by Hibernate Tools 3.4.0.CR1
 
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,7 +20,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "cel_indicador", catalog = "seguimiento_alumnos")
-public class CelIndicador implements java.io.Serializable {
+public class CelIndicador implements java.io.Serializable, Comparator<Comparable>, Comparable {
 
 	private Long indId;
 	private String indNombre;
@@ -128,6 +126,25 @@ public class CelIndicador implements java.io.Serializable {
 	public void setAudUsrUpd(String audUsrUpd) {
 		this.audUsrUpd = audUsrUpd;
 	}
+	
+	public String  toString()
+	{
+		return indNombre;
+	}
+
+	@Override
+	public int compare(Comparable o1, Comparable o2) {
+		return o1.compareTo(o2);
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		
+		CelIndicador indicador=(CelIndicador)o;		
+		return this.getIndId().compareTo(indicador.getIndId());
+	}
+	
+	
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "celIndicador")
 //	public Set getCelInteraccionCasoDetalles() {

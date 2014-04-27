@@ -25,12 +25,10 @@
 	  </n:head>
 	</n:html>
 	<window id="wndIndex" border="none" height="100%" width="100%" apply="ar.com.celia.seguimiento_alumnos.controllers.BandejaCasosController">
-	<groupbox>
+	<groupbox mold="3d">
 		<caption label="Filtros" style="font-weight:bold;"/>
-		<grid>
+		<grid id="gridFiltros">
 			<columns>
-				<column/>
-				<column/>
 				<column/>
 				<column/>
 				<column/>
@@ -40,31 +38,24 @@
 			</columns>
 			<rows>
 				<row>
-					<label value="Nombre:"/>
-					<textbox width="100%"/>
-					<label value="Apellido:"/>
-					<textbox width="100%"/>
-					<label value="Matricula"/>
-					<textbox width="100%"/>
-				</row>
-				<row>
 					<label value="Indicadores:"/>
-					<cell colspan="7">
-						<chosenbox id="lbxThree" width="100%" model="${model}" height="24px"/>
+					<cell colspan="6">
+						<chosenbox id="chosenIndicadores" width="100%" height="24px"/>
 					</cell>
 				</row>
 				<row>
-				 	<cell colspan="7" align="center">
-						<button id="btnFiltrar" label="Filtrar"/>
-					</cell>
+					<label value="Nombre:"/>
+					<textbox id="txtNombre" width="100%"/>
+					<label value="Apellido:"/>
+					<textbox id="txtApellido"  width="100%"/>
+					<label value="Matrícula:"/>
+					<textbox id="txtMatricula" width="100%"/>
+					<button id="btnFiltrar" label="Buscar" width="100%"/>
 				</row>
 			</rows>
 		</grid>
 	</groupbox>	
-	<groupbox>
-		<caption label="Casos" style="font-weight:bold;"/>
-			<listbox id="lstBandejaCasos" mold="paging" pageSize="2" width="100%">
-			</listbox>
-	</groupbox>	
+		<listbox id="lstBandejaCasos"  mold="paging" pageSize="4" width="100%" emptyMessage="No se encontraron resultados, para los filtros ingresados.">
+		</listbox>
 	</window>
 </zk>
