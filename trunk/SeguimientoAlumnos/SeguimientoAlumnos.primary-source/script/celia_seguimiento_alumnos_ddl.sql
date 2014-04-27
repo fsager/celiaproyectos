@@ -253,7 +253,7 @@ BEGIN
 							   where sind.usr_id=alu.id 
 								 and sind.valor_indicador=2';
 
-       IF p_list_indicadores is not NULL
+       IF p_list_indicadores is not NULL and p_list_indicadores<>''
       THEN
          SET @filtroIndicadores = CONCAT(' and sind.id_indicador in(', p_list_indicadores,')) ');
 		 SET @filtroIndicadores2 = CONCAT(' and ind.id_indicador in(', p_list_indicadores,') ');
@@ -262,21 +262,21 @@ BEGIN
 		SET @filtroIndicadores2 = '';
       END IF; 
 
-       IF p_matricula is not NULL
+       IF p_matricula is not NULL and p_matricula<>''
       THEN
          SET @filtroMatricula = CONCAT(' and LOWER(matricula) like''',p_matricula,'%''');
 	  ELSE
 		SET @filtroMatricula = '';
       END IF; 
 
-       IF p_apellido is not NULL
+       IF p_apellido is not NULL and p_apellido<>''
       THEN
          SET @filtroApellido = CONCAT(' and LOWER(lastname) like''',p_apellido,'%''');
 	  ELSE
 		SET @filtroApellido = '';
       END IF; 
 
-       IF p_nombre is not NULL
+       IF p_nombre is not NULL and p_nombre<>''
       THEN
          SET @filtroNombre = CONCAT(' and LOWER(firstname) like''',p_nombre,'%''');
 	  ELSE
@@ -284,7 +284,7 @@ BEGIN
       END IF;
 
 
-	SET @Query = CONCAT(@primeraParte, @filtroIndicadores,@filtroIndicadores2,@filtroMatricula,@filtroApellido,@filtroNombre);
+	SET @Query = CONCAT(@primeraParte, @filtroIndicadores,@filtroIndicadores2,@filtroMatricula,@filtroApellido,@filtroNombre,' LIMIT 0,50 ');
 
     PREPARE stmt FROM @Query;
     EXECUTE stmt;
@@ -293,3 +293,4 @@ BEGIN
 
 
 END $$
+
