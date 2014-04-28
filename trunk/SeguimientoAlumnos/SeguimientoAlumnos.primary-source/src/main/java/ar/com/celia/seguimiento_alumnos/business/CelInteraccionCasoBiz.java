@@ -46,4 +46,7 @@ public class CelInteraccionCasoBiz implements CelInteraccionCasoDefinition {
 		return dao.getCantidadContactos(aluId);
 	}
 
+	public List<CelInteraccionCaso> getInteraccionesPorAlumno(CelInteraccionCaso p_example, String[] falseLazy) throws Exception{
+		return dao.getInteraccionesPorAlumno(p_example,falseLazy);
+	}
 }
