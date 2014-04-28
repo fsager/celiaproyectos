@@ -28,7 +28,7 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 	private String icdRtaTipo;
 	private Date icdIgnorarHasta;
 	private String icdObservaciones;
-	private long casId;
+	private CelInteraccionCaso celInteraccionCaso;
 	private Date audFechaIns;
 	private Date audFechaUpd;
 	private String audUsrIns;
@@ -39,13 +39,13 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 
 	public CelInteraccionCasoDetalle(CelIndicador celIndicador,
 			String icdRtaTipo, Date icdIgnorarHasta, String icdObservaciones,
-			long casId, Date audFechaIns, Date audFechaUpd, String audUsrIns,
+			CelInteraccionCaso celInteraccionCaso, Date audFechaIns, Date audFechaUpd, String audUsrIns,
 			String audUsrUpd) {
 		this.celIndicador = celIndicador;
 		this.icdRtaTipo = icdRtaTipo;
 		this.icdIgnorarHasta = icdIgnorarHasta;
 		this.icdObservaciones = icdObservaciones;
-		this.casId = casId;
+		this.celInteraccionCaso = celInteraccionCaso;
 		this.audFechaIns = audFechaIns;
 		this.audFechaUpd = audFechaUpd;
 		this.audUsrIns = audUsrIns;
@@ -101,14 +101,16 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 		this.icdObservaciones = icdObservaciones;
 	}
 
-	@Column(name = "CAS_ID", nullable = false)
-	public long getCasId() {
-		return this.casId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CAS_ID", nullable = false)
+	public CelInteraccionCaso getCelInteraccionCaso() {
+		return celInteraccionCaso;
 	}
 
-	public void setCasId(long casId) {
-		this.casId = casId;
+	public void setCelInteraccionCaso(CelInteraccionCaso celInteraccionCaso) {
+		this.celInteraccionCaso = celInteraccionCaso;
 	}
+
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "AUD_FECHA_INS", nullable = false, length = 19)
