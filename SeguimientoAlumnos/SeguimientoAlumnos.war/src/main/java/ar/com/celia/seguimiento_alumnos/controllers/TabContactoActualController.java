@@ -178,8 +178,8 @@ public class TabContactoActualController extends GenericForwardComposer {
 					cicd.setAudUsrIns("Usuario_logueado");
 					cicd.setAudUsrUpd("Usuario_logueado");
 					cicd.setIcdObservaciones(txtObservaciones.getValue());
-					String idIndicador=(String)fila.getAttribute("indicador");
-					CelIndicador celIndicador=celIndicadorService.get(Long.valueOf(idIndicador));
+					Long idIndicador=(Long)fila.getAttribute("indicador");
+					CelIndicador celIndicador=celIndicadorService.get(idIndicador);
 					cicd.setCelIndicador(celIndicador);
 					CelDominio dom=(CelDominio)ltbrespuestas.getSelectedItem().getValue();
 					cicd.setIcdRtaTipo(dom.getDomClave());
@@ -198,6 +198,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 			{
 				Messagebox.show("La Interacción se guardó con éxito", "Información",
 						Messagebox.OK, Messagebox.INFORMATION);
+				//deshabilitar el boton guardar y en cancelar llamar a filtrar para que refresque la lista
 			}
 		}
 		
