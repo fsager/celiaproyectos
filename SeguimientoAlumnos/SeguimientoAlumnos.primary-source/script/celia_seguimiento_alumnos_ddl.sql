@@ -212,9 +212,9 @@ DELIMITER ;
 
 
 
-DROP FUNCTION IF EXISTS f_ingreso_moodle_cie;
+DROP FUNCTION IF EXISTS seguimiento_alumnos.f_ingreso_moodle_cie;
 DELIMITER |
-CREATE FUNCTION f_ingreso_moodle_cie (alu_id bigint(10) unsigned)
+CREATE FUNCTION seguimiento_alumnos.f_ingreso_moodle_cie (alu_id bigint(10) unsigned)
  RETURNS VARCHAR(2)
  NOT DETERMINISTIC
  BEGIN
@@ -223,10 +223,40 @@ CREATE FUNCTION f_ingreso_moodle_cie (alu_id bigint(10) unsigned)
 	select count(*) from celiacie_moodle2.mdl_user u
 	where DATE_ADD(FROM_UNIXTIME(u.lastaccess), INTERVAL 7 DAY) < now()
 	and u.id=alu_id
+	and not exists (select 1 from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=alu_id and cdet.ind_id=1 and DATE_ADD(cdet.AUD_FECHA_INS, INTERVAL 7 DAY) > now())-- Si pasaron 7 días o más desde que se habló con el alumno, el indicador debe comprobarse nuevamente.
 	);
-
 	IF select_var = 0 THEN RETURN 1;-- El indicador es correcto, el usuario ingresó al CIE en los últimos 7 días.
 	ELSEIF (select_var > 0) THEN RETURN 2;-- El usuario no ingresó al CIE en los últimos 7 días.
+	ELSE RETURN 0;
+	END IF;
+  RETURN select_var;
+END;
+|
+
+DELIMITER ;
+
+
+DROP FUNCTION IF EXISTS seguimiento_alumnos.f_examenes_reprobados;
+DELIMITER |
+CREATE FUNCTION seguimiento_alumnos.f_examenes_reprobados (alu_id bigint(10) unsigned)
+ RETURNS VARCHAR(2)
+ NOT DETERMINISTIC
+ BEGIN
+  DECLARE select_var smallint default 0;
+  SET select_var = (select count(*)
+	from celiacie_moodle2.mdl_quiz q
+	join celiacie_moodle2.mdl_course c on c.id = q.course
+	join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
+	join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
+	join celiacie_moodle2.mdl_user u on ue.userid = u.id
+	where FROM_UNIXTIME(q.timeclose) < now()-- La fecha de cierre del examen tiene que ser anterior a la fecha actual para que se considere.
+	and ue.userid=alu_id
+	and not exists (select 1 from celiacie_moodle2.mdl_quiz_grades gr where gr.quiz=q.id and gr.userid=ue.userid and gr.grade > 60)-- El alumno no ha rendido el examen u obtuvo menos de 60 puntos.
+	and not exists (select 1 from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=ue.userid and cdet.ind_id=3 and DATE_ADD(cdet.AUD_FECHA_INS, INTERVAL 7 DAY) > now())-- Si pasaron 7 días o más desde que se habló con el alumno, el indicador debe comprobarse nuevamente.
+	);
+
+	IF select_var = 0 THEN RETURN 1;-- El indicador es correcto, no hay examenes reprobados o no rendidos.
+	ELSEIF (select_var > 0) THEN RETURN 2;-- El indicador devuelve al menos un examen reprobado o no rendido.
 	ELSE RETURN 0;
 	END IF;
   RETURN select_var;
