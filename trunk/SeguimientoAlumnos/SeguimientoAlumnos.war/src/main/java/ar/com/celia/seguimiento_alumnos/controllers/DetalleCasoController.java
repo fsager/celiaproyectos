@@ -14,8 +14,9 @@ public class DetalleCasoController extends GenericForwardComposer {
 	
 	private Label lblContatos;
 	private Label lblTelefono;
-	private Label lblCarrera;
+	private Label lblMatricula;
 	private Label lblNombreUsuario;
+	private Label lblEmail;
 	private Tabpanel tbpContactoActual;
 	private Tabpanel tbpHistorico;
 	private Tab tbHistorico;
@@ -31,6 +32,8 @@ public class DetalleCasoController extends GenericForwardComposer {
 		
 		if(alumno!= null)
 		{
+			lblMatricula.setValue(alumno.getMatricula());
+			lblEmail.setValue(alumno.getEmail());
 			lblNombreUsuario.setValue(alumno.getLastname()+", "+alumno.getFirstname());
 			lblTelefono.setValue(alumno.getPhone1()+" - "+alumno.getPhone2());
 			String contactos=(String)arg.get("contactos");
