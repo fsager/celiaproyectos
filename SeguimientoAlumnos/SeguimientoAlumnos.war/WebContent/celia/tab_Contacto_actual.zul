@@ -25,19 +25,19 @@
 	<div>
          <panel >
              <panelchildren>
-               	<listbox id="lbIndicadores" mold="paging" pageSize="8" rows="8" vflex="true"  sizedByContent="true" fixedLayout="true" checkmark="false" multiple="true">
+               	<listbox id="lbIndicadores" mold="paging" pageSize="4" vflex="true"  sizedByContent="true" fixedLayout="true" checkmark="false" multiple="true">
                		<listhead>
-               			<listheader hflex="2"></listheader>
-               			<listheader hflex="1"></listheader>
-               			<listheader hflex="1"></listheader>
-               			<listheader hflex="2"></listheader>
-               			<listheader hflex="1"></listheader>
+               			<listheader hflex="min"></listheader>
+               			<listheader hflex="min"></listheader>
+               			<listheader hflex="min"></listheader>
+               			<listheader hflex="min"></listheader>
+               			<listheader hflex="min"></listheader>
                			<listheader hflex="2"></listheader>
                		</listhead>
 	   			</listbox>   
 	   			<div>
-	   				<label value="Observaciones generales:"></label>
-					<textbox id="tbxObservacionesGenerales" rows="2" width="100%"/>
+	   				<label value="Observaciones generales:" style="font-weight:bold;"></label>
+					<textbox id="tbxObservacionesGenerales" rows="3" width="100%"/>
 	   			</div>   
              </panelchildren>
          </panel>
