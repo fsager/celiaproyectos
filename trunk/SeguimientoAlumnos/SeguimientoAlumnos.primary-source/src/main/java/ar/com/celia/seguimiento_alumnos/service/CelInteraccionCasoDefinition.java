@@ -50,18 +50,11 @@ public interface CelInteraccionCasoDefinition {
 	public abstract void update(CelInteraccionCaso p_domain) throws Exception;
 	
 	/**
-	 * Inserta un registro y devuelve el id insertado.
-	 * 
-	 * @param p_domain    p_domain
-	 */
-	public abstract Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception;
-	
-	/**
 	 * Devuelve la cantidad de contactos o interacciones con un alumno.
 	 * 
 	 * @param p_domain    p_domain
 	 */
-	public abstract int getCantidadContactos(Long aluId) throws Exception;
+	public abstract Long getCantidadContactos(Long aluId) throws Exception;
 	
 	/**
 	 * Devuelve una lista de interacciones  y detalles para un alumno determinado.
