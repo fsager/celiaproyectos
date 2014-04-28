@@ -249,12 +249,11 @@ CREATE FUNCTION seguimiento_alumnos.f_examenes_reprobados (alu_id bigint(10) uns
 	join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
 	join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
 	join celiacie_moodle2.mdl_user u on ue.userid = u.id
-	where FROM_UNIXTIME(q.timeclose) < now()-- La fecha de cierre del examen tiene que ser anterior a la fecha actual para que se considere.
-	and ue.userid=alu_id
+	where ue.userid=alu_id
 	and not exists (select 1 from celiacie_moodle2.mdl_quiz_grades gr where gr.quiz=q.id and gr.userid=ue.userid and gr.grade > 60)-- El alumno no ha rendido el examen u obtuvo menos de 60 puntos.
-	and not exists (select 1 from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=ue.userid and cdet.ind_id=3 and DATE_ADD(cdet.AUD_FECHA_INS, INTERVAL 7 DAY) > now())-- Si pasaron 7 días o más desde que se habló con el alumno, el indicador debe comprobarse nuevamente.
+	and FROM_UNIXTIME(q.timeclose) < now()-- La fecha de cierre del examen tiene que ser anterior a la fecha actual para que se considere.
+	and true=coalesce(FROM_UNIXTIME(q.timeclose) > (select max(cdet.aud_fecha_ins) from seguimiento_alumnos.cel_interaccion_caso_detalle cdet join seguimiento_alumnos.cel_interaccion_caso caso on cdet.CAS_ID=caso.cas_id where caso.alu_id=alu_id and cdet.ind_id=3), true)-- Si hay al menos una interacción con el alumno sobre examenes reprobados, consideramos sólo los examenes posteriores a esa fecha.
 	);
-
 	IF select_var = 0 THEN RETURN 1;-- El indicador es correcto, no hay examenes reprobados o no rendidos.
 	ELSEIF (select_var > 0) THEN RETURN 2;-- El indicador devuelve al menos un examen reprobado o no rendido.
 	ELSE RETURN 0;
