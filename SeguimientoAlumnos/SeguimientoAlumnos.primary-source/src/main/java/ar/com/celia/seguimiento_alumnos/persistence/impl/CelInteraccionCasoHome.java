@@ -138,6 +138,30 @@ public class CelInteraccionCasoHome extends DAOObject implements CelInteraccionC
         }
     }
     
+    public List<CelInteraccionCaso> getInteraccionesPorAlumno(CelInteraccionCaso p_example, String[] falseLazy) throws Exception {
+        log.debug("finding CelInteraccionCaso instance by example");
+        try {
+            Criteria cri = getSession().createCriteria(CelInteraccionCaso.class);
+            cri.add(Restrictions.eq("aluId", p_example.getAluId()));
+            
+            addDependenciesFilters(p_example, cri);
+        	if(falseLazy != null) {
+        		for(int i=0; i<falseLazy.length; i++) {
+        			cri.setFetchMode(falseLazy[i], FetchMode.JOIN);
+            	}
+        	}
+        	            
+            cri.addOrder(Order.asc("casId"));
+            List<CelInteraccionCaso> results = cri.list();
+            log.debug("find by example successful, result size: " + results.size());
+            return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
     public Long insertInteraccionCaso(CelInteraccionCaso transientInstance) throws Exception {
     	
 	    Session session = this.getSession();
