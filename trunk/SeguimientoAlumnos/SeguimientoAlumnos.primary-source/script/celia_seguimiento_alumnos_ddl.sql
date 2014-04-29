@@ -108,8 +108,7 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
   CREATE TABLE seguimiento_alumnos.cel_interaccion_caso_detalle
    (	ICD_ID bigint default NULL auto_increment primary key, 
 		ICD_RTA_TIPO varchar(250) not null,
-		ICD_IGNORAR_HASTA TIMESTAMP not null,
-		ICD_OBSERVACIONES varchar(250) not null,
+		ICD_OBSERVACIONES varchar(250) null,
 		CAS_ID bigint not null,
 		IND_ID bigint not null,
     	AUD_FECHA_INS TIMESTAMP not null, 
@@ -156,9 +155,9 @@ and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.user
 
 -- FUNCTIONS
 
-DROP FUNCTION IF EXISTS f_tpsvencidos;
+DROP FUNCTION IF EXISTS seguimiento_alumnos.f_tpsvencidos;
 DELIMITER |
-CREATE FUNCTION f_tpsvencidos (alu_id bigint(10) unsigned)
+CREATE FUNCTION seguimiento_alumnos.f_tpsvencidos (alu_id bigint(10) unsigned)
  RETURNS VARCHAR(2)
  NOT DETERMINISTIC
  BEGIN
