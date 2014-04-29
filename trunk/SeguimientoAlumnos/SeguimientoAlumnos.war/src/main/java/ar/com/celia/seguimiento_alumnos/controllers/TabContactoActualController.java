@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.zkoss.zhtml.Messagebox;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
@@ -38,10 +38,12 @@ public class TabContactoActualController extends GenericForwardComposer {
 	private VwAlumnosActivos alumno=null;
 	private Textbox tbxObservacionesGenerales;
 	
+	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		comp.setAttribute("controller", this, false);
 	}
+	
 	
 	public void onCreate$wdsTabContactoActual(Event evt) throws Exception {
 	
@@ -53,13 +55,10 @@ public class TabContactoActualController extends GenericForwardComposer {
 		}
 	}
 	
-	public void generarGrilla(java.util.Set <VwIndicadoresAlumnos> indicadoresSet) throws Exception
-	{
-				
-		for(VwIndicadoresAlumnos indicador: indicadoresSet)
-		{
-			if(indicador.getValorIndicador()==2)
-			{
+	
+	public void generarGrilla(java.util.Set <VwIndicadoresAlumnos> indicadoresSet) throws Exception {
+		for(VwIndicadoresAlumnos indicador: indicadoresSet) {
+			if(indicador.getValorIndicador() == 2) {
 				//Se crea la fila
 				Listitem row=new Listitem();
 				
@@ -72,7 +71,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 				lblindicador.setMaxlength(10);
 				lblindicador.setValue(indicador.getNombreIndicador());
 				lblindicador.setTooltiptext(indicador.getDescIndicador());
-				row.setAttribute("indicador", indicador.getIdIndicador());
+				row.setAttribute("indicador", indicador);
 				
 				//Celda de Imagen Indicador
 				Listcell celdaImagen=new Listcell();
@@ -128,81 +127,72 @@ public class TabContactoActualController extends GenericForwardComposer {
 		}
 	}
 	
-	public void cargarComboDominio(Listbox listbox, String dominio) throws Exception
-	{
+	
+	public void cargarComboDominio(Listbox listbox, String dominio) throws Exception {
 		List <CelDominio> listDominosRespuestas=celDominioService.getDominio(dominio, null);
 		
-		for (int i = 0; i < listDominosRespuestas.size(); i++) 
-		{
+		for (int i = 0; i < listDominosRespuestas.size(); i++) {
 			Listitem li= new Listitem();
 			li.setValue(listDominosRespuestas.get(i));
 			li.setLabel(listDominosRespuestas.get(i).getDomTexto());
 			
 			li.setParent(listbox);
 		}
-		
 	}
 	
-	//¿que pasa si no hay cambios se guarda la interaccion en blanco o se le muestra un cartel que le recuerde que modifique algo y sino se sale?
-	public void guardarInteraccion() throws Exception
-	{
-		List<Listitem> filas=lbIndicadores.getItems();
-		
-		if(!filas.isEmpty())
-		{
-			CelInteraccionCaso cic=new CelInteraccionCaso();
-			cic.setAluId(alumno.getId());
-			Date fecha=new Date();
-			cic.setAudFechaIns(fecha);
-			cic.setAudFechaUpd(fecha);
-			cic.setAudUsrIns("Usuario_logueado");
-			cic.setAudUsrUpd("Usuario_logueado");
-			cic.setCasObservacionesGrales(tbxObservacionesGenerales.getText());
+	
+	/*
+	 * Se guarda la interacción si se cargó al menos un indicador o bien las observaciones generales, sin indicadores.
+	 */
+	public void guardarInteraccion() throws Exception {
+		List<CelInteraccionCasoDetalle> lstDetallesPendientes = new ArrayList<CelInteraccionCasoDetalle>();
+		List<Listitem> lstItems = lbIndicadores.getItems();
+
+		for (Listitem li : lstItems) {
+			Textbox txtObservaciones = (Textbox) li.getAttribute("lstCeldaCampoObservaciones");
+			Listbox lbRespuestas = (Listbox) li.getAttribute("lstCeldaListaRespuesta");
 			
-			celInteraccionCasoService.insert(cic);
-			boolean hayCasosDetallesCargados=false;
-			
-			for (int i = 0; i < filas.size(); i++) 
-			{
-				Listitem fila=filas.get(i);
-				Textbox txtObservaciones=(Textbox)fila.getAttribute("lstCeldaCampoObservaciones");
-				Listbox ltbrespuestas=(Listbox)fila.getAttribute("lstCeldaListaRespuesta");
-				
-				if((txtObservaciones!=null && txtObservaciones.getValue().compareTo("")!=0)
-				||(ltbrespuestas!=null && ltbrespuestas.getSelectedItem()!=null && ltbrespuestas.getSelectedItem().getValue()!=null)){
-					
-					hayCasosDetallesCargados=true;
-					CelInteraccionCasoDetalle cicd=new CelInteraccionCasoDetalle();
-					cicd.setAudFechaIns(fecha);
-					cicd.setAudFechaUpd(fecha);
-					cicd.setAudUsrIns("Usuario_logueado");
-					cicd.setAudUsrUpd("Usuario_logueado");
-					cicd.setIcdObservaciones(txtObservaciones.getValue());
-					Long idIndicador=(Long)fila.getAttribute("indicador");
-					CelIndicador celIndicador=celIndicadorService.get(idIndicador);
-					cicd.setCelIndicador(celIndicador);
-					CelDominio dom=(CelDominio)ltbrespuestas.getSelectedItem().getValue();
-					cicd.setIcdRtaTipo(dom.getDomClave());
-					cicd.setCelInteraccionCaso(cic);
-					celInteraccionCasoDetalleService.insert(cicd);
-				}
-			}
-			
-			//si no hay nada cargado en un indicador ni a nivel gral no debo insertar nada
-			if(!hayCasosDetallesCargados && tbxObservacionesGenerales.getText().compareTo("")==0){ 
-				celInteraccionCasoService.delete(cic);
-				Messagebox.show("No se cargó ningún campo", "Información",
-						Messagebox.OK, Messagebox.INFORMATION);
-			}
-			else
-			{
-				Messagebox.show("La Interacción se guardó con éxito", "Información",
-						Messagebox.OK, Messagebox.INFORMATION);
-				//deshabilitar el boton guardar y en cancelar llamar a filtrar para que refresque la lista
+			//Si hay una respuesta tipificada cargada para el indicador, la guardamos en la lista de indicadores a almacenar.
+			if(lbRespuestas.getSelectedItem() != null) {
+				VwIndicadoresAlumnos vwIndicador = (VwIndicadoresAlumnos) li.getAttribute("indicador");
+				CelIndicador celIndicador = celIndicadorService.get(vwIndicador.getIdIndicador());
+				CelInteraccionCasoDetalle cicd = new CelInteraccionCasoDetalle();
+				cicd.setAudFechaIns(new Date());
+				cicd.setAudFechaUpd(new Date());
+				cicd.setAudUsrIns("Valeria");//TODO tomar usuario logueado
+				cicd.setAudUsrUpd("Valeria");//TODO tomar usuario logueado
+				cicd.setIcdObservaciones(txtObservaciones.getValue());
+				cicd.setCelIndicador(celIndicador);
+				CelDominio dom = (CelDominio) lbRespuestas.getSelectedItem().getValue();
+				cicd.setIcdRtaTipo(dom.getDomClave());
+				lstDetallesPendientes.add(cicd);
 			}
 		}
+
+		//Si no hay información cargada para al menos un indicador ni se registran observaciones generales, no se permite insertar.
+		if (lstDetallesPendientes.isEmpty() && tbxObservacionesGenerales.getValue().trim().isEmpty()) {
+			Clients.showNotification("Para registrar el contacto debe cargar algún campo", "error", null, "middle_center", 3000);
+			return;
+		}
+ 
 		
+		//Guardamos el caso y los detalles asociados al mismo.
+		CelInteraccionCaso cic = new CelInteraccionCaso();
+		cic.setAluId(alumno.getId());
+		cic.setAudFechaIns(new Date());
+		cic.setAudFechaUpd(new Date());
+		cic.setAudUsrIns("Valeria");//TODO tomar usuario logueado
+		cic.setAudUsrUpd("Valeria");//TODO tomar usuario logueado
+		cic.setCasObservacionesGrales(tbxObservacionesGenerales.getValue());
+		celInteraccionCasoService.insert(cic);
 		
+		for (CelInteraccionCasoDetalle cicd : lstDetallesPendientes) {
+			cicd.setCelInteraccionCaso(cic);
+			celInteraccionCasoDetalleService.insert(cicd);
+		}
+		
+		Clients.showNotification("La información del contacto se guardó con éxito", "info", null, "middle_center", 3000);
 	}
+
 
 }
