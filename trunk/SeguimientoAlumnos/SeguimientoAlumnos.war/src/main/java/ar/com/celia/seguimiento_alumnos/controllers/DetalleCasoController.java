@@ -20,17 +20,16 @@ public class DetalleCasoController extends GenericForwardComposer {
 	private Tabpanel tbpContactoActual;
 	private Tabpanel tbpHistorico;
 	private Tab tbHistorico;
-	private Window wdsDetalleCaso;
+	private Window wndDetalleCaso;
 	private BandejaCasosController bandejaCasosController=null;
 	private VwAlumnosActivos alumno=null;
 	private TabContactoActualController tabContactoActualController=null;
 	
-	public void onCreate$wdsDetalleCaso(Event evt) throws Exception {
+	public void onCreate$wndDetalleCaso(Event evt) throws Exception {
 		
-		alumno=(VwAlumnosActivos)arg.get("alumno");
+		alumno = (VwAlumnosActivos)arg.get("alumno");
 		
-		if(alumno!= null)
-		{
+		if(alumno != null) {
 			lblMatricula.setValue(alumno.getMatricula());
 			lblEmail.setValue(alumno.getEmail());
 			lblNombreUsuario.setValue(alumno.getLastname()+", "+alumno.getFirstname());
@@ -38,61 +37,48 @@ public class DetalleCasoController extends GenericForwardComposer {
 			String contactos=(String)arg.get("contactos");
 			lblContatos.setValue(contactos);
 			cargarTabContactoActual(alumno);
-			bandejaCasosController=(BandejaCasosController)arg.get("bandejaCotroller");
+			bandejaCasosController=(BandejaCasosController)arg.get("bandejaController");
 		}
 
 	}
 	
 	
-	public void cargarTabContactoActual(VwAlumnosActivos alumno) throws Exception
-	{
-		
-		if (alumno != null) 
-		{
+	public void cargarTabContactoActual(VwAlumnosActivos alumno) throws Exception {
 			java.util.Properties params = new java.util.Properties();
-			
-			
 			params.put("alumno", alumno);
 			Window win = (Window) Executions.createComponents(
-					"/celia/tab_Contacto_actual.zul", tbpContactoActual,params);
+					"/celia/tab_Contacto_actual.zul", tbpContactoActual, params);
 			
-			tabContactoActualController=(TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
-			
-		}
-
+			tabContactoActualController = (TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
 	}
+	
 	
 	public void onSelect$tbHistorico(Event ev) throws Exception {
-		cargarTabHistorcio(alumno);
+		cargarTabHistorico(alumno);
 	}
 	
-	public void cargarTabHistorcio(VwAlumnosActivos alumno) throws Exception
-	{
-		
-		if (alumno != null) 
-		{
-			java.util.Properties params = new java.util.Properties();
-			
+	
+	public void cargarTabHistorico(VwAlumnosActivos alumno) throws Exception {
+		tbpHistorico.getChildren().clear();	
+		java.util.Properties params = new java.util.Properties();
 			
 			params.put("alumno", alumno);
 			Window win = (Window) Executions.createComponents(
-					"/celia/tab_historico.zul", tbpHistorico,params);
+					"/celia/historico_casos_alumno.zul", tbpHistorico, params);
 			
-			tabContactoActualController=(TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
-			
-		}
-
+			//tabContactoActualController=(TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
 	}
 	
+	
 	public void onClick$btnGuardar(Event evt) throws Exception {
-		
+		//TODO si el guardado falló, no debe recargarse la bandeja y cerrar la pantalla. Ver con prioridad.
 		tabContactoActualController.guardarInteraccion();
 		bandejaCasosController.cargarBandeja();
-		wdsDetalleCaso.detach();
+		wndDetalleCaso.detach();
 		
 	}
 	
 	public void onClick$btnCancelar(Event evt) throws Exception {
-		wdsDetalleCaso.detach();
+		wndDetalleCaso.detach();
 	}
 }
