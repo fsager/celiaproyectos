@@ -8,7 +8,7 @@
 		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
 		xmlns:n="native">
 	
-	<window id="wdsDetalleCaso" border="normal" closable="true" title="Detalle del contacto" width="70%" apply="ar.com.celia.seguimiento_alumnos.controllers.DetalleCasoController">
+	<window id="wndDetalleCaso" border="normal" closable="true" title="Detalle del contacto" width="70%" apply="ar.com.celia.seguimiento_alumnos.controllers.DetalleCasoController">
 		<n:html lang="en">
 			  <n:head>
 			    <n:meta charset="utf-8"/>
@@ -33,13 +33,13 @@
 				</h:div>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Matricula :  </n:spans> <label id="lblMatricula" value="" style="font-weight:bold;"></label>
+				<n:spans style="font-weight:bold;">Matrícula :  </n:spans> <label id="lblMatricula" value="" style="font-weight:bold;"></label>
 				<h:br/>
 				<h:br/>
 				<n:spans style="font-weight:bold;">E-mail:  </n:spans> <label id="lblEmail" value="" style="font-weight:bold;"></label>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Telefono:  </n:spans> <label id="lblTelefono" value="" style="font-weight:bold;"></label>
+				<n:spans style="font-weight:bold;">Teléfono:  </n:spans> <label id="lblTelefono" value="" style="font-weight:bold;"></label>
 				<h:br/>
 				<h:br/>
 				<n:spans style="font-weight:bold;">Contactos:  </n:spans> <label id="lblContatos" value="" style="font-weight:bold;"></label>
