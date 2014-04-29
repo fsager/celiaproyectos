@@ -151,31 +151,6 @@ and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.user
 -- VIEWS   
 
 
-DROP function IF EXISTS `fn_getValorIndicador`;
-DELIMITER $$
-USE `seguimiento_alumnos`$$
-CREATE FUNCTION `fn_getValorIndicador` (p_usr_id bigint,p_ind_id bigint)
-RETURNS INTEGER
-BEGIN
-	DECLARE result bigint;
-  IF p_ind_id = 1 -- No ingresa al CIE
-	THEN 
-		set result=f_ingreso_moodle_cie(p_usr_id);
-  ELSEIF p_ind_id = 2 -- Trabajo práctico vencido
-	THEN
-		set result=f_tpsvencidos(p_usr_id);
-  ELSEIF p_ind_id = 3 -- Examen reprobado
-	THEN
-		set result=f_ingreso_moodle_cie(p_usr_id);
-  ELSEIF p_ind_id = 4 -- Quedó libre en una materia
-	THEN
-		set result=f_ingreso_moodle_cie(p_usr_id);
-   END IF;
-	
-RETURN result; 
-END$$
-
-DELIMITER ;
 
 
 
@@ -264,7 +239,31 @@ END;
 
 DELIMITER ;
 
+DROP function IF EXISTS `fn_getValorIndicador`;
+DELIMITER $$
+USE `seguimiento_alumnos`$$
+CREATE FUNCTION `fn_getValorIndicador` (p_usr_id bigint,p_ind_id bigint)
+RETURNS INTEGER
+BEGIN
+	DECLARE result bigint;
+  IF p_ind_id = 1 -- No ingresa al CIE
+	THEN 
+		set result=f_ingreso_moodle_cie(p_usr_id);
+  ELSEIF p_ind_id = 2 -- Trabajo práctico vencido
+	THEN
+		set result=f_tpsvencidos(p_usr_id);
+  ELSEIF p_ind_id = 3 -- Examen reprobado
+	THEN
+		set result=f_examenes_reprobados(p_usr_id);
+  ELSEIF p_ind_id = 4 -- Quedó libre en una materia
+	THEN
+		set result=f_ingreso_moodle_cie(p_usr_id);
+   END IF;
+	
+RETURN result; 
+END$$
 
+DELIMITER ;
 
 -- PROCEDURES
     
