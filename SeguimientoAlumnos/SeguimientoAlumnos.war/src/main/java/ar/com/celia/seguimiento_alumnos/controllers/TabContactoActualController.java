@@ -159,8 +159,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 			cic.setAudUsrUpd("Usuario_logueado");
 			cic.setCasObservacionesGrales(tbxObservacionesGenerales.getText());
 			
-			Long idInteraccionCaso=celInteraccionCasoService.insertInteraccionCaso(cic);
-			
+			celInteraccionCasoService.insert(cic);
 			boolean hayCasosDetallesCargados=false;
 			
 			for (int i = 0; i < filas.size(); i++) 
@@ -184,7 +183,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 					cicd.setCelIndicador(celIndicador);
 					CelDominio dom=(CelDominio)ltbrespuestas.getSelectedItem().getValue();
 					cicd.setIcdRtaTipo(dom.getDomClave());
-					cicd.setCasId(idInteraccionCaso);
+					cicd.setCelInteraccionCaso(cic);
 					celInteraccionCasoDetalleService.insert(cicd);
 				}
 			}
