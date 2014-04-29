@@ -131,6 +131,7 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
+    //TODO ¿para qué tiene un fetch mode CelDominio que no tiene claves foráneas a ninguna tabla?
     public List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception {
         log.debug("finding CelDominio instance by example");
         try {
