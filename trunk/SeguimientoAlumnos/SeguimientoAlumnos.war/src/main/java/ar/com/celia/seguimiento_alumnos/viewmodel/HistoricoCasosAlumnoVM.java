@@ -1,6 +1,7 @@
 package ar.com.celia.seguimiento_alumnos.viewmodel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,9 +22,11 @@ import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
 import ar.com.celia.core.business.ContextManagerCore;
+import ar.com.celia.seguimiento_alumnos.domain.CelDominio;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCaso;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
+import ar.com.celia.seguimiento_alumnos.service.CelDominioDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDetalleDefinition;
 
 public class HistoricoCasosAlumnoVM {
@@ -34,6 +37,11 @@ public class HistoricoCasosAlumnoVM {
 	
 	@Wire
 	private Grid gridHistoricoCasos;
+	
+	private CelDominioDefinition celDominioService = (CelDominioDefinition) ContextManagerCore.getBizObject("celDominioService");
+	
+	private HashMap<String, CelDominio> hashRespuestasDominio = new HashMap<String, CelDominio>();
+	
 	
 	@Init
 	public void init() {
@@ -50,6 +58,12 @@ public class HistoricoCasosAlumnoVM {
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam("alumno") VwAlumnosActivos alumnoParam) throws Exception {
 		Selectors.wireComponents(view, this, false);
 		List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle = celInteraccionCasoDetalleService.getDetalleInteraccionesPorAlumno(alumnoParam.getId());
+
+		List<CelDominio> lstRespuestasDominio = celDominioService.getDominio("INDICADOR_CASO_RESPUESTA", null);
+
+		for (CelDominio domRespuestasDominio : lstRespuestasDominio) {
+			hashRespuestasDominio.put(domRespuestasDominio.getDomClave(), domRespuestasDominio);	
+		}
 		
 		cargarLbHistorico(lstInteraccionCasoDetalle);
 	}
@@ -88,8 +102,8 @@ public class HistoricoCasosAlumnoVM {
 				Row row = new Row();
 				Label lblIndicador = new Label(casoDetalle.getCelIndicador().getIndNombre());
 				lblIndicador.setParent(row);
-				
-				Label lblRespuesta = new Label(casoDetalle.getIcdRtaTipo());//TODO poner la respuesta desde el dominio.
+				CelDominio domRespuesta = hashRespuestasDominio.get(casoDetalle.getIcdRtaTipo()); 
+				Label lblRespuesta = new Label(domRespuesta.getDomTexto());
 				lblRespuesta.setParent(row);
 				
 				Label lblObservaciones = new Label(casoDetalle.getIcdObservaciones());
