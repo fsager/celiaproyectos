@@ -168,8 +168,8 @@
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/WEB-INF/error.zul</location>
 	</error-page>
-	<!-- TODO HABILITAR SEGURIDAD -->
-	<!-- security-constraint>
+
+	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>SecretProtection</web-resource-name>
 			<url-pattern>/*</url-pattern>
@@ -177,18 +177,14 @@
 			<http-method>POST</http-method>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>AUTHENTICATED_USER</role-name>
+			<role-name>ADMIN_USER</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<login-config>
-		<auth-method>FORM</auth-method>
+		<auth-method>BASIC</auth-method>
 		<realm-name>CeliaPolicy</realm-name>
-		<form-login-config>
-			<form-login-page>/indexRedirect.zul</form-login-page>
-			<form-error-page>/indexRedirect.zul</form-error-page>
-		</form-login-config>
 	</login-config>
 	<security-role>
-		<role-name>AUTHENTICATED_USER</role-name>
-	</security-role-->
+		<role-name>ADMIN_USER</role-name>
+	</security-role>
 </web-app>
