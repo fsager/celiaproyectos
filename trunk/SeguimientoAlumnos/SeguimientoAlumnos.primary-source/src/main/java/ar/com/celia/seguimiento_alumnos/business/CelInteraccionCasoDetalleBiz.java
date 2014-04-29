@@ -38,4 +38,8 @@ public class CelInteraccionCasoDetalleBiz implements CelInteraccionCasoDetalleDe
 		dao.update(p_domain);
 	}
 
+    public List<CelInteraccionCasoDetalle> getDetalleInteraccionesPorAlumno(Long alu_id) throws Exception {
+    	return dao.getDetalleInteraccionesPorAlumno(alu_id);
+    }
+
 }

@@ -45,4 +45,9 @@ public class CelInteraccionCasoDetalleService implements CelInteraccionCasoDetal
 	public void update(CelInteraccionCasoDetalle p_domain) throws Exception {
 		biz.update(p_domain);
 	}
+	
+    public List<CelInteraccionCasoDetalle> getDetalleInteraccionesPorAlumno(Long alu_id) throws Exception {
+    	return biz.getDetalleInteraccionesPorAlumno(alu_id);
+    }
+
 }
