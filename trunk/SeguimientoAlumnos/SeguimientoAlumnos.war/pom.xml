@@ -23,7 +23,7 @@
 			<properties>
 				<db.datasource>java:jboss/datasources/SeguimientoAlumnosDS</db.datasource>
 				<db.native.jdbc.extractor>JBoss</db.native.jdbc.extractor>
-				<show_sql>true</show_sql>
+				<show_sql>false</show_sql>
 				<logs.location>/log/celia</logs.location>
 				<logs.rootCategoryLevel>WARN</logs.rootCategoryLevel>
 				<logs.errorfile.threshold>WARN</logs.errorfile.threshold>
