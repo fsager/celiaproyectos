@@ -1,3 +1,6 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?component name="general" macroURI="tab_general_cau.zul"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul" 
 		xmlns:ca="client/attribute"
 	 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -20,26 +23,7 @@
 		    	<style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style>
 			  </n:head>
 			</n:html>
-	    <zscript>
-	         
-	        java.util.List indicadores=new java.util.ArrayList();
-	        indicadores.add("Todos");
-	        indicadores.add("Ingresó al moodle");
-	        indicadores.add("Rindió exámen");
-	        indicadores.add("Prensentó trabajo prático");
-	        indicadores.add("Falta mucho");
-	         
-	        org.zkoss.zul.ListModel model =new org.zkoss.zul.ListModelList(indicadores);
-	        
-	        java.util.List roles=new java.util.ArrayList();
-	        roles.add("Alumnos");
-	        roles.add("Docentes");
-	         
-	        org.zkoss.zul.ListModel modelRoles =new org.zkoss.zul.ListModelList(roles);
-	        
-	        
-	    </zscript>
-		<h:div class="row resultForm" style="margin:0px;height: 120px;">
+		<h:div class="row resultForm" style="margin:0px;height: 80px;">
 			<h:div class="col-md-4">
 				<h:div >
 					<h:div style="margin:auto;">
@@ -49,117 +33,32 @@
 				</h:div>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Legajo:</n:spans> <label id="lblLegajo" value="" style="font-weight:bold;"></label>
+				<n:spans style="font-weight:bold;">Matricula :  </n:spans> <label id="lblMatricula" value="" style="font-weight:bold;"></label>
 				<h:br/>
-				<n:spans style="font-weight:bold;">Carrera:</n:spans> Chef <label id="lblCarrera" value="" style="font-weight:bold;"></label>
+				<h:br/>
+				<n:spans style="font-weight:bold;">E-mail:  </n:spans> <label id="lblEmail" value="" style="font-weight:bold;"></label>
 			</h:div>
 			<h:div class="col-md-4">
-				<n:spans style="font-weight:bold;">Telefono:</n:spans> 351-7013131 <label id="lbltelefono" value="" style="font-weight:bold;"></label>
+				<n:spans style="font-weight:bold;">Telefono:  </n:spans> <label id="lblTelefono" value="" style="font-weight:bold;"></label>
 				<h:br/>
-				<n:spans style="font-weight:bold;">Contactos:</n:spans> 33 <label id="lblContatos" value="" style="font-weight:bold;"></label>
+				<h:br/>
+				<n:spans style="font-weight:bold;">Contactos:  </n:spans> <label id="lblContatos" value="" style="font-weight:bold;"></label>
 				<h:br/>
 			</h:div>
 		</h:div>
 	   <tabbox>
 	        <tabs>
 	            <tab label="Contacto Actual" />
-	            <tab label="Histórico" />
+	            <tab id="tbHistorico" label="Histórico" />
 	        </tabs>
 			 <tabpanels>
 			 	<tabpanel id="tbpContactoActual" />
-	            <tabpanel>
-					<grid>
-						<columns>
-							<column/>
-							<column width="50px"/>
-							<column width="80px"/>
-							<column width="200px"/>
-							<column width="250px"/>
-							<column/>
-							<column/>
-						</columns>
-						<rows>
-							<row>				
-								Ingresó al moodle: 
-								<image src="/img/red.jpg" zclass="img-thumbnail"/>
-								Respuesta:
-								<listbox mold="select">
-									<listitem label="No tuvo tiempo para hacerlo"/>
-									<listitem label="No sabe cómo hacerlo"/>
-									<listitem label="Otra razón"/>
-								</listbox>					
-								<div class="input-group">
-									<checkbox class="input-group-addon"/>
-									<label value="Ignorar hasta" width="100px" class="form-control"/>
-									<datebox class="input-group-addon"></datebox>
-								</div>
-								Observaciones:
-								<textbox rows="2" width="100%"/>
-							</row>
-							<row>				
-								Prensentó trabajo práctico: 
-								<image src="/img/red.jpg" zclass="img-thumbnail"/>
-								Respuesta:
-								<listbox mold="select">
-									<listitem label="Respuesta 1"/>
-									<listitem label="Respuesta 2"/>
-									<listitem label="Respuesta 3"/>
-								</listbox>					
-								<div class="input-group">
-									<checkbox class="input-group-addon"/>
-									<label value="Ignorar hasta" width="100px" class="form-control"/>
-									<datebox class="input-group-addon"></datebox>
-								</div>
-								Observaciones:
-								<textbox rows="2" width="100%"/>
-							</row>
-							<row>				
-								Falta mucho: 
-								<image src="/img/red.jpg" zclass="img-thumbnail"/>
-								Respuesta:
-								<listbox mold="select">
-									<listitem label="Respuesta 1"/>
-									<listitem label="Respuesta 2"/>
-									<listitem label="Respuesta 3"/>
-								</listbox>					
-								<div class="input-group">
-									<checkbox class="input-group-addon"/>
-									<label value="Ignorar hasta" width="100px" class="form-control"/>
-									<datebox class="input-group-addon"></datebox>
-								</div>
-								Observaciones:
-								<textbox rows="2" width="100%"/>
-							</row>
-							<row>				
-								Otro indicador:
-								<image src="/img/red.jpg" zclass="img-thumbnail"/>
-								Respuesta:
-								<listbox mold="select">
-									<listitem label="Respuesta 1"/>
-									<listitem label="Respuesta 2"/>
-									<listitem label="Respuesta 3"/>
-								</listbox>					
-								<div class="input-group">
-									<checkbox class="input-group-addon"/>
-									<label value="Ignorar hasta" width="100px" class="form-control"/>
-									<datebox class="input-group-addon"></datebox>
-								</div>
-								Observaciones:
-								<textbox rows="2" width="100%"/>
-							</row>
-							<row spans="1,6">
-								Observaciones generales:
-								<textbox rows="2" width="100%"/>
-							</row>
-						</rows>
-					</grid>
-				</tabpanel>
-	            <tabpanel>This is panel 2</tabpanel>
+	            <tabpanel id="tbpHistorico" />
 	        </tabpanels>
 	    </tabbox>
 	    <h:center>
-	    	<button label="Guardar"/>
-	    	<button label="Cancelar"/>
+	    	<button id="btnGuardar" label="Guardar"/>
+	    	<button id="btnCancelar" label="Cancelar"/>
 	    </h:center>
 	</window>
 </zk>
