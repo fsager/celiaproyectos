@@ -1,4 +1,6 @@
 package ar.com.celia.seguimiento_alumnos.service;
+import java.util.List;
+
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
 
 /**
@@ -46,5 +48,7 @@ public interface CelInteraccionCasoDetalleDefinition {
 	 * @param p_domain    p_domain
 	 */
 	public abstract void update(CelInteraccionCasoDetalle p_domain) throws Exception;
+	
+    public abstract List<CelInteraccionCasoDetalle> getDetalleInteraccionesPorAlumno(Long alu_id) throws Exception;
 
 }

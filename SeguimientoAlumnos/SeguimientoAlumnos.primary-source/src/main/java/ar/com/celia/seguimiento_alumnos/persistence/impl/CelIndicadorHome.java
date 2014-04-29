@@ -1,16 +1,18 @@
 package ar.com.celia.seguimiento_alumnos.persistence.impl;
 
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Restrictions;
-import ar.com.celia.seguimiento_alumnos.domain.*;
-import ar.com.celia.seguimiento_alumnos.persistence.CelIndicadorDao;
-import ar.com.celia.common.persistence.util.DAOObject;
-import org.hibernate.criterion.Order;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import ar.com.celia.common.persistence.util.DAOObject;
+import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
+import ar.com.celia.seguimiento_alumnos.persistence.CelIndicadorDao;
 
 
 /**

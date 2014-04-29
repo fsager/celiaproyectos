@@ -1,16 +1,18 @@
 package ar.com.celia.seguimiento_alumnos.persistence.impl;
 
 import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Restrictions;
-import ar.com.celia.seguimiento_alumnos.domain.*;
-import ar.com.celia.seguimiento_alumnos.persistence.CelInteraccionCasoDetalleDao;
-import ar.com.celia.common.persistence.util.DAOObject;
-import org.hibernate.criterion.Order;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import ar.com.celia.common.persistence.util.DAOObject;
+import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
+import ar.com.celia.seguimiento_alumnos.persistence.CelInteraccionCasoDetalleDao;
 
 
 /**
@@ -121,7 +123,8 @@ public class CelInteraccionCasoDetalleHome extends DAOObject implements CelInter
         	}
         	            
             cri.addOrder(Order.asc("icdId"));
-            List<CelInteraccionCasoDetalle> results = cri.list();
+            @SuppressWarnings("unchecked")
+			List<CelInteraccionCasoDetalle> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
         }
@@ -129,5 +132,28 @@ public class CelInteraccionCasoDetalleHome extends DAOObject implements CelInter
             log.error("find by example failed", re);
             throw re;
         }
+    }
+    
+    
+    public List<CelInteraccionCasoDetalle> getDetalleInteraccionesPorAlumno(Long alu_id) {
+        log.debug("finding CelInteraccionCasoDetalle instance by getDetalleInteraccionesPorAlumno");
+        try {
+            Criteria cri = getSession().createCriteria(CelInteraccionCasoDetalle.class, "celInteraccionCasoDetalle");
+            cri.createAlias("celInteraccionCasoDetalle.celInteraccionCaso", "cic");
+            cri.add(Restrictions.eq("cic.aluId", alu_id));
+            cri.setFetchMode("celInteraccionCaso", FetchMode.JOIN);
+            cri.setFetchMode("celIndicador", FetchMode.JOIN);
+            cri.addOrder(Order.desc("celInteraccionCasoDetalle.celInteraccionCaso.casId"));
+            cri.addOrder(Order.asc("celIndicador"));
+            @SuppressWarnings("unchecked")
+			List<CelInteraccionCasoDetalle> results = cri.list();
+            log.debug("find by example successful, result size: " + results.size());
+            return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    	
     }
 }

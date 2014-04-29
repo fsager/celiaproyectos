@@ -26,7 +26,6 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 	private Long icdId;
 	private CelIndicador celIndicador;
 	private String icdRtaTipo;
-	private Date icdIgnorarHasta;
 	private String icdObservaciones;
 	private CelInteraccionCaso celInteraccionCaso;
 	private Date audFechaIns;
@@ -43,7 +42,6 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 			String audUsrUpd) {
 		this.celIndicador = celIndicador;
 		this.icdRtaTipo = icdRtaTipo;
-		this.icdIgnorarHasta = icdIgnorarHasta;
 		this.icdObservaciones = icdObservaciones;
 		this.celInteraccionCaso = celInteraccionCaso;
 		this.audFechaIns = audFechaIns;
@@ -82,17 +80,7 @@ public class CelInteraccionCasoDetalle implements java.io.Serializable {
 		this.icdRtaTipo = icdRtaTipo;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "ICD_IGNORAR_HASTA", nullable = false, length = 19)
-	public Date getIcdIgnorarHasta() {
-		return this.icdIgnorarHasta;
-	}
-
-	public void setIcdIgnorarHasta(Date icdIgnorarHasta) {
-		this.icdIgnorarHasta = icdIgnorarHasta;
-	}
-
-	@Column(name = "ICD_OBSERVACIONES", nullable = false, length = 250)
+	@Column(name = "ICD_OBSERVACIONES", nullable = true, length = 250)
 	public String getIcdObservaciones() {
 		return this.icdObservaciones;
 	}
