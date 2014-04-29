@@ -253,7 +253,7 @@ public class BandejaCasosController extends GenericForwardComposer {
    
     public String getContactosAlumno(Long aluId) throws Exception{
     	String contactos="0";
-    	int cantidadContactos=celInteraccionCasoService.getCantidadContactos(aluId);
+    	Long cantidadContactos=celInteraccionCasoService.getCantidadContactos(aluId);
     	contactos=String.valueOf(cantidadContactos);
     	return contactos;
     }
