@@ -245,17 +245,14 @@ public class BandejaCasosController extends GenericForwardComposer {
 	    java.util.Properties params = new java.util.Properties();
         params.put("alumno", alumno);
         params.put("contactos", getContactosAlumno(alumno.getId()));
-        params.put("bandejaCotroller", BandejaCasosController.this);
+        params.put("bandejaController", BandejaCasosController.this);
 		Window win = (Window) Executions.createComponents("/celia/detalle_caso.zul", null,params);
 		win.doModal();
     }
     
    
     public String getContactosAlumno(Long aluId) throws Exception{
-    	String contactos="0";
-    	Long cantidadContactos=celInteraccionCasoService.getCantidadContactos(aluId);
-    	contactos=String.valueOf(cantidadContactos);
-    	return contactos;
+    	return celInteraccionCasoService.getCantidadContactos(aluId).toString();
     }
 
 }
