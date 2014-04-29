@@ -23,7 +23,6 @@ public class DetalleCasoController extends GenericForwardComposer {
 	private Window wdsDetalleCaso;
 	private BandejaCasosController bandejaCasosController=null;
 	private VwAlumnosActivos alumno=null;
-	
 	private TabContactoActualController tabContactoActualController=null;
 	
 	public void onCreate$wdsDetalleCaso(Event evt) throws Exception {
