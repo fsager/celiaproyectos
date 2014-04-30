@@ -49,6 +49,8 @@ public class BandejaCasosController extends GenericForwardComposer {
 	private Textbox txtApellido;
 	private Textbox txtMatricula;
 	private Chosenbox chosenIndicadores;
+	private List<CelIndicador> indicadores;
+	private Listhead lstHead;
 	
     public BandejaCasosController()
     {
@@ -64,32 +66,42 @@ public class BandejaCasosController extends GenericForwardComposer {
     {
     	CelIndicador celIndicadorExample=new CelIndicador();
     	String[] lazyFalse=null;
-    	List<CelIndicador> indicadores=celIndicadorService.getAll(celIndicadorExample, lazyFalse);    	
+    	indicadores=celIndicadorService.getAll(celIndicadorExample, lazyFalse);    	
 		Collections.sort(indicadores,new CelIndicador());    	
         ListModel<CelIndicador> model =new ListModelList<CelIndicador>(indicadores);
         chosenIndicadores.setModel(model);
-        
-        cargarHeader(indicadores);
     }
     
     public void cargarHeader(List<CelIndicador> indicadores)
     {
-    	Listhead head=new Listhead();
-    	head.setParent(lstBandejaCasos);
+    	lstHead.getChildren().clear();
     	
     	Listheader header=new Listheader("Datos personales");
     	header.setWidth("400px");
-    	header.setParent(head);
+    	header.setParent(lstHead);
     	
     	for(CelIndicador indicador:indicadores)
     	{
-    		header=new Listheader(indicador.getIndNombre());
-        	header.setParent(head);
+    		if(isIndicadorSelected(indicador))
+    		{
+	    		header=new Listheader(indicador.getIndNombre());
+	        	header.setParent(lstHead);
+    		}
     	}
     	
     }
     
-    
+    public boolean isIndicadorSelected(CelIndicador indicador)
+    {
+    	Set<CelIndicador> indicadoresSeleccionados=chosenIndicadores.getSelectedObjects();
+
+    	for(CelIndicador ind:indicadoresSeleccionados){
+    		if(ind.getIndId().equals(indicador.getIndId()))
+    			return true;
+    	}
+    	
+    	return indicadoresSeleccionados.isEmpty();
+    }
     
     public void onClick$btnFiltrar(Event event) throws Exception {
     	cargarBandeja();
@@ -113,9 +125,11 @@ public class BandejaCasosController extends GenericForwardComposer {
     	return selected;
     }
     
+    
     public void cargarBandeja() throws Exception{
     	lstBandejaCasos.getItems().clear();
     	String selectedIndicadores= getSelectedIndicadores();
+    	cargarHeader(indicadores);
     	
         List<VwAlumnosActivos> alumnos=vwAlumnosActivosService.p_alumnos_activos_con_indicadores(selectedIndicadores, txtMatricula.getValue(),txtApellido.getValue(),txtNombre.getValue());
 
