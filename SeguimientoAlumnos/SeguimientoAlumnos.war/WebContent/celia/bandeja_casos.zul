@@ -56,6 +56,7 @@
 		</grid>
 	</groupbox>	
 		<listbox id="lstBandejaCasos"  mold="paging" pageSize="4" width="100%" emptyMessage="No se encontraron resultados, para los filtros ingresados.">
+			<listhead id="lstHead"/>
 		</listbox>
 	</window>
 </zk>
