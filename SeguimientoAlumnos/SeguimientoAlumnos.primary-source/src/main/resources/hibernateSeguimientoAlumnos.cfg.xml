@@ -24,5 +24,7 @@
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.CelUsuario" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwIndicadoresAlumnos" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwDocentesNoIngresanAMoodle" />		
+		
 	</session-factory>
 </hibernate-configuration>
