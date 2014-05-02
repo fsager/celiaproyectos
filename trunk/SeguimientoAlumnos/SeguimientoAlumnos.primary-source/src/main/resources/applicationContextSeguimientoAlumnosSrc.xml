@@ -3,6 +3,22 @@
 
 <beans default-lazy-init="false">
 
+    <bean id="notificacionesDocentesDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.NotificacionesDocentesHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="notificacionesDocentesBusiness" class="ar.com.celia.seguimiento_alumnos.business.NotificacionesDocentesBiz">
+        <property name="dao" ref="notificacionesDocentesDao"/>
+    </bean>
+    <bean id="notificacionesDocentesBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="notificacionesDocentesBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="notificacionesDocentesService" class="ar.com.celia.seguimiento_alumnos.service.impl.NotificacionesDocentesService">
+        <property name="businessObject" ref="notificacionesDocentesBiz"/>
+    </bean>
+
+
     <bean id="celDominioDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelDominioHome">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>  
+
+	<!-- Configuración de mail -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
+
+    <bean id="steMailService" class="ar.com.celia.seguimiento_alumnos.notificaciones.SteMailPoolService" lazy-init="true">
+    	<constructor-arg ref="mailSender" />
+		<constructor-arg ref="celPropiedadService" />
+    </bean>
+    
+
+    <!-- Jobs -->
+    <bean id="servletContext" class="org.springframework.web.context.support.ServletContextFactoryBean"/>
+    
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+    
+    <bean id="notificacionesDocentes" class="ar.com.celia.seguimiento_alumnos.notificaciones.NotificacionesDocentes">
+    	<property name="steMailService" ref="steMailService"/>
+		<property name="notificacionesDocentesService" ref="notificacionesDocentesService"/>
+		<property name="celPropiedadService" ref="celPropiedadService"/>
+    </bean>
+	
+	<bean id="jobDetailDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="notificarNoIngresoAMoodle"/>
+	  <property name="concurrent" value="false"/>
+	  <property name="arguments">
+        <list>
+            <ref bean="servletContext"/>
+        </list>
+        </property>
+	</bean>
+	
+
+	<bean id="cronTriggerDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailDocenteNoIngresaMoodle"/>
+		<!-- Cada 2 días -->
+<!-- 		<property name="cronExpression" value="0 0 12 1/2 * ?"/> -->
+		<!-- Cada 10 segundos -->
+		<property name="cronExpression" value="0/10 * * * * ?"/>
+	</bean>
+	
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	  <property name="triggers">
+	    <list>
+	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/>
+	    </list>
+	  </property>
+	</bean>
+
+</beans>

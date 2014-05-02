@@ -147,6 +147,16 @@ and suspended <> 1
 and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.userid=usr.id and ra.roleid=5)
 ;
 
+create or replace view vw_docentes_no_ingresan_a_moodle as
+select * from celiacie_moodle2.mdl_user usr
+where 1=1
+and deleted <> 1
+and suspended <> 1
+and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.userid=usr.id and (ra.roleid = 3 or ra.roleid = 4))
+and DATE_ADD(FROM_UNIXTIME(usr.lastaccess), INTERVAL 2 DAY) < now()
+;
+
+
 -- VIEWS   
 
 
