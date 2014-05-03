@@ -243,3 +243,15 @@ VALUES
 'MAIL.PROP',
 'Ingreso moodle',
 'Subject ');
+
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('entorno_pruebas',
+'GRAL',
+'true',
+'Es entorno de pruebas ');--cambier en produccion por false
