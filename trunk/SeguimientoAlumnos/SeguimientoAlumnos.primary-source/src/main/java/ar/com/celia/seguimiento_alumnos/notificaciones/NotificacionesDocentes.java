@@ -1,6 +1,7 @@
 package ar.com.celia.seguimiento_alumnos.notificaciones;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -22,13 +23,104 @@ public class NotificacionesDocentes {
 	private NotificacionesDocentesDefinition notificacionesDocentesService;
 	private CelPropiedadDefinition celPropiedadService;
 	
-	public void notificarNoIngresoAMoodle(ServletContext servletContext) throws Exception
+	private String from;
+	private String replyTo;
+	private String cc;
+	private String prueba;
+	
+	public void init() throws Exception
 	{
-		this.servletContext=servletContext;
+		from=celPropiedadService.get("mail_from").getProValor();
+		replyTo=celPropiedadService.get("mail_reply_to").getProValor();
+		cc=celPropiedadService.get("mail_cc").getProValor();		
+		prueba=celPropiedadService.get("entorno_pruebas").getProValor();
+	}
+	
+	public void notificarNoIngresoAMoodle() throws Exception
+	{
+		init();
 		List<VwDocentesNoIngresanAMoodle> docentesQueNoIngresan=notificacionesDocentesService.getDocentesNoIngresanAMoodle();
+		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/docentes/noIngresaAMoodle.html");
+		String subject=celPropiedadService.get("mail_doc_no_ingreso_subject").getProValor();
 		
+		
+		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
+		{
+			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
+			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues);
+		}
+	}
+	
+	public void notificarCargaDeNotas() throws Exception
+	{	
+		init();
+		//TODO llamar al metodo que implenta la busqueda en la base de datos 
+		//List<VwDocentesNoIngresanAMoodle> docentesQueNoIngresan=notificacionesDocentesService.getDocentesNoIngresanAMoodle();
+		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/docentes/cargaDeNotas.html");
+		
+		//TODO llamar a la propiedad con el asunto del mail
+		//String subject=celPropiedadService.get("mail_doc_no_ingreso_subject").getProValor();
+		
+		//TODO iterar resultados
+//		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
+//		{
+//			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
+//			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues);
+//		}
+	}
+	
+	public void notificarTrabajosPracticosPendientesDeCorreccion() throws Exception
+	{
+		init();
+		//TODO llamar al metodo que implenta la busqueda en la base de datos 
+		//List<VwDocentesNoIngresanAMoodle> docentesQueNoIngresan=notificacionesDocentesService.getDocentesNoIngresanAMoodle();
+		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/docentes/trabajosPracticosPendientesDeCorreccion.html");
+		
+		//TODO llamar a la propiedad con el asunto del mail
+		//String subject=celPropiedadService.get("mail_doc_no_ingreso_subject").getProValor();
+		
+		//TODO iterar resultados
+//		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
+//		{
+//			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
+//			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues);
+//		}
+	}
+	
+	
+	public void notificarTrabajosPracticosExamenesPendienteDeSubida() throws Exception
+	{
+		init();
+		//TODO llamar al metodo que implenta la busqueda en la base de datos 
+		//List<VwDocentesNoIngresanAMoodle> docentesQueNoIngresan=notificacionesDocentesService.getDocentesNoIngresanAMoodle();
+		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/docentes/trabajosPracticosExamenesPendienteDeSubida.html");
+		
+		//TODO llamar a la propiedad con el asunto del mail
+		//String subject=celPropiedadService.get("mail_doc_no_ingreso_subject").getProValor();
+		
+		//TODO iterar resultados
+//		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
+//		{
+//			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
+//			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues);
+//		}
+	}
+	
+	public void enviarMail(String mail,String subject,String templateWithValues)
+	{
+		if(prueba==null ||prueba.equals("true")){
+			steMailService.enviarMail(mail+"algoparaquenollegue", from, replyTo, cc, null, subject, templateWithValues);
+		}
+		else
+		{
+			steMailService.enviarMail(mail, from, replyTo, cc, null, subject, templateWithValues);
+		}
+	}
+	
+	public static String readTemplate(ServletContext servletContext,String ubicacion) throws IOException
+	{
 		BufferedReader bufferedReaderTemplate;
-		InputStream istreamTemplateMail = this.servletContext.getResourceAsStream("/template_notificaciones/docentes/noIngresaAMoodle.html");
+		InputStream istreamTemplateMail = servletContext.getResourceAsStream(ubicacion);
 		bufferedReaderTemplate = new BufferedReader(new InputStreamReader(istreamTemplateMail));
 		
 		String textoMail = "";
@@ -41,20 +133,7 @@ public class NotificacionesDocentes {
 		}
 		bufferedReaderTemplate.close();
 		
-		
-		String from=celPropiedadService.get("mail_from").getProValor();
-		String replyTo=celPropiedadService.get("mail_reply_to").getProValor();
-		String cc=celPropiedadService.get("mail_cc").getProValor();
-		String subject=celPropiedadService.get("mail_doc_no_ingreso_subject").getProValor();
-		
-		
-		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
-		{
-			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
-			//TODO corregir mail
-			steMailService.enviarMail(docenteQueNoIngresa.getEmail()+"algoparaquenosenevie", from, replyTo, cc, null, subject, templateWithValues);
-			
-		}
+		return textoMail;
 	}
 	
 	public static String remplazarValoresTemplate(Object obj,String template) throws Exception
@@ -106,5 +185,4 @@ public class NotificacionesDocentes {
 	}
 	
 	
-
 }
