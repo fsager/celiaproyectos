@@ -37,11 +37,13 @@ public class TabContactoActualController extends GenericForwardComposer {
 	private String dominioRespuestas="INDICADOR_CASO_RESPUESTA";
 	private VwAlumnosActivos alumno=null;
 	private Textbox tbxObservacionesGenerales;
+	private String userPrincipal;
 	
 	
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
 		comp.setAttribute("controller", this, false);
+		userPrincipal=execution.getUserPrincipal().toString();
 	}
 	
 	
@@ -144,7 +146,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 	/*
 	 * Se guarda la interacción si se cargó al menos un indicador o bien las observaciones generales, sin indicadores.
 	 */
-	public void guardarInteraccion() throws Exception {
+	public boolean guardarInteraccion() throws Exception {
 		List<CelInteraccionCasoDetalle> lstDetallesPendientes = new ArrayList<CelInteraccionCasoDetalle>();
 		List<Listitem> lstItems = lbIndicadores.getItems();
 
@@ -159,8 +161,8 @@ public class TabContactoActualController extends GenericForwardComposer {
 				CelInteraccionCasoDetalle cicd = new CelInteraccionCasoDetalle();
 				cicd.setAudFechaIns(new Date());
 				cicd.setAudFechaUpd(new Date());
-				cicd.setAudUsrIns("Valeria");//TODO tomar usuario logueado
-				cicd.setAudUsrUpd("Valeria");//TODO tomar usuario logueado
+				cicd.setAudUsrIns(userPrincipal);
+				cicd.setAudUsrUpd(userPrincipal);
 				cicd.setIcdObservaciones(txtObservaciones.getValue());
 				cicd.setCelIndicador(celIndicador);
 				CelDominio dom = (CelDominio) lbRespuestas.getSelectedItem().getValue();
@@ -172,7 +174,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 		//Si no hay información cargada para al menos un indicador ni se registran observaciones generales, no se permite insertar.
 		if (lstDetallesPendientes.isEmpty() && tbxObservacionesGenerales.getValue().trim().isEmpty()) {
 			Clients.showNotification("Para registrar el contacto debe cargar algún campo", "error", null, "middle_center", 3000);
-			return;
+			return false;
 		}
  
 		
@@ -181,8 +183,8 @@ public class TabContactoActualController extends GenericForwardComposer {
 		cic.setAluId(alumno.getId());
 		cic.setAudFechaIns(new Date());
 		cic.setAudFechaUpd(new Date());
-		cic.setAudUsrIns("Valeria");//TODO tomar usuario logueado
-		cic.setAudUsrUpd("Valeria");//TODO tomar usuario logueado
+		cic.setAudUsrIns(userPrincipal);
+		cic.setAudUsrUpd(userPrincipal);
 		cic.setCasObservacionesGrales(tbxObservacionesGenerales.getValue());
 		celInteraccionCasoService.insert(cic);
 		
@@ -192,6 +194,8 @@ public class TabContactoActualController extends GenericForwardComposer {
 		}
 		
 		Clients.showNotification("La información del contacto se guardó con éxito", "info", null, "middle_center", 3000);
+		
+		return true;
 	}
 
 

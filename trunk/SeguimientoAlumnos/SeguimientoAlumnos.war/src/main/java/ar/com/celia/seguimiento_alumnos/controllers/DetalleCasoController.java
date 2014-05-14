@@ -71,11 +71,11 @@ public class DetalleCasoController extends GenericForwardComposer {
 	
 	
 	public void onClick$btnGuardar(Event evt) throws Exception {
-		//TODO si el guardado falló, no debe recargarse la bandeja y cerrar la pantalla. Ver con prioridad.
-		tabContactoActualController.guardarInteraccion();
-		bandejaCasosController.cargarBandeja();
-		wndDetalleCaso.detach();
-		
+		boolean ok=tabContactoActualController.guardarInteraccion();
+		if(ok){
+			bandejaCasosController.cargarBandeja();
+			wndDetalleCaso.detach();
+		}
 	}
 	
 	public void onClick$btnCancelar(Event evt) throws Exception {
