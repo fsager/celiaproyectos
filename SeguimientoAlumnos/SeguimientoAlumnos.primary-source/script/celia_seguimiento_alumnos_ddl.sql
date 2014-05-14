@@ -139,13 +139,74 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
 
     
 -- VIEWS
-create or replace view vw_alumnos_activos as
-select *,(select data from celiacie_moodle2.mdl_user_info_data where fieldid=1 and userid=usr.id) matricula from celiacie_moodle2.mdl_user usr
-where 1=1
-and deleted <> 1
-and suspended <> 1
-and exists (select 1 from celiacie_moodle2.mdl_role_assignments ra where ra.userid=usr.id and ra.roleid=5)
+CREATE OR REPLACE VIEW `seguimiento_alumnos`.`vw_alumnos_activos` AS
+select distinct
+        `usr`.`id` AS `id`,
+        `usr`.`auth` AS `auth`,
+        `usr`.`confirmed` AS `confirmed`,
+        `usr`.`policyagreed` AS `policyagreed`,
+        `usr`.`deleted` AS `deleted`,
+        `usr`.`suspended` AS `suspended`,
+        `usr`.`mnethostid` AS `mnethostid`,
+        `usr`.`username` AS `username`,
+        `usr`.`password` AS `password`,
+        `usr`.`idnumber` AS `idnumber`,
+        `usr`.`firstname` AS `firstname`,
+        `usr`.`lastname` AS `lastname`,
+        `usr`.`email` AS `email`,
+        `usr`.`emailstop` AS `emailstop`,
+        `usr`.`icq` AS `icq`,
+        `usr`.`skype` AS `skype`,
+        `usr`.`yahoo` AS `yahoo`,
+        `usr`.`aim` AS `aim`,
+        `usr`.`msn` AS `msn`,
+        `usr`.`phone1` AS `phone1`,
+        `usr`.`phone2` AS `phone2`,
+        `usr`.`institution` AS `institution`,
+        `usr`.`department` AS `department`,
+        `usr`.`address` AS `address`,
+        `usr`.`city` AS `city`,
+        `usr`.`country` AS `country`,
+        `usr`.`lang` AS `lang`,
+        `usr`.`theme` AS `theme`,
+        `usr`.`timezone` AS `timezone`,
+        `usr`.`firstaccess` AS `firstaccess`,
+        `usr`.`lastaccess` AS `lastaccess`,
+        `usr`.`lastlogin` AS `lastlogin`,
+        `usr`.`currentlogin` AS `currentlogin`,
+        `usr`.`lastip` AS `lastip`,
+        `usr`.`secret` AS `secret`,
+        `usr`.`picture` AS `picture`,
+        `usr`.`url` AS `url`,
+        `usr`.`description` AS `description`,
+        `usr`.`descriptionformat` AS `descriptionformat`,
+        `usr`.`mailformat` AS `mailformat`,
+        `usr`.`maildigest` AS `maildigest`,
+        `usr`.`maildisplay` AS `maildisplay`,
+        `usr`.`htmleditor` AS `htmleditor`,
+        `usr`.`ajax` AS `ajax`,
+        `usr`.`autosubscribe` AS `autosubscribe`,
+        `usr`.`trackforums` AS `trackforums`,
+        `usr`.`timecreated` AS `timecreated`,
+        `usr`.`timemodified` AS `timemodified`,
+        `usr`.`trustbitmask` AS `trustbitmask`,
+        `usr`.`imagealt` AS `imagealt`,
+        `usr`.`screenreader` AS `screenreader`,
+        `usrinfo`.`data` AS `matricula`
+FROM celiacie_moodle2.mdl_user usr
+JOIN celiacie_moodle2.mdl_user_enrolments ue ON ue.userid = usr.id
+JOIN celiacie_moodle2.mdl_user_info_data usrinfo ON usrinfo.userid=usr.id
+JOIN celiacie_moodle2.mdl_enrol e ON e.id = ue.enrolid
+JOIN celiacie_moodle2.mdl_role_assignments ra ON ra.userid = usr.id
+JOIN celiacie_moodle2.mdl_context ct ON ct.id = ra.contextid AND ct.contextlevel = 50
+JOIN celiacie_moodle2.mdl_course c ON c.id = ct.instanceid AND e.courseid = c.id
+JOIN celiacie_moodle2.mdl_role r ON r.id = ra.roleid AND r.shortname = 'student'
+WHERE e.status = 0 AND usr.suspended = 0 AND usr.deleted = 0 -- Usuarios que estén activos
+AND (ue.timeend = 0 OR ue.timeend > NOW()) AND ue.status = 0 -- una asignación puede tener fecha de fin, por lo que comprobamos que esté vigente.
+AND c.category=12 -- Materias de Marzo 2014
+AND usrinfo.fieldid=1 -- Para la matrícula del usuario
 ;
+
 
 create or replace view vw_docentes_no_ingresan_a_moodle as
 select * from celiacie_moodle2.mdl_user usr
