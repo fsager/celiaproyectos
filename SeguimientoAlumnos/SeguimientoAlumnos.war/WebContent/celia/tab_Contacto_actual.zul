@@ -28,7 +28,7 @@
                	<listbox id="lbIndicadores" mold="paging" pageSize="4" vflex="true"  sizedByContent="true" fixedLayout="true" checkmark="false" multiple="true">
                		<listhead>
                			<listheader hflex="min"></listheader>
-               			<listheader hflex="min"></listheader>
+               			<listheader width="35px"></listheader>
                			<listheader hflex="min"></listheader>
                			<listheader hflex="min"></listheader>
                			<listheader hflex="min"></listheader>
