@@ -58,6 +58,31 @@ VALUES ('Examen reprobado', 'El alumno ha reprobado o ha estado ausente en un ex
 INSERT INTO `seguimiento_alumnos`.`cel_indicador` (`IND_NOMBRE`, `IND_DESCRIPCION`, `AUD_FECHA_INS`, `AUD_FECHA_UPD`, `AUD_USR_INS`, `AUD_USR_UPD`)
 VALUES ('Quedó libre en una materia', 'El alumno ha reprobado o estado ausente en 3 ó más trabajos prácticos o cualquiera de los exámenes con su correspondiente recuperatorio.', NOW(), NOW(), 'Administrador', 'Administrador');
 
+
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('Nuevo trabajo práctico o examen', 'NUEVO_TRABAJO_PRACTICO', 'Se enviará esta alerta al alumno cuando se habilita un trabajo o examen en el sistema Moodle.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('Día previo al cierre de trabajo práctico o examen', 'DIA_PREVIO_CIERRE_TP_O_EXAMEN','Se enviará esta alerta al alumno un día antes que cierre un trabajo práctico o examen.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('Vencimiento de trabajo práctico o examen', 'VENCIMIENTO_DE_TP_O_EXAMEN','Se enviará esta alerta al alumno cuando haya vencido un trabajo o examen que no ha realizado.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('Dos trabajos prácticos reprobados en una materia', 'REPROBADOS_2_TP_DE_MATERIA','Se enviará esta alerta al alumno cuando haya reprobado dos trabajos prácticos de una materia; estará a punto de quedar libre.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('No ingresa al CIE regularmente', 'NO_INGRESA_AL_CIE_REGULARMENTE','Se enviará una alerta al docente cuando ha pasado un plazo determinado desde su último ingreso.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('Adeuda carga de notas', 'ADEUDA_CARGA_NOTAS','Cuando el docente adeuda la carga de notas en el sistema de exámenes y/o trabajos prácticos.');
+
+INSERT INTO `seguimiento_alumnos`.`cel_alerta` (`ALE_NOMBRE`, `ALE_CODIGO`, `ALE_DESCRIPCION`)
+VALUES ('No sube un trabajo práctico o examen en la fecha definida en el sistema', 'NO_SUBIO_TP_O_EXAMEN_EN_FECHA_DEFINIDA','Cuando el docente no sube un trabajo práctico o examen en la fecha definida del mismo.');
+
+
+
 INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
 VALUES ('INDICADOR_CASO_RESPUESTA', 'NO_TUVO_TIEMPO', '0', 'No tuvo tiempo para hacerlo', '1');
 
