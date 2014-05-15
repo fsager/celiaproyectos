@@ -132,10 +132,31 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
     	AUD_USR_UPD VARCHAR(250) not null
    );
 
-
  ALTER TABLE seguimiento_alumnos.cel_indicador_usuario_estado ADD CONSTRAINT CEL_IND_USR_EST_IND_ID FOREIGN KEY (IND_ID)
     REFERENCES seguimiento_alumnos.cel_indicador (IND_ID);
 
+    
+  CREATE TABLE seguimiento_alumnos.cel_alerta
+   (	ALE_ID bigint default NULL auto_increment primary key,
+		ALE_CODIGO VARCHAR(100) not null UNIQUE,
+    	ALE_NOMBRE VARCHAR(200) not null, 
+    	ALE_DESCRIPCION VARCHAR(400)
+   );
+
+  CREATE TABLE seguimiento_alumnos.cel_alerta_notificacion
+   (	ALN_ID bigint default NULL auto_increment primary key,
+    	ALE_ID bigint not null, 
+    	USR_ID bigint(10) unsigned not null,
+		ALE_FECHA_ENVIO_MAIL timestamp not null
+   );
+
+ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_ALE_ID FOREIGN KEY (ALE_ID)
+    REFERENCES seguimiento_alumnos.cel_alerta (ALE_ID);
+
+ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_USR_ID FOREIGN KEY (USR_ID)
+    REFERENCES celiacie_moodle2.mdl_user (ID);
+
+    
 
     
 -- VIEWS
@@ -208,7 +229,7 @@ AND usrinfo.fieldid=1 -- Para la matrícula del usuario
 ;
 
 
-create or replace view vw_docentes_no_ingresan_a_moodle as
+create or replace view `seguimiento_alumnos`.`vw_docentes_no_ingresan_a_moodle` as
 select * from celiacie_moodle2.mdl_user usr
 where 1=1
 and deleted <> 1
