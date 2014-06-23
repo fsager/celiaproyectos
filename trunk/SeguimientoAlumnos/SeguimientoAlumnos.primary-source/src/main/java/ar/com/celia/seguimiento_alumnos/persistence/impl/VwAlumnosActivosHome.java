@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 
 import ar.com.celia.common.persistence.util.DAOObject;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
+import ar.com.celia.seguimiento_alumnos.domain.VwMaterias;
 import ar.com.celia.seguimiento_alumnos.persistence.VwAlumnosActivosDao;
 
 
@@ -157,6 +158,26 @@ public class VwAlumnosActivosHome extends DAOObject implements VwAlumnosActivosD
         }
         catch (RuntimeException re) {
             log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
+    public List<VwMaterias> getMateriasByAlumno(VwMaterias p_example) throws Exception {
+        log.debug("finding getMateriasByAlumno instance by example");
+        try {
+        	Criteria cri = getSession().createCriteria(VwMaterias.class);
+        	cri.add(Example.create(p_example).enableLike().ignoreCase());
+        	
+
+        	
+            cri.addOrder(Order.asc("fullname"));
+            List<VwMaterias> results = cri.list();
+        		
+            return results;
+       
+        }
+        catch (RuntimeException re) {
+            log.error("find by getMateriasByAlumno failed", re);
             throw re;
         }
     }

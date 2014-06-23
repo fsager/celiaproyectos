@@ -1,8 +1,7 @@
 package ar.com.celia.seguimiento_alumnos.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -24,16 +23,22 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listhead;
 import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.ListitemRenderer;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
 import ar.com.celia.core.business.ContextManagerCore;
+import ar.com.celia.seguimiento_alumnos.business.Utils;
 import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
+import ar.com.celia.seguimiento_alumnos.domain.CelPropiedad;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 import ar.com.celia.seguimiento_alumnos.domain.VwIndicadoresAlumnos;
+import ar.com.celia.seguimiento_alumnos.domain.VwMaterias;
+import ar.com.celia.seguimiento_alumnos.renderers.Materias;
 import ar.com.celia.seguimiento_alumnos.service.CelIndicadorDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDefinition;
+import ar.com.celia.seguimiento_alumnos.service.CelPropiedadDefinition;
 import ar.com.celia.seguimiento_alumnos.service.VwAlumnosActivosDefinition;
 
 public class BandejaCasosController extends GenericForwardComposer {
@@ -41,7 +46,8 @@ public class BandejaCasosController extends GenericForwardComposer {
 	private VwAlumnosActivosDefinition vwAlumnosActivosService=(VwAlumnosActivosDefinition)ContextManagerCore.getBizObject("vwAlumnosActivosService");
 	private CelInteraccionCasoDefinition celInteraccionCasoService=(CelInteraccionCasoDefinition)ContextManagerCore.getBizObject("celInteraccionCasoService");
 	private CelIndicadorDefinition celIndicadorService=(CelIndicadorDefinition)ContextManagerCore.getBizObject("celIndicadorService");
-
+	private CelPropiedadDefinition celPropiedadService=(CelPropiedadDefinition)ContextManagerCore.getBizObject("celPropiedadService");
+	
 	
 	private Window wndIndex;
 	private Listbox lstBandejaCasos;
@@ -51,6 +57,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 	private Chosenbox chosenIndicadores;
 	private List<CelIndicador> indicadores;
 	private Listhead lstHead;
+	private HashMap<Long,Long> rangoIndicadores=new HashMap<Long,Long>();
 	
     public BandejaCasosController()
     {
@@ -67,12 +74,12 @@ public class BandejaCasosController extends GenericForwardComposer {
     	CelIndicador celIndicadorExample=new CelIndicador();
     	String[] lazyFalse=null;
     	indicadores=celIndicadorService.getAll(celIndicadorExample, lazyFalse);    	
-		Collections.sort(indicadores,new CelIndicador());    	
+		//Collections.sort(indicadores,new CelIndicador());    	
         ListModel<CelIndicador> model =new ListModelList<CelIndicador>(indicadores);
         chosenIndicadores.setModel(model);
     }
     
-    public void cargarHeader(List<CelIndicador> indicadores)
+    public void cargarHeader(List<CelIndicador> indicadores) throws Exception
     {
     	lstHead.getChildren().clear();
     	
@@ -82,10 +89,33 @@ public class BandejaCasosController extends GenericForwardComposer {
     	
     	for(CelIndicador indicador:indicadores)
     	{
+			
+			CelPropiedad pro=celPropiedadService.get("IND_"+indicador.getIndId()+"_ROJO");
+			if(pro!=null)
+			{
+				rangoIndicadores.put(indicador.getIndId(), Long.valueOf(pro.getProValor()));
+			}
+			
     		if(isIndicadorSelected(indicador))
     		{
 	    		header=new Listheader(indicador.getIndNombre());
 	        	header.setParent(lstHead);
+    		}
+    	}
+    	
+    }
+    
+    public void crearCellIndicadores(List<CelIndicador> indicadores, Listitem row, VwAlumnosActivos alumno) throws Exception
+    {
+    	for(CelIndicador indicador:indicadores)
+    	{
+    		if(isIndicadorSelected(indicador))
+    		{
+    			Listcell celdaIndicadores=new Listcell();
+    			celdaIndicadores.setValue(indicador);
+    			
+    			celdaIndicadores.setId(alumno.getId()+"_"+indicador.getIndId());
+    			celdaIndicadores.setParent(row);
     		}
     	}
     	
@@ -133,33 +163,78 @@ public class BandejaCasosController extends GenericForwardComposer {
     	
         List<VwAlumnosActivos> alumnos=vwAlumnosActivosService.p_alumnos_activos_con_indicadores(selectedIndicadores, txtMatricula.getValue(),txtApellido.getValue(),txtNombre.getValue());
 
-    	for(VwAlumnosActivos alumno:alumnos)
+    	for(final VwAlumnosActivos alumno:alumnos)
     	{
     		java.util.Set <VwIndicadoresAlumnos> indicadoresSet=alumno.getIndicadoresAlumnos();
     		List<VwIndicadoresAlumnos> myListToOrder = new ArrayList(indicadoresSet);
-    		Collections.sort(myListToOrder,new CelIndicador());
+    		//Collections.sort(myListToOrder,new CelIndicador());
+    		
+    		int cantidadIndicadores=indicadores.size();
+    		if(chosenIndicadores.getSelectedObjects()!=null || chosenIndicadores.getSelectedObjects().size()!=0)
+    		{
+    			cantidadIndicadores=chosenIndicadores.getSelectedObjects().size();
+    		}
     		
     		if(!indicadoresSet.isEmpty())
     		{
     			Listitem row=new Listitem();
     			crearPanelDatosPersonales(row,alumno);
-        		    			
+    			crearCellIndicadores(indicadores,row, alumno);			
+
+        		
         		for(VwIndicadoresAlumnos indicador:myListToOrder){
-                	
-        			Listcell celdaIndicadores=new Listcell();
-        			Image imgIndicador=new Image();
+        			
+        			final Listcell cell=(Listcell)row.getFellow(alumno.getId()+"_"+indicador.getIdIndicador());
+        			
+        			final Image imgIndicador=new Image();
         			imgIndicador.setTooltiptext(indicador.getDescIndicador());
-        			imgIndicador.setParent(celdaIndicadores);
+        			imgIndicador.setParent(cell);
         			
-        			if(indicador.getValorIndicador()==1)
-        				imgIndicador.setSrc("/img/green.jpg");
-        			else if(indicador.getValorIndicador()==2)
-        				imgIndicador.setSrc("/img/red.jpg");
-        			else 
-        				imgIndicador.setSrc("/img/yellow.jpg");
+        			String srcImage=Utils.getImageIndicador(rangoIndicadores,indicador);
+        			imgIndicador.setSrc(srcImage);     
+        			imgIndicador.setWidth("29px");
+        			imgIndicador.setHeight("29px");
         			
-        			celdaIndicadores.setParent(row);
-            		
+					
+        			imgIndicador.addEventListener("onClick",new EventListener<Event>() {
+
+						@Override
+						public void onEvent(Event event) throws Exception {
+							
+							CelIndicador celIndicador=(CelIndicador)cell.getValue();
+							final Window wMoreInfo=new Window();
+							wMoreInfo.setTitle(alumno.getLastname()+", "+alumno.getFirstname()+ " - " +celIndicador.getIndNombre());
+							wMoreInfo.setClosable(true);
+							wMoreInfo.setParent(cell);
+							wMoreInfo.setPosition("center");
+							
+							if(celIndicador.getIndFuntion()!=null){
+								
+								wMoreInfo.setWidth("550px");
+								
+								List masInfo=celIndicadorService.callMoreDetail(alumno.getId(),celIndicador);
+
+								ListModelList lm=new ListModelList(masInfo);
+								
+								Listbox lb=new Listbox();
+								lb.setHeight("500px");
+								lb.setParent(wMoreInfo);
+								lb.setModel(lm);
+								lb.setItemRenderer((ListitemRenderer)Class.forName(celIndicador.getIndMoreInfoRenderer()).newInstance());
+							}
+							else
+							{
+								wMoreInfo.setWidth("200px");
+								Label sinInfoAdicional=new Label("No cuenta con información adicional");
+								sinInfoAdicional.setParent(wMoreInfo);
+							}
+							
+							wMoreInfo.doHighlighted();
+							
+						}
+					}); 
+        			
+        			
             	}        		
         		row.setValue(alumno);
         		row.setParent(lstBandejaCasos);
@@ -168,8 +243,9 @@ public class BandejaCasosController extends GenericForwardComposer {
     	}
     } 
     
-    public void crearPanelDatosPersonales(Listitem row,VwAlumnosActivos alumno) throws Exception
+    public void crearPanelDatosPersonales(final Listitem row,final VwAlumnosActivos alumno) throws Exception
     {
+    	
 		Listcell celdaDatosPersonales=new Listcell();
 		celdaDatosPersonales.setStyle("width:400px;");
 		
@@ -202,7 +278,6 @@ public class BandejaCasosController extends GenericForwardComposer {
 		lblMatricula.setValue("Matrícula: "+alumno.getMatricula());
 		lblMatricula.setStyle("font-weight:bold;");
 		lblMatricula.setParent(divNMatricula);
-				
 		
 		Vbox vBoxDatos=new Vbox();
 		vBoxDatos.setParent(hBoxDatosPersonales);
@@ -237,6 +312,48 @@ public class BandejaCasosController extends GenericForwardComposer {
 		lblContactos.setValue("Contactos: "+getContactosAlumno(alumno.getId()));
 		lblContactos.setParent(vBoxDatos);
 		
+		
+		
+		Hbox hBoxBotones=new Hbox();
+		hBoxBotones.setParent(vBoxDatos);
+		
+		Button btnMaterias=new Button();
+		btnMaterias.setLabel("Materias");
+		btnMaterias.setAttribute("alumno", alumno);
+		btnMaterias.setSclass("tn btn-xs btn-info");
+		btnMaterias.setParent(hBoxBotones);
+		
+		btnMaterias.addEventListener("onClick",new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				
+				final Window wMaterias=new Window();
+				wMaterias.setTitle(alumno.getLastname()+", "+alumno.getFirstname());
+				wMaterias.setWidth("300px");
+				wMaterias.setClosable(true);
+				wMaterias.setParent(wndIndex);
+				wMaterias.setPosition("center");
+				
+				VwMaterias p_example=new VwMaterias();
+				p_example.setUserid(alumno.getId());;
+				
+				List<VwMaterias> materias=vwAlumnosActivosService.getMateriasByAlumno(p_example);
+				ListModelList lm=new ListModelList(materias);
+				
+				Listbox lb=new Listbox();
+				lb.setHeight("500px");
+				lb.setParent(wMaterias);
+				lb.setModel(lm);
+				
+				Materias materiasRender=new Materias();
+				lb.setItemRenderer(materiasRender);
+
+				wMaterias.doHighlighted();
+				
+			}
+		});
+		
 		Button btnNuevoContacto=new Button();
 		btnNuevoContacto.setLabel("Nuevo Contacto");
 		btnNuevoContacto.setAttribute("alumno", alumno);
@@ -247,7 +364,9 @@ public class BandejaCasosController extends GenericForwardComposer {
 		        abrirVentanDetalle((VwAlumnosActivos)event.getTarget().getAttribute("alumno"));
 		    }
 		});
-		btnNuevoContacto.setParent(vBoxDatos);
+		btnNuevoContacto.setParent(hBoxBotones);
+		
+		
 		
 		
 		celdaDatosPersonales.setParent(row);

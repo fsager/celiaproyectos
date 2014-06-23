@@ -1,4 +1,6 @@
 package ar.com.celia.seguimiento_alumnos.persistence;
+import java.util.List;
+
 import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
 
 /**
@@ -46,5 +48,7 @@ public interface CelIndicadorDao {
 	 * @param p_domain    p_domain
 	 */
 	public abstract void update(CelIndicador p_domain) throws Exception;
+	
+	public List callMoreDetail(Long aluId,CelIndicador indicador) throws Exception;
 
 }

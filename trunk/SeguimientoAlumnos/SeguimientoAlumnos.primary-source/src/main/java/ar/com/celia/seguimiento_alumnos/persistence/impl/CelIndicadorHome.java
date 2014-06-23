@@ -6,12 +6,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import ar.com.celia.common.persistence.util.DAOObject;
 import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
+import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 import ar.com.celia.seguimiento_alumnos.persistence.CelIndicadorDao;
 
 
@@ -122,10 +124,29 @@ public class CelIndicadorHome extends DAOObject implements CelIndicadorDao {
             	}
         	}
         	            
-            cri.addOrder(Order.asc("indId"));
+            cri.addOrder(Order.asc("indOrder"));
             List<CelIndicador> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
+    public List callMoreDetail(Long aluId,CelIndicador indicador) throws Exception {
+        log.debug("finding VwAlumnosActivos instance by example");
+        try {
+        	Query query = getSession().createSQLQuery(
+        			"CALL "+indicador.getIndFuntion()+"(?)")
+        			.addEntity("info",Class.forName(indicador.getIndMoreInfoClass()));
+        	
+        	query.setLong(0, aluId);
+        		 
+        	return query.list();
+        		
+       
         }
         catch (RuntimeException re) {
             log.error("find by example failed", re);

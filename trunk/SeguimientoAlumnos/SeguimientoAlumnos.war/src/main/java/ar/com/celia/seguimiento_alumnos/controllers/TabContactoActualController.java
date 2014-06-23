@@ -16,16 +16,19 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Textbox;
 
 import ar.com.celia.core.business.ContextManagerCore;
+import ar.com.celia.seguimiento_alumnos.business.Utils;
 import ar.com.celia.seguimiento_alumnos.domain.CelDominio;
 import ar.com.celia.seguimiento_alumnos.domain.CelIndicador;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCaso;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
+import ar.com.celia.seguimiento_alumnos.domain.CelPropiedad;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 import ar.com.celia.seguimiento_alumnos.domain.VwIndicadoresAlumnos;
 import ar.com.celia.seguimiento_alumnos.service.CelDominioDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelIndicadorDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDetalleDefinition;
+import ar.com.celia.seguimiento_alumnos.service.CelPropiedadDefinition;
 
 public class TabContactoActualController extends GenericForwardComposer {
 	
@@ -38,6 +41,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 	private VwAlumnosActivos alumno=null;
 	private Textbox tbxObservacionesGenerales;
 	private String userPrincipal;
+	private CelPropiedadDefinition celPropiedadService=(CelPropiedadDefinition)ContextManagerCore.getBizObject("celPropiedadService");
 	
 	
 	public void doAfterCompose(Component comp) throws Exception {
@@ -60,7 +64,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 	
 	public void generarGrilla(java.util.Set <VwIndicadoresAlumnos> indicadoresSet) throws Exception {
 		for(VwIndicadoresAlumnos indicador: indicadoresSet) {
-			if(indicador.getValorIndicador() == 2) {
+			if(indicador.getValorIndicador() >= 2) {
 				//Se crea la fila
 				Listitem row=new Listitem();
 				
@@ -78,9 +82,18 @@ public class TabContactoActualController extends GenericForwardComposer {
 				//Celda de Imagen Indicador
 				Listcell celdaImagen=new Listcell();
 				Image imgIndicador=new Image();
-				if(indicador.getValorIndicador()==1)imgIndicador.setSrc("/img/green.jpg");
-				else if(indicador.getValorIndicador()==2)imgIndicador.setSrc("/img/red.jpg");
-				else imgIndicador.setSrc("/img/yellow.jpg");
+				
+				CelPropiedad pro=celPropiedadService.get("IND_"+indicador.getIdIndicador()+"_ROJO");
+				Long valorRojo=null;
+				if(pro!=null)
+				{
+					valorRojo=new Long(pro.getProValor());
+				}
+				
+    			String srcImage=Utils.getImageIndicador(valorRojo,indicador);
+    			imgIndicador.setSrc(srcImage);
+    			imgIndicador.setWidth("29px");
+    			imgIndicador.setHeight("29px");
 				
 				//Celda label respuesta
 				Listcell celdaRespuesta=new Listcell();

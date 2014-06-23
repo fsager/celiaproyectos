@@ -37,5 +37,10 @@ public class CelIndicadorBiz implements CelIndicadorDefinition {
 	public void update(CelIndicador p_domain) throws Exception {
 		dao.update(p_domain);
 	}
+	
+	public List callMoreDetail(Long aluId,CelIndicador indicador) throws Exception
+	{
+		return dao.callMoreDetail(aluId,indicador);
+	}
 
 }

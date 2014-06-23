@@ -3,6 +3,7 @@ package ar.com.celia.seguimiento_alumnos.service.impl;
 import java.util.List;
 
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
+import ar.com.celia.seguimiento_alumnos.domain.VwMaterias;
 import ar.com.celia.seguimiento_alumnos.service.VwAlumnosActivosDefinition;
 
 /**
@@ -49,4 +50,8 @@ public class VwAlumnosActivosService implements VwAlumnosActivosDefinition {
 	public List<VwAlumnosActivos> p_alumnos_activos_con_indicadores(String list_indicadores, String matricula, String apellido, String nombre) throws Exception {
 		return biz.p_alumnos_activos_con_indicadores(list_indicadores, matricula, apellido, nombre);
     }
+	
+	 public List<VwMaterias> getMateriasByAlumno(VwMaterias p_example) throws Exception{
+		 return biz.getMateriasByAlumno(p_example);
+	 }
 }
