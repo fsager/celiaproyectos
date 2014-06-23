@@ -25,6 +25,10 @@ public class CelIndicador implements java.io.Serializable, Comparator<Comparable
 	private Long indId;
 	private String indNombre;
 	private String indDescripcion;
+	private Integer indOrder;
+	private String indFuntion;
+	private String indMoreInfoRenderer;
+	private String indMoreInfoClass;
 	private Date audFechaIns;
 	private Date audFechaUpd;
 	private String audUsrIns;
@@ -88,7 +92,46 @@ public class CelIndicador implements java.io.Serializable, Comparator<Comparable
 	public void setIndDescripcion(String indDescripcion) {
 		this.indDescripcion = indDescripcion;
 	}
+	
 
+	@Column(name = "IND_FUNCTION", nullable = false, length = 300)
+	public String getIndFuntion() {
+		return indFuntion;
+	}
+	
+	public void setIndFuntion(String indFuntion) {
+		this.indFuntion = indFuntion;
+	}
+
+
+	@Column(name = "ind_moreinfo_renderer", nullable = false, length = 300)
+	public String getIndMoreInfoRenderer() {
+		return indMoreInfoRenderer;
+	}
+	
+	public void setIndMoreInfoRenderer(String indMoreInfoRenderer) {
+		this.indMoreInfoRenderer = indMoreInfoRenderer;
+	}
+	
+	
+	@Column(name = "ind_moreinfo_class", nullable = false, length = 300)
+	public String getIndMoreInfoClass() {
+		return indMoreInfoClass;
+	}
+	
+	public void setIndMoreInfoClass(String indMoreInfoClass) {
+		this.indMoreInfoClass = indMoreInfoClass;
+	}
+	
+	@Column(name = "IND_ORDER",nullable = false)
+	public Integer getIndOrder() {
+		return indOrder;
+	}
+	
+	public void setIndOrder(Integer indOrder) {
+		this.indOrder = indOrder;
+	}
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "AUD_FECHA_INS", nullable = false, length = 19)
 	public Date getAudFechaIns() {

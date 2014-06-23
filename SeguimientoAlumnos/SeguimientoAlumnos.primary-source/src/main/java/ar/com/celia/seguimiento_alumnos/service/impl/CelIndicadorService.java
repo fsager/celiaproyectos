@@ -45,4 +45,9 @@ public class CelIndicadorService implements CelIndicadorDefinition {
 	public void update(CelIndicador p_domain) throws Exception {
 		biz.update(p_domain);
 	}
+	
+	public List callMoreDetail(Long aluId,CelIndicador indicador) throws Exception
+	{
+		return biz.callMoreDetail(aluId,indicador);
+	}
 }
