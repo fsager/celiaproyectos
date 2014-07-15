@@ -225,6 +225,7 @@ JOIN celiacie_moodle2.mdl_role r ON r.id = ra.roleid AND r.shortname = 'student'
 WHERE e.status = 0 AND usr.suspended = 0 AND usr.deleted = 0 -- Usuarios que estén activos
 AND (ue.timeend = 0 OR ue.timeend > NOW()) AND ue.status = 0 -- una asignación puede tener fecha de fin, por lo que comprobamos que esté vigente.
 AND usrinfo.fieldid=1 -- Para la matrícula del usuario
+AND auth != 'nologin' -- Usuarios que no fueron excluidos de poder loguearse.
 ;
 
 
