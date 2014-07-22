@@ -2,7 +2,37 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-lazy-init="false">
+    <bean id="celAlertaEnviadaDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelAlertaEnviadaHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celAlertaEnviadaBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelAlertaEnviadaBiz">
+        <property name="dao" ref="celAlertaEnviadaDao"/>
+    </bean>
+    <bean id="celAlertaEnviadaBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celAlertaEnviadaBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celAlertaEnviadaService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelAlertaEnviadaService">
+        <property name="businessObject" ref="celAlertaEnviadaBiz"/>
+    </bean>
 
+
+    <bean id="notificacionesAlumnosDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.NotificacionesAlumnosHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="notificacionesAlumnosBusiness" class="ar.com.celia.seguimiento_alumnos.business.NotificacionesAlumnosBiz">
+        <property name="dao" ref="notificacionesAlumnosDao"/>
+    </bean>
+    <bean id="notificacionesAlumnosBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="notificacionesAlumnosBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="notificacionesAlumnosService" class="ar.com.celia.seguimiento_alumnos.service.impl.NotificacionesAlumnosService">
+        <property name="businessObject" ref="notificacionesAlumnosBiz"/>
+    </bean>
+    
     <bean id="notificacionesDocentesDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.NotificacionesDocentesHome">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
