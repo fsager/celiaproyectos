@@ -21,9 +21,11 @@
     	<property name="steMailService" ref="steMailService"/>
 		<property name="notificacionesDocentesService" ref="notificacionesDocentesService"/>
 		<property name="celPropiedadService" ref="celPropiedadService"/>
+		<property name="celAlertaEnviadaService" ref="celAlertaEnviadaService"/>		
 		<property name="servletContext" ref="servletContext"/>
     </bean>
-	
+    
+
 	<bean id="jobDetailDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	  <property name="targetObject" ref="notificacionesDocentes"/>
 	  <property name="targetMethod" value="notificarNoIngresoAMoodle"/>
@@ -48,6 +50,55 @@
 	  <property name="concurrent" value="false"/>
 	</bean>
 	
+    <bean id="notificacionesAlumnos" class="ar.com.celia.seguimiento_alumnos.notificaciones.NotificacionesAlumnos">
+    	<property name="steMailService" ref="steMailService"/>
+		<property name="notificacionesAlumnosService" ref="notificacionesAlumnosService"/>
+		<property name="celPropiedadService" ref="celPropiedadService"/>
+		<property name="celAlertaEnviadaService" ref="celAlertaEnviadaService"/>
+		<property name="servletContext" ref="servletContext"/>
+    </bean>
+	
+	<bean id="jobDetailAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarNuevoTrabajoPractico"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarTrabajoPracticoPorVencer"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarTrabajoPracticoVencidos"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarNuevoExamen"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarExamenPorVencer"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarExamenVencidos"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosLibres" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarLibres"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
 
 	<bean id="cronTriggerDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailDocenteNoIngresaMoodle"/>
@@ -68,19 +119,78 @@
 	<bean id="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosPendientesDeCorreccion"/>
 		<!-- Cada 2 días -->
-		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+<!-- 		<property name="cronExpression" value="0 0 12 1/2 * ?"/> -->
 		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<property name="cronExpression" value="0/10 * * * * ?"/>
 	</bean>
 	
 	<bean id="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
 		<!-- Cada 2 días -->
+<!-- 		<property name="cronExpression" value="0 0 12 1/2 * ?"/> -->
+		<!-- Cada 10 segundos -->
+		<property name="cronExpression" value="0/10 * * * * ?"/>
+	</bean>
+	
+	
+	<!-- ALUMNOS -->
+	<bean id="cronTriggerAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosNuevoTrabajoPractico"/>
+		<!-- Cada 2 días -->
 		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
-	
+
+	<bean id="cronTriggerAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoPorVencer"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoVencidos"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosNuevoExamen"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosExamenPorVencer"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosExamenVencidos"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosLibres" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosLibres"/>
+		<!-- Cada 2 días -->
+		<property name="cronExpression" value="0 0 12 1/2 * ?"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+
 	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 	  <property name="triggers">
 	    <list>
@@ -88,6 +198,15 @@
 	      <ref bean="cronTriggerDocenteCargaNotas"/>
 	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/>
 	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
+	      
+	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/>
+	      <ref bean="cronTriggerAlumnosNuevoExamen"/>
+	      <ref bean="cronTriggerAlumnosExamenPorVencer"/>
+	      <ref bean="cronTriggerAlumnosExamenVencidos"/>
+	      <ref bean="cronTriggerAlumnosLibres"/>
+	      
 	    </list>
 	  </property>
 	</bean>

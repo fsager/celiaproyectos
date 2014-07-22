@@ -28,6 +28,9 @@
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwExameneesReprobados" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwTpsVencidos" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwMaterias" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.CelAlertaEnviada" />
 		
 	</session-factory>
 </hibernate-configuration>
