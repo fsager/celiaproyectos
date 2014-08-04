@@ -36,6 +36,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
 			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_NUEVO_TP);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -51,6 +53,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_NUEVO_EXAMEN);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -66,6 +70,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
 			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_TP_POR_VENCER);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -81,6 +87,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_EXAMEN_POR_VENCER);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -96,6 +104,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
 			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_TP_VENCIDO);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -111,6 +121,8 @@ public class NotificacionesAlumnos extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_EXAMEN_VENCIDO);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -127,7 +139,21 @@ public class NotificacionesAlumnos extends Notificaciones{
 			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
 			//TODO
 			//enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_MATERIA,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_NUEVO_EXAMEN);
+			if(frenar)
+				break;
 		}
+	}
+	
+	public void test() throws Exception
+	{
+		super.frenar=true;
+		notificarNuevoTrabajoPractico();
+		notificarNuevoExamen();
+		notificarTrabajoPracticoPorVencer();
+		notificarExamenPorVencer();
+		notificarTrabajoPracticoVencidos();
+		notificarExamenVencidos();
+		//notificarLibres();
 	}
 	
 	public void setNotificacionesAlumnosService(

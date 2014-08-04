@@ -34,6 +34,9 @@ public class NotificacionesDocentes extends Notificaciones{
 		{
 			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
 			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues,false,null,null,null,null);
+			
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -50,7 +53,10 @@ public class NotificacionesDocentes extends Notificaciones{
 		for(VwAlertasExamenes notaPendiente:notasPendientes)
 		{
 			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail);
-			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,notaPendiente.getQuizid(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_NOTA_PENDIENTE);
+			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_EXAMEN,notaPendiente.getQuizid(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_NOTA_PENDIENTE);
+			
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -67,11 +73,12 @@ public class NotificacionesDocentes extends Notificaciones{
 		for(VwAlertasTps notaPendiente:tpNotasPendientes)
 		{
 			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail);
-			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,notaPendiente.getAssignmentId(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_TP_NOTA_PENDIENTE);
+			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_TP,notaPendiente.getAssignmentId(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_TP_NOTA_PENDIENTE);
+			if(frenar)
+				break;
 		}
 	}
-	
-	
+		
 	public void notificarTrabajosPracticosExamenesPendienteDeSubida() throws Exception
 	{
 		notificarTrabajosPracticosPendientesDeSubir();
@@ -91,7 +98,9 @@ public class NotificacionesDocentes extends Notificaciones{
 		for(VwAlertasTps tp:tpsPendientes)
 		{
 			String templateWithValues=remplazarValoresTemplate(tp,textoMail);
-			enviarMail(tp.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,tp.getAssignmentId(),tp.getUserid(),Notificaciones.ALERTA_DOC_TP_PENDIENTE_CARGA);
+			enviarMail(tp.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_TP,tp.getAssignmentId(),tp.getUserid(),Notificaciones.ALERTA_DOC_TP_PENDIENTE_CARGA);
+			if(frenar)
+				break;
 		}
 	}
 	
@@ -108,8 +117,20 @@ public class NotificacionesDocentes extends Notificaciones{
 		for(VwAlertasExamenes examen:examenPendientes)
 		{
 			String templateWithValues=remplazarValoresTemplate(examen,textoMail);
-			enviarMail(examen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,examen.getQuizid(),examen.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_PENDIENTE_CARGA);
+			enviarMail(examen.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_EXAMEN,examen.getQuizid(),examen.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_PENDIENTE_CARGA);
+			if(frenar)
+				break;
 		}
+	}
+
+	
+	public void test() throws Exception
+	{
+		super.frenar=true;
+//		notificarNoIngresoAMoodle();
+//		notificarCargaDeNotas();
+//		notificarTrabajosPracticosPendientesDeCorreccion();
+//		notificarTrabajosPracticosExamenesPendienteDeSubida();
 	}
 	
 	public NotificacionesDocentesDefinition getNotificacionesDocentesService() {

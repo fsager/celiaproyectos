@@ -42,6 +42,8 @@ public class Notificaciones {
 	protected static final String ALERTA_DOC_TP_NOTA_PENDIENTE="DOC_TP_NOTA_PENDIENTE";
 	protected static final String ALERTA_DOC_EXAMEN_PENDIENTE_CARGA="DOC_EXAMEN_PENDIENTE_CARGA";
 	protected static final String ALERTA_DOC_TP_PENDIENTE_CARGA="DOC_TPS_PENDIENTE_CARGA";
+	
+	protected boolean frenar=false;
 		
 	
 	public void init() throws Exception
@@ -107,8 +109,10 @@ public class Notificaciones {
 		{
 			atributo.setAccessible(true);
 				
-			
-			templateWithValues=templateWithValues.replaceAll("##"+atributo.getName()+"##", atributo.get(obj).toString());
+			if(atributo.get(obj)!=null)
+				templateWithValues=templateWithValues.replaceAll("##"+atributo.getName()+"##", atributo.get(obj).toString());
+			else
+				templateWithValues=templateWithValues.replaceAll("##"+atributo.getName()+"##", "");
 		}
 		
 		return templateWithValues;

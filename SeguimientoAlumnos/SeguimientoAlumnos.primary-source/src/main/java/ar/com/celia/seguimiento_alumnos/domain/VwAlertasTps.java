@@ -101,4 +101,22 @@ public class VwAlertasTps implements java.io.Serializable {
 	public void setAssignmentName(String assignmentName) {
 		this.assignmentName = assignmentName;
 	}
+	
+	@Column(name = "fecha_inicio", nullable = true)
+	public String getFechaInicio() {
+		return fechaInicio;
+	}
+	
+	public void setFechaInicio(String fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	
+	@Column(name = "fecha_vencimiento", nullable = true)
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+	
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
 }
