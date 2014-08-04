@@ -17,7 +17,7 @@ create table cel_alerta_enviada
  
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_nuevos_examenes` as
 select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name
+	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
@@ -29,7 +29,7 @@ and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' a
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_examenes_por_vencer` as
 select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name
+	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
@@ -42,7 +42,7 @@ and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' a
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_examenes_vencidos` as
 select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name
+	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
@@ -57,7 +57,7 @@ and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' a
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_nuevos_tp` as
 select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name
+	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
@@ -69,7 +69,7 @@ and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignm
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_tp_por_vencer` as
 select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name
+	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
@@ -82,7 +82,7 @@ and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignm
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_tpsvencidos` as
 select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name
+	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
@@ -97,66 +97,59 @@ select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.
 
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_nota_pendiente` as
-select q.id quiz_id,ue.userid userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
+select q.id quiz_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
 where ra.userid=u.id
 and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
-and ra.roleid = 3) mail,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name, gr.grade
+and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
+	,q.name quiz_name, DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
-  join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
-  join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
-  join celiacie_moodle2.mdl_user u on ue.userid = u.id
-  join celiacie_moodle2.mdl_quiz_grades gr on gr.quiz=q.id and gr.userid=ue.userid
 where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
  and DATE_ADD(FROM_UNIXTIME(timeclose), INTERVAL 4 DAY) < now()
- and gr.grade = 0.00000
- and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='DOC_EXAMEN_NOTA_PENDIENTE' and usr_id=ue.userid)
+ and exists (select 1 from celiacie_moodle2.mdl_quiz_grades gr where gr.quiz=q.id and gr.grade = 0.00000)
 ;
 
+
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_tp_nota_pendiente` as
-select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name,FROM_UNIXTIME(timedue), asu.grade
+select a.id assignment_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
+where ra.userid=u.id
+and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
+and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
+	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
-  join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
-  join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
-  join celiacie_moodle2.mdl_user u on ue.userid=u.id
-  join celiacie_moodle2.mdl_assignment_submissions asu on asu.userid=ue.userid and asu.assignment=a.id
 where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
  and DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 4 DAY) < now()
- and asu.grade = 0
- and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='DOC_TP_NOTA_PENDIENTE' and usr_id=ue.userid)
+ and exists (select 1 from celiacie_moodle2.mdl_assignment_submissions asu where asu.assignment=a.id and asu.grade = 0)
 ;
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_tps_pendientes_carga` as
-select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name
+select a.id assignment_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
+where ra.userid=u.id
+and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
+and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
+	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
-  join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
-  join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
-  join celiacie_moodle2.mdl_user u on ue.userid=u.id
 where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
 and DATEDIFF(FROM_UNIXTIME(timeavailable),now())<=10  -- falten x dias para estar disponible
 and DATEDIFF(FROM_UNIXTIME(timeavailable),now())>=0  -- falten x dias para estar disponible
 and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta caargado
-and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='DOC_TPS_PENDIENTE_CARGA' and usr_id=ue.userid)
 ;
 
+
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_pendientes_carga` as
-select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name
+select q.id quiz_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
+where ra.userid=u.id
+and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
+and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
+	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
-  join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
-  join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
-  join celiacie_moodle2.mdl_user u on ue.userid = u.id
 where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
 and DATEDIFF(FROM_UNIXTIME(timeopen),now())<=10  -- falten x dias para estar disponible
 and DATEDIFF(FROM_UNIXTIME(timeopen),now())>=0  -- falten x dias para estar disponible
 and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta caargado
-and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='DOC_EXAMEN_PENDIENTE_CARGA' and usr_id=ue.userid)
 ;
 
 

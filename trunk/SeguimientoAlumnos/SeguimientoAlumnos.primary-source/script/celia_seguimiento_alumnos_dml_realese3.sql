@@ -19,7 +19,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail_alu_nuevos_tp_subject',
 'MAIL.PROP',
-'Nuevo trabajo práctivo',
+'Nuevo trabajo práctico',
 'Subject ');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
