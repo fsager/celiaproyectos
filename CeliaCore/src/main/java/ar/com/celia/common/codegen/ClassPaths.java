@@ -8,41 +8,39 @@ public class ClassPaths {
 	
 	public static String getTemplatePath()
 	{
-		return ".\\templates\\";
+		return "."+File.separator+"templates"+File.separator;
 	}
 	
 	public static String getPersistenceDaoPath(String root_package)
 	{
-			return getFile(root_package,"\\persistence\\");
+			return getFile(root_package,File.separator+"persistence"+File.separator);
 	}
 	
 	public static String getPersistenceImplPath(String root_package)
 	{
-		return getFile(root_package,"\\persistence\\impl\\");
+		return getFile(root_package,File.separator+"persistence"+File.separator+"impl"+File.separator);
 	}
 	
 	public static String getBusinessPath(String root_package)
 	{
-			return getFile(root_package,"\\business\\");
+			return getFile(root_package,File.separator+"business"+File.separator);
 	}
 	
 	public static String getServicePath(String root_package)
 	{
-			return getFile(root_package,"\\service\\");
+			return getFile(root_package,File.separator+"service"+File.separator);
 	}
 	
 	public static String getServiceImplPath(String root_package)
 	{
-			return getFile(root_package,"\\service\\impl\\");
+			return getFile(root_package,File.separator+"service"+File.separator+"impl"+File.separator);
 	}
 	
 	private static String getFile(String root_package,String folderDestino)
 	{
 		try
-		{
-			root_package=root_package.replaceAll("\\.","\\\\");
-			
-			File f=new File("..\\"+proyecto+"\\src\\"+root_package+folderDestino);
+		{			
+			File f=new File(".."+File.separator+proyecto+File.separator+"src"+File.separator+"main"+File.separator+"java"+File.separator+root_package+folderDestino);
 			
 			if(!f.exists())
 				f.mkdirs();
