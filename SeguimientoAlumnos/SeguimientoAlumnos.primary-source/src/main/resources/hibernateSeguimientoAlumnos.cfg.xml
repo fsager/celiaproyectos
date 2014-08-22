@@ -32,5 +32,13 @@
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.CelAlertaEnviada" />
 		
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwPeriodoEtapaMaterias" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwPeriodo" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwEtapa" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwMateria" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwTrabajoPractico" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwExamen" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwNotasAlumno" />
+				
 	</session-factory>
 </hibernate-configuration>

@@ -17,9 +17,7 @@
 	<profiles>
 		<profile>
 			<id>jboss</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
+			
 			<properties>
 				<db.datasource>java:jboss/datasources/SeguimientoAlumnosDS</db.datasource>
 				<db.native.jdbc.extractor>JBoss</db.native.jdbc.extractor>
@@ -35,16 +33,19 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>weblogic</id>
+			<id>desa</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<properties>
-				<db.datasource>jdbc/SeguimientoAlumnos-DS</db.datasource>
-				<db.native.jdbc.extractor>WebLogic</db.native.jdbc.extractor>
-				<show_sql>false</show_sql>
+				<db.datasource>java:jboss/datasources/SeguimientoAlumnosDS</db.datasource>
+				<db.native.jdbc.extractor>JBoss</db.native.jdbc.extractor>
+				<show_sql>true</show_sql>
 				<logs.location>/log/celia</logs.location>
-				<logs.rootCategoryLevel>WARN</logs.rootCategoryLevel>
-				<logs.errorfile.threshold>WARN</logs.errorfile.threshold>
-				<logs.db.threshold>ERROR</logs.db.threshold>
-				<logs.console.threshold>WARN</logs.console.threshold>
+				<logs.rootCategoryLevel>DEBUG</logs.rootCategoryLevel>
+				<logs.errorfile.threshold>DEBUG</logs.errorfile.threshold>
+				<logs.db.threshold>DEBUG</logs.db.threshold>
+				<logs.console.threshold>DEBUG</logs.console.threshold>
 				<logs.enableAppender>CONSOLE,ERRORFILE,DB</logs.enableAppender>
 				<logs.perfInterceptor.threshold>TRACE</logs.perfInterceptor.threshold>
 				<logs.monitorfile.threshold>TRACE</logs.monitorfile.threshold>

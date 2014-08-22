@@ -204,4 +204,109 @@
     <bean id="vwIndicadoresAlumnosService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwIndicadoresAlumnosService">
         <property name="businessObject" ref="vwIndicadoresAlumnosBiz"/>
     </bean>
+
+
+    
+    <bean id="vwPeriodoEtapaMateriasDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwPeriodoEtapaMateriasHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwPeriodoEtapaMateriasBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwPeriodoEtapaMateriasBiz">
+        <property name="dao" ref="vwPeriodoEtapaMateriasDao"/>
+    </bean>
+    <bean id="vwPeriodoEtapaMateriasBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwPeriodoEtapaMateriasBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwPeriodoEtapaMateriasService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwPeriodoEtapaMateriasService">
+        <property name="businessObject" ref="vwPeriodoEtapaMateriasBiz"/>
+    </bean>
+
+<bean id="vwPeriodoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwPeriodoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwPeriodoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwPeriodoBiz">
+        <property name="dao" ref="vwPeriodoDao"/>
+    </bean>
+    <bean id="vwPeriodoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwPeriodoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwPeriodoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwPeriodoService">
+        <property name="businessObject" ref="vwPeriodoBiz"/>
+    </bean>
+    <bean id="vwEtapaDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwEtapaHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwEtapaBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwEtapaBiz">
+        <property name="dao" ref="vwEtapaDao"/>
+    </bean>
+    <bean id="vwEtapaBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwEtapaBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwEtapaService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwEtapaService">
+        <property name="businessObject" ref="vwEtapaBiz"/>
+    </bean>
+    <bean id="vwMateriaDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwMateriaHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwMateriaBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwMateriaBiz">
+        <property name="dao" ref="vwMateriaDao"/>
+    </bean>
+    <bean id="vwMateriaBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwMateriaBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwMateriaService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwMateriaService">
+        <property name="businessObject" ref="vwMateriaBiz"/>
+    </bean>
+    <bean id="vwTrabajoPracticoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwTrabajoPracticoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwTrabajoPracticoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwTrabajoPracticoBiz">
+        <property name="dao" ref="vwTrabajoPracticoDao"/>
+    </bean>
+    <bean id="vwTrabajoPracticoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwTrabajoPracticoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwTrabajoPracticoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwTrabajoPracticoService">
+        <property name="businessObject" ref="vwTrabajoPracticoBiz"/>
+    </bean>
+    <bean id="vwExamenDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwExamenHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwExamenBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwExamenBiz">
+        <property name="dao" ref="vwExamenDao"/>
+    </bean>
+    <bean id="vwExamenBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwExamenBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwExamenService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwExamenService">
+        <property name="businessObject" ref="vwExamenBiz"/>
+    </bean>
+    
+    <bean id="vwNotasAlumnoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwNotasAlumnoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwNotasAlumnoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwNotasAlumnoBiz">
+        <property name="dao" ref="vwNotasAlumnoDao"/>
+    </bean>
+    <bean id="vwNotasAlumnoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwNotasAlumnoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwNotasAlumnoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwNotasAlumnoService">
+        <property name="businessObject" ref="vwNotasAlumnoBiz"/>
+    </bean>    
+    
+    
 </beans>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:ca="client/attribute"
+	 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
+		xmlns:n="native">
+	<n:html lang="en">
+	  <n:head>
+	    <n:meta charset="utf-8"/>
+	    <n:meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	    <n:meta name="apple-mobile-web-app-capable" content="yes"/>
+		    <style src="/css/bootstrap.css" ></style>
+		    <style src="/css/bootstrap-responsive.min.css" ></style>
+		    <style src="/css/google.font.css"></style>
+		    <style src="/css/font-awesome.min.css" >        </style>
+		    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style>
+	    <style src="/css/custom.css" ></style>
+	    <style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style>
+	  </n:head>
+	</n:html>
+<window id="wnd_auditoria_alumnos" border="none" width="100%" 
+	apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.AuditoriaAlumnosVM')"
+	onOK="@command('filtrar')">
+
+	<groupbox open="true" mold="3d" style="padding:0px;" >
+	<caption label="Filtros" style="font-size:14px;font-weight:bold;" image="/img/opt_filter_24.png"/>
+		<grid fixedLayout="true" hflex="1">
+			<columns>
+				<column width="70px" />
+				<column />
+				<column width="70px" />
+				<column />
+				<column width="70px" />
+				<column />
+				<column width="70px" />
+				<column />
+				<column align="right" width="100px"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Apellido:"/>
+					<textbox value="@save(vm.apellidoAlumno, before='filtrar')"/>
+					<label value="Nombre:"/>
+					<textbox value="@save(vm.nombreAlumno, before='filtrar')"/>
+					<label value="Periodo:"/>
+					<combobox model="@load(vm.periodos)" selectedItem="@bind(vm.periodoSelected)"
+						onSelect="@command('actualizarEtapas')">
+						<template name="model" var="periodo">
+							<comboitem label="@load(periodo.periodo)" value="@load(periodo)" />
+						</template>
+					</combobox>
+					<label value="Etapa:"/>
+					<combobox model="@load(vm.periodoSelected.vwEtapas)" selectedItem="@bind(vm.etapaSelected)"
+						>
+						<template name="model" var="etapa">
+							<comboitem label="@load(etapa.etapa)" value="@load(etapa)" />
+						</template>
+					</combobox>
+					<button id="btnFiltrar" label="Filtrar" image="/img/opt_filter_24.png" sclass="btn-primary" onClick="@command('filtrar')"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+		<listbox id="lbNotas" model="@bind(vm.alumnoNotas)" itemRenderer="@init(vm.listitemRenderer)" mold="paging" autopaging="true"  rows="10"  emptyMessage="No se encontraron datos para el periodo y etapa seleccionados." 
+			vflex="1" >
+			<frozen columns="2" width="300px"/>
+		</listbox>
+	<hlayout>							
+		<button id="btn_export_excel" label="Exportar a Excel" image="/img/excel_icon.png" sclass="btn-primary" onClick="@command('exportar')" />	
+	</hlayout>
+</window>
+</zk>
