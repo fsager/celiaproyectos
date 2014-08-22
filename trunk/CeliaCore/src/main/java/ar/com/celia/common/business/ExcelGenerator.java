@@ -88,7 +88,7 @@ public class ExcelGenerator extends AbstractDocumentGenerator {
 		else 
 			rowXls = sheet.getRow(row);
 		addCell(column, rowXls, null, value, valueType);
-		sheet.autoSizeColumn((short) column);
+		
 //		addCell(i, rowXls, style, "" + header.get(i));
 	}
 	
@@ -130,7 +130,7 @@ public class ExcelGenerator extends AbstractDocumentGenerator {
 		newStyle.setFont(newFont);
 		
 		addCell(column, rowXls, newStyle, value, valueType);
-		sheet.autoSizeColumn((short) column);
+		
 	}
 	
 	public void addCellYellowNoAutoSizeColumn (HSSFSheet sheet, Object value, int row, int column, int valueType, boolean isBold, boolean border, int size,
@@ -232,7 +232,7 @@ public class ExcelGenerator extends AbstractDocumentGenerator {
 		else 
 			rowXls = sheet.getRow(row);
 		addCell(column, rowXls, p_style, value, valueType);
-		sheet.autoSizeColumn((short) column);
+		
 	}
 	
 	public void addCellTitle (HSSFSheet sheet, Object value, int row, int column) {
@@ -242,7 +242,7 @@ public class ExcelGenerator extends AbstractDocumentGenerator {
 		else 
 			rowXls = sheet.getRow(row);
 		addCell(column, rowXls, style, value, ExcelGenerator.VALOR_STRING);
-		sheet.autoSizeColumn((short) column);
+		
 	}
 	
 	public void addCellDetail (HSSFSheet sheet, Object value, int row, int column) {
@@ -256,7 +256,7 @@ public class ExcelGenerator extends AbstractDocumentGenerator {
 		else 
 			rowXls = sheet.getRow(row);
 		addCell(column, rowXls, style_detail, value, type);
-		sheet.autoSizeColumn((short) column);
+		
 	}
 	
 	public void addResultSet (HSSFSheet sheet, java.sql.ResultSet rs, int startRow, int startColumn, SimpleDateFormat sdf) throws Exception {
