@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+	<client-config>
+		<disable-behind-modal>false</disable-behind-modal>
+		<resend-delay>300000</resend-delay>
+	</client-config>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/WEB-INF/error.zul</location>
+	</error-page>
+
+	<language-mapping>
+		<language-name>xml</language-name>
+		<extension>svg</extension>
+	</language-mapping>
+
+	<language-mapping>
+		<language-name>xml</language-name>
+		<extension>xchart</extension>
+	</language-mapping>
+
+	<language-mapping>
+		<language-name>xml</language-name>
+		<extension>xml2html</extension>
+	</language-mapping>
+
+	<session-config>
+		<session-timeout>1800</session-timeout>
+	</session-config>
+
+	<session-config>
+		<timer-as-inactive>false</timer-as-inactive>
+		<timer-keep-alive>true</timer-keep-alive>
+		<timeout-uri>/index.zul</timeout-uri>
+		<!-- session-timeout: [Default: 0 (depending on the Web server)] -->
+		<session-timeout>0</session-timeout>
+		<max-desktops-per-session>-1</max-desktops-per-session>
+	</session-config>
+
+	<preference>
+		<name>org.zkoss.zul.Window.defaultActionOnShow</name>
+		<value></value>
+	</preference>
+
+	<system-config>
+		<ui-factory-class>org.zkoss.zk.ui.http.SerializableUiFactory
+		</ui-factory-class>
+		<cache-provider-class>org.zkoss.zk.ui.impl.GlobalDesktopCacheProvider
+		</cache-provider-class>
+		<max-spare-threads>500</max-spare-threads>
+		<max-suspended-threads>-1</max-suspended-threads>
+		<max-process-time>15000</max-process-time>
+	</system-config>
+
+	<desktop-config>
+		<desktop-timeout>3600</desktop-timeout>
+	</desktop-config>
+
+	<language-config>
+		<addon-uri>/WEB-INF/lang-addon.xml</addon-uri>
+	</language-config>
+
+	<library-property>
+		<name>org.zkoss.util.label.web.charset</name>
+		<value>ISO-8859-1</value>
+	</library-property>
+
+	<library-property>
+		<name>org.zkoss.util.label.classpath.charset</name>
+		<value>ISO-8859-1</value>
+	</library-property>
+
+	<system-config>
+		<label-location>/WEB-INF/zk-label.properties</label-location>
+		<label-location>/WEB-INF/zk-label_es.properties</label-location>
+	</system-config>
+	
+	<library-property>
+		<name>org.zkoss.zul.progressbox.position</name>
+		<value>center,center</value>
+	</library-property>
+
+	<library-property>
+		<name>org.zkoss.bind.DebuggerFactory.enable</name>
+		<value>false</value>
+	</library-property>
+
+	<library-property>
+		<name>org.zkoss.zul.Button.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Menupopup.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zkmax.zul.Navbar.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Paging.mold</name>
+		<value>bs</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zul.Panel.mold</name>
+		<value>bs</value>
+	</library-property>
+</zk>

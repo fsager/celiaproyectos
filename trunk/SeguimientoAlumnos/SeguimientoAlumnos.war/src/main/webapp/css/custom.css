@@ -1,0 +1,218 @@
+/*------------------------------------------------------------------
+
+[Custom Stylesheet]
+
+
+Last change:	03/25/2013
+Assigned to:	You
+
+-------------------------------------------------------------------*/
+
+
+
+
+.tiene-error{
+	border: 1px solid #b94a48;
+	border-radius: 5px;
+	color:#b94a48;	
+}
+
+
+/*Para que no tape a los mensaje msgGrowl*/
+.z-center
+{
+	z-index:0;
+}
+
+/*Para que los mensaje msgGrowl no queden detras de los componentes de zk */
+.msgGrowl-container{
+	z-index:999999;
+}
+
+.z-popup-content{
+	padding:0px;
+}
+
+.z-popup .z-popup-cnt{
+	padding:0px;
+}
+
+.alert-help{
+  font-size:10px;
+  line-height:0px;
+  text-align:left;
+}
+
+.resultForm .internalForm {
+	border: 1px solid #547072;
+	padding: 7px;
+	
+	-webkit-border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+	-webkit-box-shadow: #666 0px 1px 2px;
+	-moz-box-shadow: #666 0px 1px 2px;
+	box-shadow: #666 0px 1px 2px;
+	
+	font-weight: bolder;
+	behavior: url(/css/PIE.htc);
+
+
+	
+	
+	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+	width: 80px;
+	margin: 5px;
+	height: 60px;
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#5bc0de), to(#31b0d5));
+	background-image: -webkit-linear-gradient(top, #5bc0de, 0%, #31b0d5, 100%);
+	background-image: -moz-linear-gradient(top, #5bc0de 0%, #31b0d5 100%);
+	background-image: linear-gradient(to bottom, #5bc0de 0%, #31b0d5 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff31b0d5', GradientType=0);
+	border-color: #2aabd2;
+
+
+}
+
+.btn-controlAsistencia-estado1{
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#d9534f), to(#c9302c));
+	background-image: -webkit-linear-gradient(top, #d9534f, 0%, #c9302c, 100%);
+	background-image: -moz-linear-gradient(top, #d9534f 0%, #c9302c 100%);
+	background-image: linear-gradient(to bottom, #d9534f 0%, #c9302c 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9534f', endColorstr='#ffc9302c', GradientType=0);
+	border-color: #c12e2a;	
+}
+
+.btn-controlAsistencia-estado2{
+	background-image: -webkit-gradient(linear, left 0%, left 100%, from(#5bc0de), to(#31b0d5));
+	background-image: -webkit-linear-gradient(top, #5bc0de, 0%, #31b0d5, 100%);
+	background-image: -moz-linear-gradient(top, #5bc0de 0%, #31b0d5 100%);
+	background-image: linear-gradient(to bottom, #5bc0de 0%, #31b0d5 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff31b0d5', GradientType=0);
+	border-color: #2aabd2;
+}
+
+
+
+.resultForm {
+	padding: 5px;
+	background-color: #F0F0F0;
+	border-radius: 5px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.rpt_titulo_tabla {
+	-webkit-border-radius: 10px 10px 00px 0px;
+	-moz-border-radius: 10px 10px 0px 0px;
+	border-radius: 10px 10px 0px 0px;
+	background: -moz-linear-gradient(top, #DADAEA 0%, #666666 85%, #333333 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#DADAEA), color-stop(85%,#666666), color-stop(100%,#333333)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #DADAEA 0%, #666666 85%, #333333 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #DADAEA 0%, #666666 85%, #333333 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #DADAEA 0%, #666666 85%, #333333 100%); /* IE10+ */
+	background: linear-gradient(top, #DADAEA 0%, #666666 85%, #333333 100%); /* W3C */
+	color: white;
+	behavior: url(/css/PIE.htc);
+}
+
+
+.legajo_table {
+	border-style: dashed;
+	border-width: 1px;
+	border-color: #999999;
+	background-color: #353535;
+	width: 100%;
+	margin: 0px;
+}
+
+.legajo_foto {
+	background-color: #DADADA;
+	padding:0px;
+}
+
+.legajo_campo {
+	color:white;
+	font-weight:bold;
+	font-size: 10px;
+	text-align: right;
+	background-color: #666666;
+}
+
+.legajo_valor {
+	background-color: #EFEFEF;
+	color:#333333;
+	font-size: 10px;
+}
+
+
+
+.adds_table {
+	border-style: dashed;
+	border-width: 1px;
+	border-color: #999999;
+	background-color: #353535;
+	margin: 0px;
+}
+
+.adds_foto {
+	background-color: #DADADA;
+	padding:0px;
+}
+
+.adds_campo {
+	font-weight:bold;
+	text-align: right;
+}
+
+.adds_valor {
+	text-align: left;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
+	background-color: #C16D00;
+	color:white;
+}
+
+.btn-group.open .btn-primary.dropdown-toggle {
+	background-color: #C16D00;
+}
+
+.toolbar_search {
+	background:#777777;
+	background: -moz-linear-gradient(top, #999999 0%, #666666 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#999999), color-stop(100%,#666666)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #999999 0%, #666666 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #999999 0%, #666666 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #999999 0%, #666666 100%); /* IE10+ */
+	background: linear-gradient(top, #999999 0%, #666666 100%); /* W3C */
+	behavior: url(/css/PIE.htc);
+	padding:0px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.z-label {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.z-text  {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+	margin-right: 0px;
+	overflow:auto;
+}
+
+.pagination {
+display: inline-block;
+padding-left: 0;
+margin: 5px 0;
+border-radius: 4px;
+}
