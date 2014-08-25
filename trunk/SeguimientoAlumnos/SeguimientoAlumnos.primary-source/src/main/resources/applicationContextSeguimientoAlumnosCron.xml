@@ -106,6 +106,12 @@
 	  <property name="concurrent" value="false"/>
 	</bean>
 	
+	<bean id="jobDetailAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarAlumnosPorQuedarLibresPorTP"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
 	<bean id="jobDetailAlumnosTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 	  <property name="targetObject" ref="notificacionesAlumnos"/>
 	  <property name="targetMethod" value="test"/>
@@ -204,7 +210,15 @@
 	<bean id="cronTriggerAlumnosLibres" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosLibres"/>
 		<!-- OK Fire at 6:45am every day -->
-			<property name="cronExpression" value="0 45 6 ? * *"/>
+			<property name="cronExpression" value="0 30 6 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosPorQuedarLibresPorTP"/>
+		<!-- OK Fire at 6:45am every day -->
+			<property name="cronExpression" value="0 30 6 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -220,20 +234,21 @@
 	    <list>
 <!-- 	    	<ref bean="cronTriggerDocenteTest"/> -->
 	    
-	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/>
-	      <ref bean="cronTriggerDocenteCargaNotas"/>
-	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/>
-	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
+<!-- 	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/> -->
+<!-- 	      <ref bean="cronTriggerDocenteCargaNotas"/> -->
+<!-- 	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/> -->
+<!-- 	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/> -->
 	      
-<!-- 	      <ref bean="cronTriggerAlumnosTest"/> -->
+	      <ref bean="cronTriggerAlumnosTest"/>
 	      
-	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/>
-	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/>
-	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/>
-	      <ref bean="cronTriggerAlumnosNuevoExamen"/>
-	      <ref bean="cronTriggerAlumnosExamenPorVencer"/>
-	      <ref bean="cronTriggerAlumnosExamenVencidos"/>
-	      <ref bean="cronTriggerAlumnosLibres"/>
+<!-- 	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosNuevoExamen"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosExamenPorVencer"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosExamenVencidos"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosLibres"/> -->
+<!-- 	      <ref bean="cronTriggerAlumnosPorQuedarLibresPorTP"/> -->
 	      
 	    </list>
 	  </property>

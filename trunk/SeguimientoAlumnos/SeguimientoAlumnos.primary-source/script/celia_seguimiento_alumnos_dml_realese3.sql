@@ -132,4 +132,24 @@ VALUES
 'Examen pendiente de carga',
 'Subject ');
 
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_por_quedar_libres_subject',
+'MAIL.PROP',
+'Materia en riesgo de condición de libre',
+'Subject ');
 
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('periodo_activo',
+'PERIODOS',
+'13',
+'Id de la categoría que representa el periodo activo');

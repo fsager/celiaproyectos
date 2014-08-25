@@ -1,6 +1,9 @@
 package ar.com.celia.seguimiento_alumnos.business;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.jsoup.Jsoup;
 
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
@@ -32,11 +35,25 @@ public class NotificacionesDocentesBiz implements NotificacionesDocentesDefiniti
     }
     
     public List<VwAlertasTps> getTpPendientesDeSubir() throws Exception{
-    	return dao.getTpPendientesDeSubir();
+    	List<VwAlertasTps> vwAlertasTps = dao.getTpPendientesDeSubir();
+    	List<VwAlertasTps> res = new ArrayList<VwAlertasTps>();
+    	for (VwAlertasTps vwAlertasTp : vwAlertasTps) {
+			if(vwAlertasTp.getAssignmentName() != null &&
+					!"Trabajo Práctico".equalsIgnoreCase(Jsoup.parse(vwAlertasTp.getAssignmentName()).text().trim()))
+				res.add(vwAlertasTp);
+		}
+    	return res;
     }
     
     public List<VwAlertasExamenes> getExamenPendientesDeSubir() throws Exception{
-    	return dao.getExamenPendientesDeSubir();
+    	List<VwAlertasExamenes> vwAlertasExamenes =dao.getExamenPendientesDeSubir();
+    	List<VwAlertasExamenes> res = new ArrayList<VwAlertasExamenes>();
+    	for (VwAlertasExamenes vwAlertasExamen : vwAlertasExamenes) {
+			if(vwAlertasExamen.getQuizName() != null &&
+					!"Examen".equalsIgnoreCase(Jsoup.parse(vwAlertasExamen.getQuizName()).text().trim()))
+				res.add(vwAlertasExamen);
+		}
+    	return res;
     }
 
 }

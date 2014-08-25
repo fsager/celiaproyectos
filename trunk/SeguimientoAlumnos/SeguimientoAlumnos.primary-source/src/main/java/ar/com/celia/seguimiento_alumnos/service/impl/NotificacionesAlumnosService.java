@@ -2,10 +2,10 @@ package ar.com.celia.seguimiento_alumnos.service.impl;
 
 import java.util.List;
 
+import ar.com.celia.seguimiento_alumnos.domain.VwAlertasAlumnoLibrePorTP;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
 import ar.com.celia.seguimiento_alumnos.service.NotificacionesAlumnosDefinition;
-import ar.com.celia.seguimiento_alumnos.service.NotificacionesDocentesDefinition;
 
 /**
  * @created 30-Oct-2006 12:19:43 PM
@@ -34,6 +34,10 @@ public class NotificacionesAlumnosService implements NotificacionesAlumnosDefini
     
     public List<VwAlertasTps> getTrabajosPracticosVencidos() throws Exception{
     	return biz.getTrabajosPracticosVencidos();
+    }
+    
+    public List<VwAlertasAlumnoLibrePorTP> getTrabajosPracticosPorQuedarLibre() throws Exception{
+    	return biz.getTrabajosPracticosPorQuedarLibre();
     }
     
     public List<VwAlertasExamenes> getExamenesNuevos() throws Exception{

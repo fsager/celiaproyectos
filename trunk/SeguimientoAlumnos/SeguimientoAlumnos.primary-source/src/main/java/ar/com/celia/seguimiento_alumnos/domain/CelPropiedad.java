@@ -14,6 +14,10 @@ import javax.persistence.Table;
 @Table(name = "cel_propiedad", catalog = "seguimiento_alumnos")
 public class CelPropiedad implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3847948694560548140L;
 	private String proClave;
 	private String proTipo;
 	private String proValor;

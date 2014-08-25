@@ -32,7 +32,8 @@
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.CelAlertaEnviada" />
 		
-		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwPeriodoEtapaMaterias" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwAlertasAlumnoLibrePorTP" />
+		
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwPeriodo" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwEtapa" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwMateria" />

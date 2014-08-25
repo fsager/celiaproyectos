@@ -5,9 +5,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SQLQuery;
+import org.hibernate.criterion.Restrictions;
 
 import ar.com.celia.common.persistence.util.DAOObject;
+import ar.com.celia.seguimiento_alumnos.domain.VwAlertasAlumnoLibrePorTP;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
 import ar.com.celia.seguimiento_alumnos.persistence.NotificacionesAlumnosDao;
@@ -64,6 +67,24 @@ public class NotificacionesAlumnosHome extends DAOObject implements Notificacion
             
             
             List<VwAlertasTps> results = sQLQuery.list();
+            log.debug("find by example successful, result size: " + results.size());
+            return results;
+        }
+        catch (RuntimeException re) {
+            log.error("find by example failed", re);
+            throw re;
+        }
+    }
+    
+    public List<VwAlertasAlumnoLibrePorTP> getTrabajosPracticosPorQuedarLibre() throws Exception {
+        log.debug("finding VwAlertasTps instance de alumnos por quedar libres");
+        try {
+            
+            Criteria cri = getSession().createCriteria(VwAlertasAlumnoLibrePorTP.class);
+            cri.add(Restrictions.sqlRestriction(" {alias}.per_cat_id = (select p.pro_valor from cel_propiedad p where p.pro_clave = 'periodo_activo') "));
+            cri.setFetchMode("vwMateria", FetchMode.JOIN);
+            @SuppressWarnings("unchecked")
+			List<VwAlertasAlumnoLibrePorTP> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
         }

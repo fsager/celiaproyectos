@@ -59,17 +59,19 @@ public class AuditoriaAlumnosVM {
 	private VwPeriodo periodoSelected;
 	private VwEtapa etapaSelected;
 	
+	private Boolean filtrarHabilitado;
+	
 	@Init
 	public void init() {
 		try {
-			periodos = vwPeriodoService.getAll(new VwPeriodo(), new String[]{"vwEtapas"});			
-			//TODO if(periodos.isEmpty()
-//					|| periodos.get(0).getVwEtapas().isEmpty()) {mostrar mensaje que no hay periodos, etapas y materias cargadas o correctamente cargadas en moodle.}
-//			else
-			periodoSelected = periodos.get(0);
-			//Que pasa si un periodo no tiene etapas?
-			etapaSelected = periodoSelected.getVwEtapas().get(0);
 			materias = new ArrayList<VwMateria>();
+			
+			periodos = vwPeriodoService.getAll(new VwPeriodo(), new String[]{"vwEtapas"});			
+			
+			if(!(filtrarHabilitado = !periodos.isEmpty() && !periodos.get(0).getVwEtapas().isEmpty())) return;
+			
+			periodoSelected = periodos.get(0);
+			etapaSelected = periodoSelected.getVwEtapas().get(0);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,14 +86,16 @@ public class AuditoriaAlumnosVM {
     }
 	
 	@Command
-	@NotifyChange({"etapas","etapaSelected"})
+	@NotifyChange({"etapas","etapaSelected","filtrarHabilitado"})
 	public void actualizarEtapas(){
 		etapaSelected = periodoSelected.getVwEtapas().get(0);
+		filtrarHabilitado = !periodos.isEmpty() && etapaSelected != null;
 	}
 	
 	@Command
 	@NotifyChange("alumnoNotas")
 	public void filtrar() throws Exception{
+		if(!filtrarHabilitado)return;
 		materias.clear();
 		VwMateria vwMateriaExample = new VwMateria();
 		vwMateriaExample.setVwEtapa(etapaSelected);
@@ -208,6 +212,14 @@ public class AuditoriaAlumnosVM {
 
 	public void setAlumnoNotas(Map<VwNotasAlumno, List<VwNotasAlumno>> alumnoNotas) {
 		this.alumnoNotas = alumnoNotas;
+	}
+
+	public Boolean getFiltrarHabilitado() {
+		return filtrarHabilitado;
+	}
+
+	public void setFiltrarHabilitado(Boolean filtrarHabilitado) {
+		this.filtrarHabilitado = filtrarHabilitado;
 	}
 	
 }

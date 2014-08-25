@@ -1,11 +1,14 @@
 package ar.com.celia.seguimiento_alumnos.business;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import ar.com.celia.seguimiento_alumnos.domain.VwAlertasAlumnoLibrePorTP;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
 import ar.com.celia.seguimiento_alumnos.persistence.NotificacionesAlumnosDao;
-import ar.com.celia.seguimiento_alumnos.persistence.NotificacionesDocentesDao;
 import ar.com.celia.seguimiento_alumnos.service.NotificacionesAlumnosDefinition;
 
 public class NotificacionesAlumnosBiz implements NotificacionesAlumnosDefinition {
@@ -20,7 +23,15 @@ public class NotificacionesAlumnosBiz implements NotificacionesAlumnosDefinition
 	}
 	
     public List<VwAlertasTps> getTrabajosPracticosNuevos() throws Exception{
-    	return dao.getTrabajosPracticosNuevos();
+    	List<VwAlertasTps> vwAlertasTps = dao.getTrabajosPracticosNuevos();
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH24:mm:ss");
+    	Date fechaActual = new Date();
+    	List<VwAlertasTps> res = new ArrayList<VwAlertasTps>();
+    	for (VwAlertasTps vwAlertasTp : vwAlertasTps)
+			if(sdf.parse(vwAlertasTp.getFechaVencimiento()).after(fechaActual))
+				res.add(vwAlertasTp);
+		
+    	return res;
     }
     
     public List<VwAlertasTps> getTrabajosPracticosPorVencer() throws Exception{
@@ -31,9 +42,20 @@ public class NotificacionesAlumnosBiz implements NotificacionesAlumnosDefinition
     	return dao.getTrabajosPracticosVencidos();
     }
     
-    public List<VwAlertasExamenes> getExamenesNuevos() throws Exception{
-    	return dao.getExamenesNuevos();
+    public List<VwAlertasAlumnoLibrePorTP> getTrabajosPracticosPorQuedarLibre() throws Exception{
+    	return dao.getTrabajosPracticosPorQuedarLibre();
     }
+    
+    public List<VwAlertasExamenes> getExamenesNuevos() throws Exception{
+    	List<VwAlertasExamenes> vwAlertasExamenes = dao.getExamenesNuevos();
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH24:mm:ss");
+    	Date fechaActual = new Date();
+    	List<VwAlertasExamenes> res = new ArrayList<VwAlertasExamenes>();
+    	for (VwAlertasExamenes vwExamenen : vwAlertasExamenes)
+			if(sdf.parse(vwExamenen.getFechaVencimiento()).after(fechaActual))
+				res.add(vwExamenen);
+		
+    	return res;    }
     
     public List<VwAlertasExamenes> getExamenesPorVencer() throws Exception{
     	return dao.getExamenesPorVencer();

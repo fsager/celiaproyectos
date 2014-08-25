@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 
 /**
  * @author gdelasilva
- * La clase representa una materia(curso en moodle).
+ * La clase representa un examen(curso en moodle).
  */
 @Entity
 @Table(name = "vw_examenes", schema = "seguimiento_alumnos")
