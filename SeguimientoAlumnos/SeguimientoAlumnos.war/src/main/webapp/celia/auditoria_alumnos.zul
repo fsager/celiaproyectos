@@ -58,7 +58,7 @@
 							<comboitem label="@load(etapa.etapa)" value="@load(etapa)" />
 						</template>
 					</combobox>
-					<button id="btnFiltrar" label="Filtrar" image="/img/opt_filter_24.png" sclass="btn-primary" onClick="@command('filtrar')"/>
+					<button id="btnFiltrar" label="Filtrar" image="/img/opt_filter_24.png" sclass="btn-primary" onClick="@command('filtrar')" visible="@bind(vm.filtrarHabilitado)"/>
 				</row>
 			</rows>
 		</grid>

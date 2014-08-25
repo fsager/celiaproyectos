@@ -23,6 +23,10 @@ import javax.persistence.TemporalType;
 @Table(name = "cel_interaccion_caso_detalle", catalog = "seguimiento_alumnos")
 public class CelInteraccionCasoDetalle implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 293961860245143273L;
 	private Long icdId;
 	private CelIndicador celIndicador;
 	private String icdRtaTipo;

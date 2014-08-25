@@ -1,6 +1,7 @@
 package ar.com.celia.seguimiento_alumnos.service;
 import java.util.List;
 
+import ar.com.celia.seguimiento_alumnos.domain.VwAlertasAlumnoLibrePorTP;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
 import ar.com.celia.seguimiento_alumnos.domain.VwDocentesNoIngresanAMoodle;
@@ -17,6 +18,8 @@ public interface NotificacionesAlumnosDefinition {
     public List<VwAlertasTps> getTrabajosPracticosPorVencer() throws Exception;
     
     public List<VwAlertasTps> getTrabajosPracticosVencidos() throws Exception;
+    
+    public List<VwAlertasAlumnoLibrePorTP> getTrabajosPracticosPorQuedarLibre() throws Exception;
     
     public List<VwAlertasExamenes> getExamenesNuevos() throws Exception;
     

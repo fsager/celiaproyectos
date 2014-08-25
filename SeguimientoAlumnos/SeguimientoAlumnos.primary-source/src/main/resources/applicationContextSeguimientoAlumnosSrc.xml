@@ -206,23 +206,7 @@
     </bean>
 
 
-    
-    <bean id="vwPeriodoEtapaMateriasDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwPeriodoEtapaMateriasHome">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-    <bean id="vwPeriodoEtapaMateriasBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwPeriodoEtapaMateriasBiz">
-        <property name="dao" ref="vwPeriodoEtapaMateriasDao"/>
-    </bean>
-    <bean id="vwPeriodoEtapaMateriasBiz" parent="baseTransactionProxy">
-         <property name="target">
-             <ref bean="vwPeriodoEtapaMateriasBusiness"/> 
-        </property> 
-    </bean>
-    <bean id="vwPeriodoEtapaMateriasService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwPeriodoEtapaMateriasService">
-        <property name="businessObject" ref="vwPeriodoEtapaMateriasBiz"/>
-    </bean>
-
-<bean id="vwPeriodoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwPeriodoHome">
+	<bean id="vwPeriodoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwPeriodoHome">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="vwPeriodoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwPeriodoBiz">

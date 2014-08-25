@@ -52,6 +52,8 @@
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
 
 		<celiacore.version>1.0</celiacore.version>
+		
+		<jsoup.version>1.7.3</jsoup.version>
 	</properties>
 
 	<repositories>
@@ -90,12 +92,7 @@
 								<Implementation-Build>${buildNumber}</Implementation-Build>
 							</manifestEntries>
 						</archive>
-						<webXml>${basedir}/WebContent/WEB-INF/web.xml</webXml>
-						<webResources>
-							<resource>
-								<directory>${basedir}/WebContent</directory>
-							</resource>
-						</webResources>
+<!-- 						<webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml> -->
 					</configuration>
 				</plugin>
 				<plugin>
@@ -109,9 +106,8 @@
 						<modules>
 							<webModule>
 								<groupId>ar.com.celia.SeguimientoAlumnos</groupId>
-								<bundleFileName>SeguimientoAlumnos.war</bundleFileName>
-								<contextRoot>/SeguimientoAlumnos</contextRoot>
 								<artifactId>SeguimientoAlumnos.war</artifactId>
+								<contextRoot>/SeguimientoAlumnos</contextRoot>
 							</webModule>
 						</modules>
 					</configuration>
@@ -329,6 +325,13 @@
 				<!--packaging>jar</packaging-->
 				<version>${celiacore.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${jsoup.version}</version>
+			</dependency>
+						
 		</dependencies>
 	</dependencyManagement>
 

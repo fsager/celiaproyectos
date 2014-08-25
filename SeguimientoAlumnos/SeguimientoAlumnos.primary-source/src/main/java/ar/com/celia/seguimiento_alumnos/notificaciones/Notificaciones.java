@@ -37,6 +37,7 @@ public class Notificaciones {
 	protected static final String ALERTA_TP_POR_VENCER="ALU_TP_POR_VENCER";
 	protected static final String ALERTA_TP_VENCIDO="ALU_TP_VENCIDO";	
 	protected static final String ALERTA_ALU_LIBRE="ALU_LIBRE";
+	protected static final String ALERTA_ALU_POR_QUEDAR_LIBRE="ALU_POR_QUEDAR_LIBRE";
 	
 	protected static final String ALERTA_DOC_EXAMEN_NOTA_PENDIENTE="DOC_EXAMEN_NOTA_PENDIENTE";
 	protected static final String ALERTA_DOC_TP_NOTA_PENDIENTE="DOC_TP_NOTA_PENDIENTE";
