@@ -61,13 +61,22 @@ public class NotasAlumnoListRenderer implements ListitemRenderer<Entry<VwNotasAl
 				VwNotasAlumno vwNotasAlumnoEvalNota = alumnoEvalNotaIterator.next();
 				if(vwNotasAlumnoEvalNota.getTipoEvaluacion().equals(evaluacion.getTipoEvaluacion()) 
 				&& vwNotasAlumnoEvalNota.getEvalId().equals(evaluacion.getId())){
-					listcellNota.setLabel(vwNotasAlumnoEvalNota.getNotaDivididoDiez()+"");
-					listcellNota.setTooltiptext(evaluacion.getTitulo()+" - "+listcellNota.getLabel());
+					listcellNota.setLabel("-");
+					
+					if(vwNotasAlumnoEvalNota.isAusente())
+						listcellNota.setTooltiptext(evaluacion.getTitulo()+(vwNotasAlumnoEvalNota.getTipoEvaluacion().equals("TRABAJO_PRACTICO")?" - No entregado":" - Ausente"));
+					else if(vwNotasAlumnoEvalNota.isSinNota())
+						listcellNota.setTooltiptext(evaluacion.getTitulo()+" - Sin Nota");
+					else {
+						listcellNota.setLabel(vwNotasAlumnoEvalNota.getNotaDivididoDiez().toString());
+						listcellNota.setTooltiptext(evaluacion.getTitulo()+" - "+listcellNota.getLabel());
+					}
+					
 					alumnoEvalNotaIterator.remove();
 					continue evaluaciones;
 				}
 			}
-			listcellNota.setTooltiptext(evaluacion.getTitulo()+" - Sin Nota/Ausente");
+			listcellNota.setTooltiptext("Materia No Cursada");
 		}
 	}
 	
