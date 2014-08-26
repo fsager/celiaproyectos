@@ -114,7 +114,17 @@ public class VwNotasAlumno implements Serializable {
 	
 	@Transient
 	public Double getNotaDivididoDiez(){
-		return this.nota ==null || this.nota < 0D? 0D:this.nota/10D;
+		return this.nota < 0D? 0D:this.nota/10D;
+	}
+	
+	@Transient
+	public Boolean isSinNota(){
+		return this.nota == -1D;
+	}
+	
+	@Transient
+	public Boolean isAusente(){
+		return this.nota==null;
 	}
 	
 }

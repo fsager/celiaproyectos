@@ -234,21 +234,21 @@
 	    <list>
 <!-- 	    	<ref bean="cronTriggerDocenteTest"/> -->
 	    
-<!-- 	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/> -->
-<!-- 	      <ref bean="cronTriggerDocenteCargaNotas"/> -->
-<!-- 	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/> -->
-<!-- 	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/> -->
+	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/>
+	      <ref bean="cronTriggerDocenteCargaNotas"/>
+	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/>
+	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
 	      
-	      <ref bean="cronTriggerAlumnosTest"/>
+<!-- 	      <ref bean="cronTriggerAlumnosTest"/> -->
 	      
-<!-- 	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosNuevoExamen"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosExamenPorVencer"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosExamenVencidos"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosLibres"/> -->
-<!-- 	      <ref bean="cronTriggerAlumnosPorQuedarLibresPorTP"/> -->
+	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/>
+	      <ref bean="cronTriggerAlumnosNuevoExamen"/>
+	      <ref bean="cronTriggerAlumnosExamenPorVencer"/>
+	      <ref bean="cronTriggerAlumnosExamenVencidos"/>
+	      <ref bean="cronTriggerAlumnosLibres"/>
+	      <ref bean="cronTriggerAlumnosPorQuedarLibresPorTP"/>
 	      
 	    </list>
 	  </property>
