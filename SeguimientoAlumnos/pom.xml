@@ -27,7 +27,7 @@
 	<properties>
 		<project.build.sourceEncoding>ISO8859_1</project.build.sourceEncoding>
 
-		<zk.version>7.0.0</zk.version>
+		<zk.version>7.0.1</zk.version>
 		<zk-bootstrap.version>1.0.0</zk-bootstrap.version>
 
 		<hibernate.core.version>3.6.10.Final</hibernate.core.version>
