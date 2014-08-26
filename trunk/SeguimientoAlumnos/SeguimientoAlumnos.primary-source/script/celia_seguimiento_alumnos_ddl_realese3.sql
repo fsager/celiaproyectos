@@ -5,8 +5,8 @@ where c.category=12 -- Materias de Marzo 2014
 AND startdate > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
 ;
 
--- drop table cel_alerta_enviada;
-create table cel_alerta_enviada
+-- drop table if exists cel_alerta_enviada;
+create table `seguimiento_alumnos`.`cel_alerta_enviada`
    (	ale_ID  bigint default NULL auto_increment primary key,
 		ale_obj_tipo varchar(250) not null,
 		ale_obj_id bigint not null,
@@ -134,7 +134,7 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
 and DATEDIFF(FROM_UNIXTIME(timeavailable),now())<=10  -- falten x dias para estar disponible
 and DATEDIFF(FROM_UNIXTIME(timeavailable),now())>=0  -- falten x dias para estar disponible
-and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta caargado
+and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta cargado
 ;
 
 
@@ -149,52 +149,11 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
 and DATEDIFF(FROM_UNIXTIME(timeopen),now())<=10  -- falten x dias para estar disponible
 and DATEDIFF(FROM_UNIXTIME(timeopen),now())>=0  -- falten x dias para estar disponible
-and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta caargado
+and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta cargado
 ;
 
 
-create or replace view `vw_alerta_alumno_libre_por_tp` AS
-    select 
-        `am`.`userid` AS `userid`,
-        `u`.`email` AS `email`,
-        `m`.`per_cat_id` AS `per_cat_id`,
-        `m`.`mat_id` AS `mat_id`,
-        count(`tp`.`id`) AS `cant_tp`,
-        sum((case
-            when isnull(`na`.`id`) then 1
-            else 0
-        end)) AS `cant_ausente`,
-        sum((case
-            when
-                ((`na`.`grade` < 60)
-                    and (`na`.`grade` <> -(1)))
-            then
-                1
-            else 0
-        end)) AS `cant_reprobado`
-    from
-        ((((`seguimiento_alumnos`.`vw_alumno_materias` `am`
-        join `celiacie_moodle2`.`mdl_user` `u` ON ((`am`.`userid` = `u`.`id`)))
-        join `seguimiento_alumnos`.`vw_materias_activas` `m` ON ((`m`.`mat_id` = `am`.`id`)))
-        join `celiacie_moodle2`.`mdl_assignment` `tp` ON (((`tp`.`course` = `am`.`id`)
-            and (not ((ucase(`tp`.`name`) like '%RECUPERATORIO%')))
-            and (from_unixtime(`tp`.`timedue`) < now ()))))
-        left join `celiacie_moodle2`.`mdl_assignment_submissions` `na` ON (((`na`.`assignment` = `tp`.`id`)
-            and (`na`.`userid` = `am`.`userid`))))
-    where
-        (not (exists( select 
-                1
-            from
-                `seguimiento_alumnos`.`cel_alerta_enviada` `ae`
-            where
-                ((`ae`.`ale_obj_tipo` = 'mdl_assignment')
-                    and (`ae`.`ale_obj_id` = `m`.`mat_id`)
-                    and (`ae`.`USR_ID` = `u`.`id`)
-                    and (`ae`.`ale_alerta` = 'ALU_POR_QUEDAR_LIBRE')))))
-    group by `am`.`userid` , `u`.`email` , `m`.`per_cat_id` , `m`.`mat_id`
-    having ((`cant_reprobado` + `cant_ausente`) >= 2);
-
-create or replace VIEW `vw_alumno_materias` AS
+create or replace VIEW `seguimiento_alumnos`.`vw_alumno_materias` AS
     select distinct
         `u`.`id` AS `userid`,
         `c`.`id` AS `id`,
@@ -236,7 +195,8 @@ create or replace VIEW `vw_alumno_materias` AS
         join `celiacie_moodle2`.`mdl_user_enrolments` `ue` ON ((`e`.`id` = `ue`.`enrolid`)))
         join `celiacie_moodle2`.`mdl_user` `u` ON ((`ue`.`userid` = `u`.`id`)));
 
-create or replace VIEW `vw_alumnos_activos` AS
+
+create or replace VIEW `seguimiento_alumnos`.`vw_alumnos_activos` AS
     select distinct
         `usr`.`id` AS `id`,
         `usr`.`auth` AS `auth`,
@@ -307,12 +267,96 @@ create or replace VIEW `vw_alumnos_activos` AS
             and (`usr`.`suspended` = 0)
             and (`usr`.`deleted` = 0)
             and ((`ue`.`timeend` = 0)
-            or (`ue`.`timeend` > now ()))
+            or (`ue`.`timeend` > now()))
             and (`ue`.`status` = 0)
             and (`usrinfo`.`fieldid` = 1)
             and (`usr`.`auth` <> 'nologin'));
             
-create or replace VIEW `vw_cursos_activos` AS
+     
+
+create or replace VIEW `seguimiento_alumnos`.`vw_periodo_etapa_materias` AS
+    select 
+        `catp`.`id` AS `per_cat_id`,
+        `catp`.`name` AS `periodo`,
+        `catp`.`visible` AS `periodo_visible`,
+        `catp`.`sortorder` AS `per_order`,
+        `cat`.`id` AS `etp_cat_id`,
+        `cat`.`name` AS `etapa`,
+        `cat`.`description` AS `etapa_descripcion`,
+        `cat`.`visible` AS `etapa_visible`,
+        `cat`.`sortorder` AS `etp_order`,
+        `mat`.`id` AS `mat_id`,
+        `mat`.`fullname` AS `mat_nombre_completo`,
+        `mat`.`shortname` AS `mat_nombre_corto`,
+        `mat`.`sortorder` AS `orden`,
+        `mat`.`visible` AS `visible`
+    from
+        ((`celiacie_moodle2`.`mdl_course_categories` `catp`
+        join `celiacie_moodle2`.`mdl_course_categories` `cat` ON (((`cat`.`parent` = `catp`.`id`)
+            and (`catp`.`parent` = 0))))
+        join `celiacie_moodle2`.`mdl_course` `mat` ON (((`mat`.`category` = `cat`.`id`)
+            and (`mat`.`category` <> 0))))
+    order by `catp`.`name` , `mat`.`sortorder` , `cat`.`name`;        
+
+    
+create or replace VIEW `seguimiento_alumnos`.`vw_materias_activas` AS
+    select distinct
+        `vw_periodo_etapa_materias`.`mat_id` AS `mat_id`,
+        `vw_periodo_etapa_materias`.`mat_nombre_completo` AS `mat_nombre_completo`,
+        `vw_periodo_etapa_materias`.`mat_nombre_corto` AS `mat_nombre_corto`,
+        `vw_periodo_etapa_materias`.`orden` AS `orden`,
+        `vw_periodo_etapa_materias`.`visible` AS `visible`,
+        `vw_periodo_etapa_materias`.`etp_cat_id` AS `etp_cat_id`,
+        `vw_periodo_etapa_materias`.`per_cat_id` AS `per_cat_id`
+    from
+        `seguimiento_alumnos`.`vw_periodo_etapa_materias`;
+
+        
+create or replace view `seguimiento_alumnos`.`vw_alerta_alumno_libre_por_tp` AS
+    select 
+        `am`.`userid` AS `userid`,
+        `u`.`email` AS `email`,
+        `m`.`per_cat_id` AS `per_cat_id`,
+        `m`.`mat_id` AS `mat_id`,
+        count(`tp`.`id`) AS `cant_tp`,
+        sum((case
+            when isnull(`na`.`id`) then 1
+            else 0
+        end)) AS `cant_ausente`,
+        sum((case
+            when
+                ((`na`.`grade` < 60)
+                    and (`na`.`grade` <> -(1)))
+            then
+                1
+            else 0
+        end)) AS `cant_reprobado`
+    from
+        ((((`seguimiento_alumnos`.`vw_alumno_materias` `am`
+        join `celiacie_moodle2`.`mdl_user` `u` ON ((`am`.`userid` = `u`.`id`)))
+        join `seguimiento_alumnos`.`vw_materias_activas` `m` ON ((`m`.`mat_id` = `am`.`id`)))
+        join `celiacie_moodle2`.`mdl_assignment` `tp` ON (((`tp`.`course` = `am`.`id`)
+            and (not ((ucase(`tp`.`name`) like '%RECUPERATORIO%')))
+            and (from_unixtime(`tp`.`timedue`) < now()))))
+        left join `celiacie_moodle2`.`mdl_assignment_submissions` `na` ON (((`na`.`assignment` = `tp`.`id`)
+            and (`na`.`userid` = `am`.`userid`))))
+    where
+        (not (exists( select 
+                1
+            from
+                `seguimiento_alumnos`.`cel_alerta_enviada` `ae`
+            where
+                ((`ae`.`ale_obj_tipo` = 'mdl_assignment')
+                    and (`ae`.`ale_obj_id` = `m`.`mat_id`)
+                    and (`ae`.`USR_ID` = `u`.`id`)
+                    and (`ae`.`ale_alerta` = 'ALU_POR_QUEDAR_LIBRE')))))
+    group by `am`.`userid` , `u`.`email` , `m`.`per_cat_id` , `m`.`mat_id`
+    having ((`cant_reprobado` + `cant_ausente`) >= 2);
+
+
+
+            
+create or replace VIEW `seguimiento_alumnos`.`vw_cursos_activos` AS
     select 
         `c`.`id` AS `id`,
         `c`.`category` AS `category`,
@@ -354,7 +398,8 @@ create or replace VIEW `vw_cursos_activos` AS
         join `celiacie_moodle2`.`mdl_course` `c` ON (((`c`.`category` = `cat`.`id`)
             and (`c`.`category` <> 0))));
 
-create or replace VIEW `vw_etapas_activas` AS
+            
+create or replace VIEW `seguimiento_alumnos`.`vw_etapas_activas` AS
     select distinct
         `vw_periodo_etapa_materias`.`etp_cat_id` AS `etp_cat_id`,
         `vw_periodo_etapa_materias`.`etapa` AS `etapa`,
@@ -365,7 +410,8 @@ create or replace VIEW `vw_etapas_activas` AS
     from
         `seguimiento_alumnos`.`vw_periodo_etapa_materias`;
 
-create or replace VIEW `vw_evaluaciones` AS
+        
+create or replace VIEW `seguimiento_alumnos`.`vw_evaluaciones` AS
     select distinct
         `tp`.`id` AS `id`,
         'TRABAJO_PRACTICO' AS `tipo`,
@@ -381,9 +427,10 @@ create or replace VIEW `vw_evaluaciones` AS
         `exam`.`intro` AS `descripcion`,
         `exam`.`course` AS `mat_id`
     from
-        `celiacie_moodle2`.`mdl_quiz` `exam`
+        `celiacie_moodle2`.`mdl_quiz` `exam`;
 
-create or replace VIEW `vw_examenes` AS
+        
+create or replace VIEW `seguimiento_alumnos`.`vw_examenes` AS
     select distinct
         `exam`.`id` AS `id`,
         'EXAMEN' AS `tipo_evaluacion`,
@@ -396,7 +443,8 @@ create or replace VIEW `vw_examenes` AS
     from
         `celiacie_moodle2`.`mdl_quiz` `exam`;
 
-create or replace VIEW `vw_examenes_alumno` AS
+        
+create or replace VIEW `seguimiento_alumnos`.`vw_examenes_alumno` AS
     select distinct
         `exam`.`id` AS `examid`,
         `alu_activo`.`id` AS `userid`,
@@ -407,37 +455,36 @@ create or replace VIEW `vw_examenes_alumno` AS
         left join `seguimiento_alumnos`.`vw_alumnos_activos` `alu_activo` ON ((`alu_activo`.`id` = `notas`.`userid`)))
     where
         ((`alu_activo`.`id` is not null)
-            and (`notas`.`id` is not null))
-
-create or replace VIEW `vw_listado_notas_alumno` AS
-    select 
-        `a`.`lastname` AS `lastname`,
-        `a`.`firstname` AS `firstname`,
-        `n`.`per_cat_id` AS `per_cat_id`,
-        `n`.`etp_cat_id` AS `etp_cat_id`,
-        `n`.`mat_id` AS `mat_id`,
-        `n`.`tipo_evaluacion` AS `tipo_evaluacion`,
-        `n`.`id` AS `evalid`,
-        `n`.`userid` AS `userid`,
-        `n`.`nota` AS `nota`
-    from
-        (`seguimiento_alumnos`.`vw_notas_alumno` `n`
-        join `seguimiento_alumnos`.`vw_alumnos_activos` `a` ON ((`a`.`id` = `n`.`userid`)))
-    order by `n`.`userid`;
-
-create or replace VIEW `vw_materias_activas` AS
+            and (`notas`.`id` is not null));
+            
+create or replace VIEW `seguimiento_alumnos`.`vw_trabajos_practicos` AS
     select distinct
-        `vw_periodo_etapa_materias`.`mat_id` AS `mat_id`,
-        `vw_periodo_etapa_materias`.`mat_nombre_completo` AS `mat_nombre_completo`,
-        `vw_periodo_etapa_materias`.`mat_nombre_corto` AS `mat_nombre_corto`,
-        `vw_periodo_etapa_materias`.`orden` AS `orden`,
-        `vw_periodo_etapa_materias`.`visible` AS `visible`,
-        `vw_periodo_etapa_materias`.`etp_cat_id` AS `etp_cat_id`,
-        `vw_periodo_etapa_materias`.`per_cat_id` AS `per_cat_id`
+        `tp`.`id` AS `id`,
+        'TRABAJO_PRACTICO' AS `tipo_evaluacion`,
+        `tp`.`name` AS `titulo`,
+        `tp`.`intro` AS `descripcion`,
+        from_unixtime(`tp`.`timeavailable`) AS `fecha_hora_inicio`,
+        from_unixtime(`tp`.`timedue`) AS `fecha_hora_fin`,
+        `tp`.`course` AS `mat_id`
     from
-        `seguimiento_alumnos`.`vw_periodo_etapa_materias`;
+        `celiacie_moodle2`.`mdl_assignment` `tp`;
 
-create or replace VIEW `vw_notas_alumno` AS
+        
+create or replace VIEW `seguimiento_alumnos`.`vw_trabajos_practicos_alumno` AS
+    select distinct
+        `tp`.`id` AS `tpid`,
+        `alu_activo`.`id` AS `userid`,
+        `tpe`.`grade` AS `nota`
+    from
+        ((`celiacie_moodle2`.`mdl_assignment` `tp`
+        left join `celiacie_moodle2`.`mdl_assignment_submissions` `tpe` ON ((`tpe`.`assignment` = `tp`.`id`)))
+        left join `seguimiento_alumnos`.`vw_alumnos_activos` `alu_activo` ON ((`tpe`.`userid` = `alu_activo`.`id`)))
+    where
+        ((`alu_activo`.`id` is not null)
+            and (`tpe`.`id` is not null));
+            
+
+create or replace VIEW `seguimiento_alumnos`.`vw_notas_alumno` AS
     select 
         `u`.`id` AS `userid`,
         `pem`.`per_cat_id` AS `per_cat_id`,
@@ -471,31 +518,26 @@ create or replace VIEW `vw_notas_alumno` AS
         left join `seguimiento_alumnos`.`vw_examenes_alumno` `exama` ON (((`exama`.`examid` = `exam`.`id`)
             and (`exama`.`userid` = `u`.`id`))));
 
-create or replace VIEW `vw_periodo_etapa_materias` AS
-    select 
-        `catp`.`id` AS `per_cat_id`,
-        `catp`.`name` AS `periodo`,
-        `catp`.`visible` AS `periodo_visible`,
-        `catp`.`sortorder` AS `per_order`,
-        `cat`.`id` AS `etp_cat_id`,
-        `cat`.`name` AS `etapa`,
-        `cat`.`description` AS `etapa_descripcion`,
-        `cat`.`visible` AS `etapa_visible`,
-        `cat`.`sortorder` AS `etp_order`,
-        `mat`.`id` AS `mat_id`,
-        `mat`.`fullname` AS `mat_nombre_completo`,
-        `mat`.`shortname` AS `mat_nombre_corto`,
-        `mat`.`sortorder` AS `orden`,
-        `mat`.`visible` AS `visible`
-    from
-        ((`celiacie_moodle2`.`mdl_course_categories` `catp`
-        join `celiacie_moodle2`.`mdl_course_categories` `cat` ON (((`cat`.`parent` = `catp`.`id`)
-            and (`catp`.`parent` = 0))))
-        join `celiacie_moodle2`.`mdl_course` `mat` ON (((`mat`.`category` = `cat`.`id`)
-            and (`mat`.`category` <> 0))))
-    order by `catp`.`name` , `mat`.`sortorder` , `cat`.`name`;
 
-create or replace VIEW `vw_periodos_activos` AS
+create or replace VIEW `seguimiento_alumnos`.`vw_listado_notas_alumno` AS
+    select 
+        `a`.`lastname` AS `lastname`,
+        `a`.`firstname` AS `firstname`,
+        `n`.`per_cat_id` AS `per_cat_id`,
+        `n`.`etp_cat_id` AS `etp_cat_id`,
+        `n`.`mat_id` AS `mat_id`,
+        `n`.`tipo_evaluacion` AS `tipo_evaluacion`,
+        `n`.`id` AS `evalid`,
+        `n`.`userid` AS `userid`,
+        `n`.`nota` AS `nota`
+    from
+        (`seguimiento_alumnos`.`vw_notas_alumno` `n`
+        join `seguimiento_alumnos`.`vw_alumnos_activos` `a` ON ((`a`.`id` = `n`.`userid`)))
+    order by `n`.`userid`;
+
+    
+               
+create or replace VIEW `seguimiento_alumnos`.`vw_periodos_activos` AS
     select distinct
         `vw_periodo_etapa_materias`.`per_cat_id` AS `per_cat_id`,
         `vw_periodo_etapa_materias`.`periodo` AS `periodo`,
@@ -503,28 +545,3 @@ create or replace VIEW `vw_periodos_activos` AS
         `vw_periodo_etapa_materias`.`per_order` AS `per_orden`
     from
         `seguimiento_alumnos`.`vw_periodo_etapa_materias`;
-
-create or replace VIEW `vw_trabajos_practicos` AS
-    select distinct
-        `tp`.`id` AS `id`,
-        'TRABAJO_PRACTICO' AS `tipo_evaluacion`,
-        `tp`.`name` AS `titulo`,
-        `tp`.`intro` AS `descripcion`,
-        from_unixtime(`tp`.`timeavailable`) AS `fecha_hora_inicio`,
-        from_unixtime(`tp`.`timedue`) AS `fecha_hora_fin`,
-        `tp`.`course` AS `mat_id`
-    from
-        `celiacie_moodle2`.`mdl_assignment` `tp`;
-        
-create or replace VIEW `vw_trabajos_practicos_alumno` AS
-    select distinct
-        `tp`.`id` AS `tpid`,
-        `alu_activo`.`id` AS `userid`,
-        `tpe`.`grade` AS `nota`
-    from
-        ((`celiacie_moodle2`.`mdl_assignment` `tp`
-        left join `celiacie_moodle2`.`mdl_assignment_submissions` `tpe` ON ((`tpe`.`assignment` = `tp`.`id`)))
-        left join `seguimiento_alumnos`.`vw_alumnos_activos` `alu_activo` ON ((`tpe`.`userid` = `alu_activo`.`id`)))
-    where
-        ((`alu_activo`.`id` is not null)
-            and (`tpe`.`id` is not null));
