@@ -94,7 +94,17 @@ public class AuditoriaAlumnosXLSExporter {
 //						}else 
 					if(vwNotasAlumno.getTipoEvaluacion().equals(vwEvaluacion.getTipoEvaluacion()) 
 					   && vwNotasAlumno.getEvalId().equals(vwEvaluacion.getId())){
-						excel.addCellWithStyle(sheet, decimalStyle, vwNotasAlumno.getNotaDivididoDiez(), row, ++col, VALOR_NUMERICO);
+						
+						if(vwNotasAlumno.isAusente())
+							excel.addCellWithStyle(sheet, decimalStyle, 
+									(vwNotasAlumno.getTipoEvaluacion().equals("TRABAJO_PRACTICO")?" - No entregado":" - Ausente")
+									, row, ++col, VALOR_STRING);
+						else if(vwNotasAlumno.isSinNota())
+							excel.addCellWithStyle(sheet, decimalStyle, 
+									" - Sin Nota"
+									, row, ++col, VALOR_STRING);
+						else excel.addCellWithStyle(sheet, decimalStyle, vwNotasAlumno.getNotaDivididoDiez(), row, ++col, VALOR_NUMERICO);
+						
 						continue evaluaciones;
 					}
 				}
