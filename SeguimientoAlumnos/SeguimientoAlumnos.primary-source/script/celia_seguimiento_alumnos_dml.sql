@@ -105,6 +105,20 @@ INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DO
 VALUES ('TIPO_INTERACCION_CASO', 'PERSONALMENTE', '0', 'Interacción personal', '3');
 
 
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_TIPO`,
+`PRO_CLAVE`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('GRAL',
+'FECHA_DESDE',
+'01/08/2014',
+'Fecha a partír de la cual se filtran los registros en las consultas');
+
+
+delete from cel_propiedad
+where pro_tipo = 'MAIL.PROP';
 
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -129,11 +143,6 @@ VALUES
 '465',
 '465');
 
-
-delete from cel_propiedad
-where pro_tipo = 'MAIL.PROP';
-
-			
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 (`PRO_CLAVE`,
 `PRO_TIPO`,
@@ -176,7 +185,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.user',
 'MAIL.PROP',
-'federicosager@gmail.com',
+'notificaciones@celiaeig.com',
 'Usuario para el envio de mails');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -199,7 +208,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.pass',
 'MAIL.PROP',
-'#####',
+'Notas.73',
 'Clave de mail');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -210,7 +219,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.host',
 'MAIL.PROP',
-'smtp.gmail.com',
+'mail.celiaeig.com',
 'Host smtp');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -221,7 +230,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.port',
 'MAIL.PROP',
-'465',
+'25',
 'Puerto smtp');
 
 
@@ -278,5 +287,149 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('entorno_pruebas',
 'GRAL',
-'true',
-'Es entorno de pruebas ');--cambier en produccion por false
+'false',
+'Es entorno de pruebas');
+
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_nuevos_tp_subject',
+'MAIL.PROP',
+'Nuevo trabajo práctico',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_nuevos_examenes_subject',
+'MAIL.PROP',
+'Nuevo examen',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_tp_por_vencer_subject',
+'MAIL.PROP',
+'Trabajo práctico por vencer',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_examenes_por_vecer_subject',
+'MAIL.PROP',
+'Examen por vencer',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_tp_vencidos_subject',
+'MAIL.PROP',
+'Trabajo práctico vencido',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_examenes_vencidos_subject',
+'MAIL.PROP',
+'Examen vencido',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_libres_subject',
+'MAIL.PROP',
+'Materia libre',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_doc_carga_nota_subject',
+'MAIL.PROP',
+'Nota pendiente de carga',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_doc_tp_carga_nota_subject',
+'MAIL.PROP',
+'Nota pendiente de carga',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_doc_tp_pendiente_subida',
+'MAIL.PROP',
+'Trabajo práctico pendiente de carga',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_doc_examen_pendiente_subida',
+'MAIL.PROP',
+'Examen pendiente de carga',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('mail_alu_por_quedar_libres_subject',
+'MAIL.PROP',
+'Materia en riesgo de condición de libre',
+'Subject ');
+
+INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
+(`PRO_CLAVE`,
+`PRO_TIPO`,
+`PRO_VALOR`,
+`PRO_DESCRIPCION`)
+VALUES
+('periodo_activo',
+'PERIODOS',
+'13',
+'Id de la categoría que representa el periodo activo');
