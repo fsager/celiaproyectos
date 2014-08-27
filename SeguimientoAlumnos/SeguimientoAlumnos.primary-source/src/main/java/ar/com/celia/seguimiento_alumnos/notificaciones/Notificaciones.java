@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Date;
 
 import javax.servlet.ServletContext;
@@ -105,7 +106,17 @@ public class Notificaciones {
 	public static String remplazarValoresTemplate(Object obj,String template) throws Exception
 	{
 		Field[] atributos=obj.getClass().getDeclaredFields();
+		Method[] methodGet = obj.getClass().getDeclaredMethods();
 		String templateWithValues=template;
+		
+		for (Method method : methodGet) {
+			if(!method.getName().startsWith("get"))continue;
+			String nombreCampo = method.getName().replaceFirst("get", "");
+			nombreCampo = (nombreCampo.charAt(0)+"").toLowerCase()+nombreCampo.substring(1);
+			Object valor = method.invoke(obj, (Object[])null); 
+			templateWithValues=templateWithValues.replaceAll("##"+nombreCampo+"##", valor==null?"":valor.toString());
+		}
+		
 		for(Field atributo: atributos)
 		{
 			atributo.setAccessible(true);
