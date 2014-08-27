@@ -24,7 +24,7 @@ public class NotificacionesAlumnosBiz implements NotificacionesAlumnosDefinition
 	
     public List<VwAlertasTps> getTrabajosPracticosNuevos() throws Exception{
     	List<VwAlertasTps> vwAlertasTps = dao.getTrabajosPracticosNuevos();
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH24:mm:ss");
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     	Date fechaActual = new Date();
     	List<VwAlertasTps> res = new ArrayList<VwAlertasTps>();
     	for (VwAlertasTps vwAlertasTp : vwAlertasTps)
@@ -48,7 +48,7 @@ public class NotificacionesAlumnosBiz implements NotificacionesAlumnosDefinition
     
     public List<VwAlertasExamenes> getExamenesNuevos() throws Exception{
     	List<VwAlertasExamenes> vwAlertasExamenes = dao.getExamenesNuevos();
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH24:mm:ss");
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     	Date fechaActual = new Date();
     	List<VwAlertasExamenes> res = new ArrayList<VwAlertasExamenes>();
     	for (VwAlertasExamenes vwExamenen : vwAlertasExamenes)
