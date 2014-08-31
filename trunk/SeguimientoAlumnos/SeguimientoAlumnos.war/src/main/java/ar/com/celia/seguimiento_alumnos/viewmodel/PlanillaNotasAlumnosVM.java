@@ -38,7 +38,7 @@ import ar.com.celia.seguimiento_alumnos.service.VwPeriodoDefinition;
 import ar.com.celia.seguimiento_alumnos.zkrenderer.NotasAlumnoListRenderer;
 
 @VariableResolver(org.zkoss.zkplus.spring.DelegatingVariableResolver.class)
-public class AuditoriaAlumnosVM {
+public class PlanillaNotasAlumnosVM {
 
 	@WireVariable
 	private VwPeriodoDefinition vwPeriodoService;
