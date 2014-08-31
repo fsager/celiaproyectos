@@ -1,9 +1,3 @@
-CREATE OR REPLACE VIEW `seguimiento_alumnos`.`vw_cursos_activos` AS
-select *
-FROM celiacie_moodle2.mdl_course c
-where c.category=12 -- Materias de Marzo 2014
-AND startdate > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-;
 
 -- drop table if exists cel_alerta_enviada;
 create table `seguimiento_alumnos`.`cel_alerta_enviada`
@@ -19,12 +13,12 @@ create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_nuevos_examenes`
 select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
 	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
-  join vw_cursos_activos c on c.id = q.course
+  join seguimiento_alumnos.vw_cursos_activos c on c.id = q.course
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid = u.id
-where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_NUEVO_QUIZ' and usr_id=ue.userid)
+where now() between DATE_SUB(FROM_UNIXTIME(timeopen), INTERVAL 5 DAY) and FROM_UNIXTIME(timeopen)  
+and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_NUEVO_QUIZ' and usr_id=ue.userid)
 ;
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_examenes_por_vencer` as
@@ -35,8 +29,7 @@ select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortn
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid = u.id
-where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and DATEDIFF(FROM_UNIXTIME(timeclose),now())=2
+where DATE_ADD(now(), INTERVAL 2 DAY) >= FROM_UNIXTIME(timeclose) 
 and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_QUIZ_POR_VENCER' and usr_id=ue.userid)
 ;
 
@@ -49,8 +42,7 @@ select q.id quiz_id,ue.userid userid,u.email,c.fullname course_fullname,c.shortn
   join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid = u.id
   LEFT  JOIN  celiacie_moodle2.mdl_quiz_grades gr on gr.quiz=q.id and gr.userid=ue.userid
-where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and FROM_UNIXTIME(timeclose) < now()
+where FROM_UNIXTIME(timeclose) < now()
 and gr.grade is null
 and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_QUIZ_VENCIDO' and usr_id=ue.userid)
 ;
@@ -63,8 +55,7 @@ select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid=u.id
-where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='ALU_NUEVO_TP' and usr_id=ue.userid)
+where not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='ALU_NUEVO_TP' and usr_id=ue.userid)
 ;
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_alumnos_tp_por_vencer` as
@@ -75,8 +66,7 @@ select a.id assignment_id,ue.userid userid,u.email,c.fullname course_fullname,c.
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid=u.id
-where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and DATEDIFF(FROM_UNIXTIME(timedue),now())=2
+where DATE_ADD(now(), INTERVAL 2 DAY) >= FROM_UNIXTIME(timedue)
 and not exists (select 1 from cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='ALU_TP_POR_VENCER' and usr_id=ue.userid)
 ;
 
@@ -104,8 +94,7 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 	,q.name quiz_name, DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
-where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
- and DATE_ADD(FROM_UNIXTIME(timeclose), INTERVAL 4 DAY) < now()
+where DATE_ADD(FROM_UNIXTIME(timeclose), INTERVAL 4 DAY) < now()
  and exists (select 1 from celiacie_moodle2.mdl_quiz_grades gr where gr.quiz=q.id and gr.grade = 0.00000)
 ;
 
@@ -118,8 +107,7 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
-where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
- and DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 4 DAY) < now()
+where DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 4 DAY) < now()
  and exists (select 1 from celiacie_moodle2.mdl_assignment_submissions asu where asu.assignment=a.id and asu.grade = 0)
 ;
 
@@ -131,9 +119,7 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_assignment a
   join vw_cursos_activos c on c.id = a.course
-where timeavailable > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and DATEDIFF(FROM_UNIXTIME(timeavailable),now())<=10  -- falten x dias para estar disponible
-and DATEDIFF(FROM_UNIXTIME(timeavailable),now())>=0  -- falten x dias para estar disponible
+where now() between DATE_SUB(FROM_UNIXTIME(timeavailable), INTERVAL 10 DAY) and FROM_UNIXTIME(timeavailable)   
 and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta cargado
 ;
 
@@ -146,9 +132,7 @@ and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname
 	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
   from celiacie_moodle2.mdl_quiz q
   join vw_cursos_activos c on c.id = q.course
-where timeopen > UNIX_TIMESTAMP(STR_TO_DATE((select pro_valor from `seguimiento_alumnos`.`cel_propiedad` where pro_clave = 'FECHA_DESDE'),'%d/%m/%Y'))
-and DATEDIFF(FROM_UNIXTIME(timeopen),now())<=10  -- falten x dias para estar disponible
-and DATEDIFF(FROM_UNIXTIME(timeopen),now())>=0  -- falten x dias para estar disponible
+where now() between DATE_SUB(FROM_UNIXTIME(timeopen), INTERVAL 10 DAY) and FROM_UNIXTIME(timeopen)   
 and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no esta cargado
 ;
 
@@ -262,6 +246,7 @@ create or replace VIEW `seguimiento_alumnos`.`vw_alumnos_activos` AS
             and (`e`.`courseid` = `c`.`id`))))
         join `celiacie_moodle2`.`mdl_role` `r` ON (((`r`.`id` = `ra`.`roleid`)
             and (`r`.`shortname` = 'student'))))
+        
     where
         ((`e`.`status` = 0)
             and (`usr`.`suspended` = 0)
@@ -396,7 +381,8 @@ create or replace VIEW `seguimiento_alumnos`.`vw_cursos_activos` AS
         join `celiacie_moodle2`.`mdl_course_categories` `cat` ON (((`cat`.`parent` = `catp`.`id`)
             and (`catp`.`parent` = 0))))
         join `celiacie_moodle2`.`mdl_course` `c` ON (((`c`.`category` = `cat`.`id`)
-            and (`c`.`category` <> 0))));
+            and (`c`.`category` <> 0))))
+        where catp.id = (select p.pro_valor from cel_propiedad p where p.pro_clave = 'periodo_activo');
 
             
 create or replace VIEW `seguimiento_alumnos`.`vw_etapas_activas` AS
@@ -487,36 +473,55 @@ create or replace VIEW `seguimiento_alumnos`.`vw_trabajos_practicos_alumno` AS
 create or replace VIEW `seguimiento_alumnos`.`vw_notas_alumno` AS
     select 
         `u`.`id` AS `userid`,
-        `pem`.`per_cat_id` AS `per_cat_id`,
-        `pem`.`etp_cat_id` AS `etp_cat_id`,
-        `pem`.`mat_id` AS `mat_id`,
+        `catp`.`id` AS `per_cat_id`,
+        `cat`.`id` AS `etp_cat_id`,
+        `mat`.`id` AS `mat_id`,
         'TRABAJO_PRACTICO' AS `tipo_evaluacion`,
         `tp`.`id` AS `id`,
         `tpa`.`nota` AS `nota`
     from
-        (((((`celiacie_moodle2`.`mdl_user` `u`
-        join `celiacie_moodle2`.`mdl_user_enrolments` `ue` ON ((`ue`.`userid` = `u`.`id`)))
-        join `celiacie_moodle2`.`mdl_enrol` `e` ON ((`e`.`id` = `ue`.`enrolid`)))
-        join `seguimiento_alumnos`.`vw_periodo_etapa_materias` `pem` ON ((`pem`.`mat_id` = `e`.`courseid`)))
-        left join `seguimiento_alumnos`.`vw_trabajos_practicos` `tp` ON ((`tp`.`mat_id` = `pem`.`mat_id`)))
-        left join `seguimiento_alumnos`.`vw_trabajos_practicos_alumno` `tpa` ON (((`tpa`.`tpid` = `tp`.`id`)
-            and (`tpa`.`userid` = `u`.`id`)))) 
-    union all select 
+        `celiacie_moodle2`.`mdl_user` `u`
+        join `celiacie_moodle2`.`mdl_user_enrolments` `ue` 
+        	ON `ue`.`userid` = `u`.`id`
+        join `celiacie_moodle2`.`mdl_enrol` `e` 
+        	ON `e`.`id` = `ue`.`enrolid`
+        join `celiacie_moodle2`.`mdl_course_categories` `catp`
+        	ON catp.id = (select p.pro_valor from seguimiento_alumnos.cel_propiedad p where p.pro_clave = 'periodo_activo')
+        join `celiacie_moodle2`.`mdl_course_categories` `cat` 
+        	ON `cat`.`parent` = `catp`.`id`
+            and `catp`.`parent` = 0
+        join `celiacie_moodle2`.`mdl_course` `mat` ON `mat`.`category` = `cat`.`id`
+            and `mat`.`category` <> 0
+            and mat.id= `e`.`courseid` 
+        left join `seguimiento_alumnos`.`vw_trabajos_practicos` `tp` ON `tp`.`mat_id` = `mat`.`id`
+        left join `seguimiento_alumnos`.`vw_trabajos_practicos_alumno` `tpa` ON `tpa`.`tpid` = `tp`.`id`
+            and `tpa`.`userid` = `u`.`id`
+
+            union all
+
+         select 
         `u`.`id` AS `userid`,
-        `pem`.`per_cat_id` AS `per_cat_id`,
-        `pem`.`etp_cat_id` AS `etp_cat_id`,
-        `pem`.`mat_id` AS `mat_id`,
+        `catp`.`id` AS `per_cat_id`,
+        `cat`.`id` AS `etp_cat_id`,
+        `mat`.`id` AS `mat_id`,
         'EXAMEN' AS `tipo_evaluacion`,
         `exam`.`id` AS `id`,
         `exama`.`nota` AS `nota`
     from
-        (((((`celiacie_moodle2`.`mdl_user` `u`
-        join `celiacie_moodle2`.`mdl_user_enrolments` `ue` ON ((`ue`.`userid` = `u`.`id`)))
-        join `celiacie_moodle2`.`mdl_enrol` `e` ON ((`e`.`id` = `ue`.`enrolid`)))
-        join `seguimiento_alumnos`.`vw_periodo_etapa_materias` `pem` ON ((`pem`.`mat_id` = `e`.`courseid`)))
-        left join `seguimiento_alumnos`.`vw_examenes` `exam` ON ((`exam`.`mat_id` = `pem`.`mat_id`)))
-        left join `seguimiento_alumnos`.`vw_examenes_alumno` `exama` ON (((`exama`.`examid` = `exam`.`id`)
-            and (`exama`.`userid` = `u`.`id`))));
+        `celiacie_moodle2`.`mdl_user` `u`
+        join `celiacie_moodle2`.`mdl_user_enrolments` `ue` ON `ue`.`userid` = `u`.`id`
+        join `celiacie_moodle2`.`mdl_enrol` `e` ON `e`.`id` = `ue`.`enrolid`
+        join `celiacie_moodle2`.`mdl_course_categories` `catp`
+        	ON catp.id = (select p.pro_valor from seguimiento_alumnos.cel_propiedad p where p.pro_clave = 'periodo_activo')
+        join `celiacie_moodle2`.`mdl_course_categories` `cat` 
+        	ON `cat`.`parent` = `catp`.`id`
+            and `catp`.`parent` = 0
+        join `celiacie_moodle2`.`mdl_course` `mat` ON `mat`.`category` = `cat`.`id`
+            and `mat`.`category` <> 0
+            and mat.id= `e`.`courseid` 
+        left join `seguimiento_alumnos`.`vw_examenes` `exam` ON `exam`.`mat_id` = `mat`.`id`
+        left join `seguimiento_alumnos`.`vw_examenes_alumno` `exama` ON `exama`.`examid` = `exam`.`id`
+            and `exama`.`userid` = `u`.`id`;
 
 
 create or replace VIEW `seguimiento_alumnos`.`vw_listado_notas_alumno` AS

@@ -17,9 +17,9 @@ import javax.persistence.Transient;
  * Nota de un alumno en una evaluación.
  */
 @Entity
-@Table(name = "vw_listado_notas_alumno", schema = "seguimiento_alumnos"	)
-@IdClass(VwNotasAlumnoPk.class)
-public class VwNotasAlumno implements Serializable {
+@Table(name = "vw_listado_notas_tp_alumno", schema = "seguimiento_alumnos"	)
+@IdClass(VwListadoNotasTpAlumnoPk.class)
+public class VwListadoNotasTpAlumno extends VwListadoNotasAlumno implements Serializable {
 
 	private static final long serialVersionUID = 6830633785760982839L;
 		
@@ -129,7 +129,7 @@ public class VwNotasAlumno implements Serializable {
 	
 }
 
-class VwNotasAlumnoPk implements Serializable{
+class VwListadoNotasTpAlumnoPk implements Serializable{
 
 	private static final long serialVersionUID = -5743176869051961905L;
 	

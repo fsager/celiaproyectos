@@ -24,13 +24,16 @@ import org.zkoss.zul.Listbox;
 import ar.com.celia.seguimiento_alumnos.comparator.VwNotasAlumnoComparator;
 import ar.com.celia.seguimiento_alumnos.domain.VwEtapa;
 import ar.com.celia.seguimiento_alumnos.domain.VwEvaluacion;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasAlumno;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasTpAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwMateria;
-import ar.com.celia.seguimiento_alumnos.domain.VwNotasAlumno;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasExamenAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwPeriodo;
 import ar.com.celia.seguimiento_alumnos.exporter.AuditoriaAlumnosXLSExporter;
 import ar.com.celia.seguimiento_alumnos.service.VwEtapaDefinition;
+import ar.com.celia.seguimiento_alumnos.service.VwListadoNotasExamenAlumnoDefinition;
+import ar.com.celia.seguimiento_alumnos.service.VwListadoNotasTpAlumnoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.VwMateriaDefinition;
-import ar.com.celia.seguimiento_alumnos.service.VwNotasAlumnoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.VwPeriodoDefinition;
 import ar.com.celia.seguimiento_alumnos.zkrenderer.NotasAlumnoListRenderer;
 
@@ -44,7 +47,9 @@ public class AuditoriaAlumnosVM {
 	@WireVariable
 	private VwMateriaDefinition vwMateriaService;
 	@WireVariable
-	private VwNotasAlumnoDefinition vwNotasAlumnoService;
+	private VwListadoNotasExamenAlumnoDefinition vwListadoNotasExamenAlumnoService;
+	@WireVariable
+	private VwListadoNotasTpAlumnoDefinition vwListadoNotasTpAlumnoService;
 	
 	@Wire
 	private Listbox lbNotas;
@@ -52,7 +57,7 @@ public class AuditoriaAlumnosVM {
 		
 	private List<VwPeriodo> periodos;
 	private List<VwMateria> materias;
-	private Map<VwNotasAlumno, List<VwNotasAlumno>> alumnoNotas;
+	private Map<VwListadoNotasAlumno, List<VwListadoNotasAlumno>> alumnoNotas;
 		
 	private String nombreAlumno;
 	private String apellidoAlumno;
@@ -120,21 +125,34 @@ public class AuditoriaAlumnosVM {
 	
 	private void actualizarNotasAlumnos() throws Exception {
 		lbNotas.getItems().clear();
-		VwNotasAlumno vwNotasAlumnoExample = new VwNotasAlumno();
-		if(nombreAlumno != null && !nombreAlumno.trim().isEmpty())
-			vwNotasAlumnoExample.setFirstname(nombreAlumno.toLowerCase());
-		if(apellidoAlumno!= null && !apellidoAlumno.trim().isEmpty())
-			vwNotasAlumnoExample.setLastname(apellidoAlumno.toLowerCase());
-		vwNotasAlumnoExample.setEtpCatId(etapaSelected.getEtpId());
-		vwNotasAlumnoExample.setPerCatId(etapaSelected.getVwPeriodo().getPerId());
+		VwListadoNotasExamenAlumno vwNotasExamenAlumnoExample = new VwListadoNotasExamenAlumno();
+		VwListadoNotasTpAlumno vwNotasTpAlumnoExample = new VwListadoNotasTpAlumno();
+		if(nombreAlumno != null && !nombreAlumno.trim().isEmpty()) {
+			vwNotasExamenAlumnoExample.setFirstname(nombreAlumno.toLowerCase());
+			vwNotasTpAlumnoExample.setFirstname(nombreAlumno.toLowerCase());
+		}
+		if(apellidoAlumno!= null && !apellidoAlumno.trim().isEmpty()) {
+			vwNotasExamenAlumnoExample.setLastname(apellidoAlumno.toLowerCase());
+			vwNotasTpAlumnoExample.setLastname(apellidoAlumno.toLowerCase());
+		}
 		
-		List<VwNotasAlumno> notasAlumnos = vwNotasAlumnoService.getAll(vwNotasAlumnoExample, null);
+		vwNotasExamenAlumnoExample.setEtpCatId(etapaSelected.getEtpId());
+		vwNotasExamenAlumnoExample.setPerCatId(etapaSelected.getVwPeriodo().getPerId());
+		vwNotasTpAlumnoExample.setEtpCatId(etapaSelected.getEtpId());
+		vwNotasTpAlumnoExample.setPerCatId(etapaSelected.getVwPeriodo().getPerId());
+		
+		List<VwListadoNotasExamenAlumno> notasExamenesAlumnos = vwListadoNotasExamenAlumnoService.getAll(vwNotasExamenAlumnoExample, null);
+		List<VwListadoNotasTpAlumno> notasTpsAlumnos = vwListadoNotasTpAlumnoService.getAll(vwNotasTpAlumnoExample, null);
+		
+		List<VwListadoNotasAlumno> notasAlumnos = new ArrayList<VwListadoNotasAlumno>();
+		notasAlumnos.addAll(notasExamenesAlumnos);
+		notasAlumnos.addAll(notasTpsAlumnos);
 		
 		alumnoNotas = new TreeMap<>(new VwNotasAlumnoComparator());
 		
-		for (VwNotasAlumno vwNotasAlumno : notasAlumnos) {
+		for (VwListadoNotasAlumno vwNotasAlumno : notasAlumnos) {
 			if(!alumnoNotas.containsKey(vwNotasAlumno))
-				alumnoNotas.put(vwNotasAlumno, new ArrayList<VwNotasAlumno>(lbNotas.getListhead().getChildren().size()));
+				alumnoNotas.put(vwNotasAlumno, new ArrayList<VwListadoNotasAlumno>(lbNotas.getListhead().getChildren().size()));
 			alumnoNotas.get(vwNotasAlumno).add(vwNotasAlumno);
 		}
 	}
@@ -206,11 +224,11 @@ public class AuditoriaAlumnosVM {
 		this.materias = materias;
 	}
 
-	public Map<VwNotasAlumno, List<VwNotasAlumno>> getAlumnoNotas() {
+	public Map<VwListadoNotasAlumno, List<VwListadoNotasAlumno>> getAlumnoNotas() {
 		return alumnoNotas;
 	}
 
-	public void setAlumnoNotas(Map<VwNotasAlumno, List<VwNotasAlumno>> alumnoNotas) {
+	public void setAlumnoNotas(Map<VwListadoNotasAlumno, List<VwListadoNotasAlumno>> alumnoNotas) {
 		this.alumnoNotas = alumnoNotas;
 	}
 
