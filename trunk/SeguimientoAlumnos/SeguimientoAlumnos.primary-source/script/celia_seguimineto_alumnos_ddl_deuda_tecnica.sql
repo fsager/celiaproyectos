@@ -1,4 +1,4 @@
-create or replace view vw_listado_notas_tp_alumno as
+create or replace view seguimiento_alumnos.vw_listado_notas_tp_alumno as
 select 
 		`u`.`lastname` AS `lastname`,
 		`u`.`firstname` AS `firstname`,
@@ -27,7 +27,7 @@ select
         left join `seguimiento_alumnos`.`vw_trabajos_practicos_alumno` `tpa` ON `tpa`.`tpid` = `tp`.`id`
             and `tpa`.`userid` = `u`.`id`;
 
-create or replace view vw_listado_notas_examen_alumno as
+create or replace view seguimiento_alumnos.vw_listado_notas_examen_alumno as
 select 
 		`u`.`lastname` AS `lastname`,
 		`u`.`firstname` AS `firstname`,
