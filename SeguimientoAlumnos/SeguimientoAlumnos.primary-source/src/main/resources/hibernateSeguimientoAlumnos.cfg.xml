@@ -39,7 +39,7 @@
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwMateria" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwTrabajoPractico" />
 		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwExamen" />
-		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwNotasAlumno" />
-				
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasExamenAlumno" />
+		<mapping class="ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasTpAlumno" />
 	</session-factory>
 </hibernate-configuration>

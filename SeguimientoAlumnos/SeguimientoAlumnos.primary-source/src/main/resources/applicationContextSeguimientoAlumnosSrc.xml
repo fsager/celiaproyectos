@@ -277,20 +277,33 @@
         <property name="businessObject" ref="vwExamenBiz"/>
     </bean>
     
-    <bean id="vwNotasAlumnoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwNotasAlumnoHome">
+    <bean id="vwListadoNotasExamenAlumnoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwListadoNotasExamenAlumnoHome">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="vwNotasAlumnoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwNotasAlumnoBiz">
-        <property name="dao" ref="vwNotasAlumnoDao"/>
+    <bean id="vwListadoNotasExamenAlumnoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwListadoNotasExamenAlumnoBiz">
+        <property name="dao" ref="vwListadoNotasExamenAlumnoDao"/>
     </bean>
-    <bean id="vwNotasAlumnoBiz" parent="baseTransactionProxy">
+    <bean id="vwListadoNotasExamenAlumnoBiz" parent="baseTransactionProxy">
          <property name="target">
-             <ref bean="vwNotasAlumnoBusiness"/> 
+             <ref bean="vwListadoNotasExamenAlumnoBusiness"/> 
         </property> 
     </bean>
-    <bean id="vwNotasAlumnoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwNotasAlumnoService">
-        <property name="businessObject" ref="vwNotasAlumnoBiz"/>
-    </bean>    
-    
+    <bean id="vwListadoNotasExamenAlumnoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwListadoNotasExamenAlumnoService">
+        <property name="businessObject" ref="vwListadoNotasExamenAlumnoBiz"/>
+    </bean>
+    <bean id="vwListadoNotasTpAlumnoDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwListadoNotasTpAlumnoHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="vwListadoNotasTpAlumnoBusiness" class="ar.com.celia.seguimiento_alumnos.business.VwListadoNotasTpAlumnoBiz">
+        <property name="dao" ref="vwListadoNotasTpAlumnoDao"/>
+    </bean>
+    <bean id="vwListadoNotasTpAlumnoBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="vwListadoNotasTpAlumnoBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="vwListadoNotasTpAlumnoService" class="ar.com.celia.seguimiento_alumnos.service.impl.VwListadoNotasTpAlumnoService">
+        <property name="businessObject" ref="vwListadoNotasTpAlumnoBiz"/>
+    </bean>
     
 </beans>
