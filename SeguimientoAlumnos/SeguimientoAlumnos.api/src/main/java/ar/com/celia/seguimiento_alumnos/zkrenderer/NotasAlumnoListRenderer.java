@@ -17,11 +17,11 @@ import org.zkoss.zul.ListitemRenderer;
 
 import ar.com.celia.seguimiento_alumnos.domain.VwEvaluacion;
 import ar.com.celia.seguimiento_alumnos.domain.VwExamen;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwMateria;
-import ar.com.celia.seguimiento_alumnos.domain.VwNotasAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwTrabajoPractico;
 
-public class NotasAlumnoListRenderer implements ListitemRenderer<Entry<VwNotasAlumno, List<VwNotasAlumno>>> {
+public class NotasAlumnoListRenderer implements ListitemRenderer<Entry<VwListadoNotasAlumno, List<VwListadoNotasAlumno>>> {
 
 	private List<VwMateria> materias;
 	private Listbox lbNotas;
@@ -33,11 +33,11 @@ public class NotasAlumnoListRenderer implements ListitemRenderer<Entry<VwNotasAl
 	}
 
 	@Override
-	public void render(Listitem liNotasAlumno, Entry<VwNotasAlumno, List<VwNotasAlumno>> vwNotasAlumnoEntry, int index) throws Exception {
+	public void render(Listitem liNotasAlumno, Entry<VwListadoNotasAlumno, List<VwListadoNotasAlumno>> vwNotasAlumnoEntry, int index) throws Exception {
 		
 		Listbox lbNotas = liNotasAlumno.getListbox();
 		
-		VwNotasAlumno vwNotasAlumno = vwNotasAlumnoEntry.getKey();
+		VwListadoNotasAlumno vwNotasAlumno = vwNotasAlumnoEntry.getKey();
 		
 		new Listcell(vwNotasAlumno.getLastname()).setParent(liNotasAlumno);
 		new Listcell(vwNotasAlumno.getFirstname()).setParent(liNotasAlumno);
@@ -54,11 +54,11 @@ public class NotasAlumnoListRenderer implements ListitemRenderer<Entry<VwNotasAl
 			
 			if(evaluacion==null) continue evaluaciones;
 			
-			Iterator<VwNotasAlumno> alumnoEvalNotaIterator = new LinkedList<>(vwNotasAlumnoEntry.getValue()).iterator();
+			Iterator<VwListadoNotasAlumno> alumnoEvalNotaIterator = new LinkedList<>(vwNotasAlumnoEntry.getValue()).iterator();
 			
 			//notasAlumno:
 			while(alumnoEvalNotaIterator.hasNext()){
-				VwNotasAlumno vwNotasAlumnoEvalNota = alumnoEvalNotaIterator.next();
+				VwListadoNotasAlumno vwNotasAlumnoEvalNota = alumnoEvalNotaIterator.next();
 				if(vwNotasAlumnoEvalNota.getTipoEvaluacion().equals(evaluacion.getTipoEvaluacion()) 
 				&& vwNotasAlumnoEvalNota.getEvalId().equals(evaluacion.getId())){
 					listcellNota.setLabel("-");
