@@ -6,23 +6,9 @@
 	 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
 		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
 		xmlns:n="native">
-	<n:html lang="en">
-	  <n:head>
-	    <n:meta charset="utf-8"/>
-	    <n:meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	    <n:meta name="apple-mobile-web-app-capable" content="yes"/>
-		    <style src="/css/bootstrap.css" ></style>
-		    <style src="/css/bootstrap-responsive.min.css" ></style>
-		    <style src="/css/google.font.css"></style>
-		    <style src="/css/font-awesome.min.css" >        </style>
-		    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style>
-	    <style src="/css/custom.css" ></style>
-	    <style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style>
-	  </n:head>
-	</n:html>
 <window id="wnd_auditoria_alumnos" border="none" width="100%" 
 	apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.AuditoriaAlumnosVM')"
-	onOK="@command('filtrar')">
+	onOK="@command('filtrar')" hflex="1" vflex="1">
 
 	<groupbox open="true" mold="3d" style="padding:0px;" >
 	<caption label="Filtros" style="font-size:14px;font-weight:bold;" image="/img/opt_filter_24.png"/>
@@ -45,15 +31,14 @@
 					<label value="Nombre:"/>
 					<textbox value="@save(vm.nombreAlumno, before='filtrar')"/>
 					<label value="Periodo:"/>
-					<combobox model="@load(vm.periodos)" selectedItem="@bind(vm.periodoSelected)"
+					<combobox model="@load(vm.periodos)" selectedItem="@bind(vm.periodoSelected)" readonly="true"
 						onSelect="@command('actualizarEtapas')">
 						<template name="model" var="periodo">
 							<comboitem label="@load(periodo.periodo)" value="@load(periodo)" />
 						</template>
 					</combobox>
 					<label value="Etapa:"/>
-					<combobox model="@load(vm.periodoSelected.vwEtapas)" selectedItem="@bind(vm.etapaSelected)"
-						>
+					<combobox model="@load(vm.periodoSelected.vwEtapas)" selectedItem="@bind(vm.etapaSelected)" readonly="true">
 						<template name="model" var="etapa">
 							<comboitem label="@load(etapa.etapa)" value="@load(etapa)" />
 						</template>
