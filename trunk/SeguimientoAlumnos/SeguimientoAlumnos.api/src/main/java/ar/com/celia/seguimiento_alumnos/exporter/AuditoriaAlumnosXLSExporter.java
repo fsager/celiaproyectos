@@ -22,14 +22,15 @@ import ar.com.celia.common.business.ExcelGenerator;
 import ar.com.celia.seguimiento_alumnos.domain.VwEtapa;
 import ar.com.celia.seguimiento_alumnos.domain.VwEvaluacion;
 import ar.com.celia.seguimiento_alumnos.domain.VwExamen;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwMateria;
-import ar.com.celia.seguimiento_alumnos.domain.VwNotasAlumno;
+import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasExamenAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwPeriodo;
 import ar.com.celia.seguimiento_alumnos.domain.VwTrabajoPractico;
 
 public class AuditoriaAlumnosXLSExporter {
 
-	public File export(String fileName, VwPeriodo vwPeriodo, VwEtapa vwEtapa, List<VwMateria> vwMaterias, Map<VwNotasAlumno,List<VwNotasAlumno>> mapNotasAlumno) {
+	public File export(String fileName, VwPeriodo vwPeriodo, VwEtapa vwEtapa, List<VwMateria> vwMaterias, Map<VwListadoNotasAlumno,List<VwListadoNotasAlumno>> mapNotasAlumno) {
 		
 		ExcelGenerator excel = new ExcelGenerator();
 		HSSFCellStyle cellStyleWhite = excel.getCustomStyle(WHITE.index, BLACK.index, false, true, (short)12, ALIGN_CENTER);
@@ -81,14 +82,14 @@ public class AuditoriaAlumnosXLSExporter {
 			}
 	    }
 	    
-		for (VwNotasAlumno alumno : mapNotasAlumno.keySet()) {
+		for (VwListadoNotasAlumno alumno : mapNotasAlumno.keySet()) {
 			excel.addCellWithStyle(sheet, cellStyleWhite, alumno.getLastname(), ++row, col = 0, VALOR_STRING);
 			excel.addCellWithStyle(sheet, cellStyleWhite, alumno.getFirstname(), row, ++col, VALOR_STRING);
 
 			evaluaciones:
 			for (VwEvaluacion vwEvaluacion : evaluaciones){
 //				notas:
-				for (VwNotasAlumno vwNotasAlumno : mapNotasAlumno.get(alumno)) {
+				for (VwListadoNotasAlumno vwNotasAlumno : mapNotasAlumno.get(alumno)) {
 //						if(!vwNotasAlumno.getMatId().equals(vwMateria.getMatId())){
 //							continue notas;
 //						}else 
