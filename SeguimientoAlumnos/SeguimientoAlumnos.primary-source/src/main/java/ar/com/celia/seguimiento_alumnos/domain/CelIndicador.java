@@ -170,8 +170,7 @@ public class CelIndicador implements java.io.Serializable, Comparator<Comparable
 		this.audUsrUpd = audUsrUpd;
 	}
 	
-	public String  toString()
-	{
+	public String toString() {
 		return indNombre;
 	}
 
