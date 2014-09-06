@@ -91,7 +91,7 @@ ALTER TABLE seguimiento_alumnos.cel_grupo_usuario ADD CONSTRAINT CEL_GRU_USR_ID 
 
   CREATE TABLE seguimiento_alumnos.cel_interaccion_caso
    (	CAS_ID  bigint default NULL auto_increment primary key, 
-		CAS_OBSERVACIONES_GRALES varchar(250),    	
+		CAS_OBSERVACIONES_GRALES varchar(3000),    	
 		ALU_ID bigint(10) unsigned not null,
     	AUD_FECHA_INS TIMESTAMP not null, 
     	AUD_FECHA_UPD TIMESTAMP not null, 
