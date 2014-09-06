@@ -37,7 +37,7 @@
 	   			</listbox>   
 	   			<div>
 	   				<label value="Observaciones generales:" style="font-weight:bold;"></label>
-					<textbox id="tbxObservacionesGenerales" rows="3" width="100%"/>
+					<textbox id="tbxObservacionesGenerales" rows="3" width="100%" maxlength="3000"/>
 	   			</div>   
              </panelchildren>
          </panel>
