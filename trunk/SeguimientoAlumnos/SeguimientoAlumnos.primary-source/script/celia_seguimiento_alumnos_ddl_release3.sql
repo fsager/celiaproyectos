@@ -66,8 +66,10 @@ select distinct a.id assignment_id,ue.userid userid, u.lastname, u.firstname, u.
   join seguimiento_alumnos.vw_cursos_activos c on c.id = a.course
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
-  join celiacie_moodle2.mdl_user u on ue.userid=u.id
+  join celiacie_moodle2.mdl_user u on u.id = ue.userid
+  left join celiacie_moodle2.mdl_assignment_submissions sub on sub.assignment = a.id and sub.userid = u.id  
 where now() between DATE_SUB(FROM_UNIXTIME(timedue), INTERVAL 2 DAY) and FROM_UNIXTIME(timedue)
+and sub.grade is null
 and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='ALU_TP_POR_VENCER' and usr_id=ue.userid)
 ;
 
