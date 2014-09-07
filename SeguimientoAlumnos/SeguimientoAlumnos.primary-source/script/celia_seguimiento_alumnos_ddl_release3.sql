@@ -29,7 +29,9 @@ select distinct q.id quiz_id,ue.userid userid, u.lastname, u.firstname, u.email,
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid = u.id
-where now() between DATE_SUB(FROM_UNIXTIME(timeclose), INTERVAL 3 DAY) and FROM_UNIXTIME(timeclose)  
+  left join celiacie_moodle2.mdl_quiz_attempts att on att.quiz = q.id and att.userid = u.id
+where now() between DATE_SUB(FROM_UNIXTIME(timeclose), INTERVAL 3 DAY) and FROM_UNIXTIME(timeclose)
+and att.userid is null
 and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_QUIZ_POR_VENCER' and usr_id=ue.userid)
 ;
 
@@ -41,9 +43,9 @@ select distinct q.id quiz_id,ue.userid userid, u.lastname, u.firstname, u.email,
   join celiacie_moodle2.mdl_enrol e on e.courseid = c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id = ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid = u.id
-  LEFT  JOIN  celiacie_moodle2.mdl_quiz_grades gr on gr.quiz=q.id and gr.userid=ue.userid
+  left join celiacie_moodle2.mdl_quiz_attempts att on att.quiz = q.id and att.userid = u.id
 where FROM_UNIXTIME(timeclose) < now()
-and gr.grade is null
+and att.userid is null
 and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada where ale_obj_tipo='mdl_quiz' and ale_obj_id=q.id and ale_alerta='ALU_QUIZ_VENCIDO' and usr_id=ue.userid)
 ;
 
@@ -66,10 +68,10 @@ select distinct a.id assignment_id,ue.userid userid, u.lastname, u.firstname, u.
   join seguimiento_alumnos.vw_cursos_activos c on c.id = a.course
   join celiacie_moodle2.mdl_enrol e on e.courseid=c.id
   join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
-  join celiacie_moodle2.mdl_user u on u.id = ue.userid
-  left join celiacie_moodle2.mdl_assignment_submissions sub on sub.assignment = a.id and sub.userid = u.id  
+  join celiacie_moodle2.mdl_user u on ue.userid=u.id
+  LEFT JOIN celiacie_moodle2.mdl_assignment_submissions asu on asu.userid=ue.userid and asu.assignment=a.id
 where now() between DATE_SUB(FROM_UNIXTIME(timedue), INTERVAL 2 DAY) and FROM_UNIXTIME(timedue)
-and sub.grade is null
+and asu.userid is null
 and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada where ale_obj_tipo='mdl_assignment' and ale_obj_id=a.id and ale_alerta='ALU_TP_POR_VENCER' and usr_id=ue.userid)
 ;
 
@@ -82,8 +84,8 @@ select distinct a.id assignment_id,ue.userid userid, u.lastname, u.firstname, u.
   join celiacie_moodle2.mdl_user_enrolments ue on e.id=ue.enrolid
   join celiacie_moodle2.mdl_user u on ue.userid=u.id
   LEFT JOIN celiacie_moodle2.mdl_assignment_submissions asu on asu.userid=ue.userid and asu.assignment=a.id
-  where FROM_UNIXTIME(a.timedue) < now()
-  and asu.grade is null
+  where now() between DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 7 DAY) and FROM_UNIXTIME(timedue)
+  and asu.userid is null
   and not exists (select 1 from seguimiento_alumnos.cel_alerta_enviada 
 	  where ale_obj_tipo='mdl_assignment' 
 	  	and ale_obj_id=a.id 
