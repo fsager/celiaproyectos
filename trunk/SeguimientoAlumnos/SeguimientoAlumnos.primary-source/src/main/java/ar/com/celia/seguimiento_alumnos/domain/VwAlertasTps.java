@@ -2,14 +2,9 @@ package ar.com.celia.seguimiento_alumnos.domain;
 
 // Generated 06/04/2014 19:30:09 by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -19,8 +14,14 @@ import javax.persistence.Table;
 @Table(name = "vw_alerta_alumnos_nuevos_tp", schema = "seguimiento_alumnos")
 public class VwAlertasTps implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8155919547354389633L;
 	private Long assignmentId;
 	private Long userid;
+	private String lastname;
+	private String firstname;
 	private String email;
 	private String courseFullname;
 	private String courseShortname;
@@ -53,6 +54,24 @@ public class VwAlertasTps implements java.io.Serializable {
 	
 	public void setUserid(Long userid) {
 		this.userid = userid;
+	}
+
+	@Column(name = "lastname", nullable = false)
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	@Column(name = "firstname", nullable = false)
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	@Column(name = "course_fullname", nullable = false)
@@ -118,5 +137,17 @@ public class VwAlertasTps implements java.io.Serializable {
 	
 	public void setFechaVencimiento(String fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "VwAlertasTps [assignmentId=" + assignmentId + ", userid="
+				+ userid + ", lastname=" + lastname + ", firstname="
+				+ firstname + ", email=" + email + ", courseFullname="
+				+ courseFullname + ", courseShortname=" + courseShortname
+				+ ", courseCategory=" + courseCategory + ", assignmentName="
+				+ assignmentName + ", fechaInicio=" + fechaInicio
+				+ ", fechaVencimiento=" + fechaVencimiento + "]";
 	}
 }

@@ -22,7 +22,7 @@ public class NotificacionesAlumnos extends Notificaciones{
 		String subject=celPropiedadService.get("mail_alu_nuevos_tp_subject").getProValor();
 		
 		for(VwAlertasTps nuevoTps:tps) {
-			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
+			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail,"true".equals(prueba));
 			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_NUEVO_TP);
 			
 			if(frenar)
@@ -39,7 +39,7 @@ public class NotificacionesAlumnos extends Notificaciones{
 		
 		for(VwAlertasExamenes nuevoExamen:examenes)
 		{
-			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
+			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail,"true".equals(prueba));
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_NUEVO_EXAMEN);
 			if(frenar)
 				break;
@@ -54,10 +54,10 @@ public class NotificacionesAlumnos extends Notificaciones{
 		String subject=celPropiedadService.get("mail_alu_tp_por_vencer_subject").getProValor();
 		
 		
-		for(VwAlertasTps nuevoTps:tps)
+		for(VwAlertasTps tpPorVencer:tps)
 		{
-			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
-			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_TP_POR_VENCER);
+			String templateWithValues=remplazarValoresTemplate(tpPorVencer,textoMail,"true".equals(prueba));
+			enviarMail(tpPorVencer.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,tpPorVencer.getAssignmentId(),tpPorVencer.getUserid(),Notificaciones.ALERTA_TP_POR_VENCER);
 			if(frenar)
 				break;
 		}
@@ -72,7 +72,7 @@ public class NotificacionesAlumnos extends Notificaciones{
 		
 		for(VwAlertasExamenes nuevoExamen:examenes)
 		{
-			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
+			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail,"true".equals(prueba));
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_EXAMEN_POR_VENCER);
 			if(frenar)
 				break;
@@ -88,7 +88,7 @@ public class NotificacionesAlumnos extends Notificaciones{
 		
 		
 		for(VwAlertasTps nuevoTps:tps) {
-			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail);
+			String templateWithValues=remplazarValoresTemplate(nuevoTps,textoMail,"true".equals(prueba));
 			enviarMail(nuevoTps.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_TP,nuevoTps.getAssignmentId(),nuevoTps.getUserid(),Notificaciones.ALERTA_TP_VENCIDO);
 			if(frenar)
 				break;
@@ -105,7 +105,7 @@ public class NotificacionesAlumnos extends Notificaciones{
 		
 		for(VwAlertasExamenes nuevoExamen:examenes)
 		{
-			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
+			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail,"true".equals(prueba));
 			enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_EXAMEN,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_EXAMEN_VENCIDO);
 			if(frenar)
 				break;
@@ -114,19 +114,19 @@ public class NotificacionesAlumnos extends Notificaciones{
 	
 	public void notificarLibres() throws Exception
 	{
-		init();
-		List<VwAlertasExamenes> examenes=notificacionesAlumnosService.getLibres();
-		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/alumnos/alumnoLibre.html");
-		String subject=celPropiedadService.get("mail_alu_libres_subject").getProValor();
-		
-		for(VwAlertasExamenes nuevoExamen:examenes)
-		{
-			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail);
-			//TODO
-			//enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_MATERIA,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_NUEVO_EXAMEN);
-			if(frenar)
-				break;
-		}
+//		init();
+//		List<VwAlertasExamenes> examenes=notificacionesAlumnosService.getLibres();
+//		String textoMail =  readTemplate(this.servletContext,"/template_notificaciones/alumnos/alumnoLibre.html");
+//		String subject=celPropiedadService.get("mail_alu_libres_subject").getProValor();
+//		
+//		for(VwAlertasExamenes nuevoExamen:examenes)
+//		{
+//			String templateWithValues=remplazarValoresTemplate(nuevoExamen,textoMail,"true".equals(prueba));
+//			//TODO
+//			//enviarMail(nuevoExamen.getEmail(),subject,templateWithValues,true,Notificaciones.OBJ_TIPO_MATERIA,nuevoExamen.getQuizid(),nuevoExamen.getUserid(),Notificaciones.ALERTA_NUEVO_EXAMEN);
+//			if(frenar)
+//				break;
+//		}
 	}
 	
 	public void notificarAlumnosPorQuedarLibresPorTP() throws Exception
@@ -139,9 +139,9 @@ public class NotificacionesAlumnos extends Notificaciones{
 		int cant = 0;
 		for(VwAlertasAlumnoLibrePorTP alumnoLibrePorTP:alertasAlumnoLibrePorTPs) {
 			if(cant == 10)break;
-			String templateWithValues=remplazarValoresTemplate(alumnoLibrePorTP,textoMail);
+			String templateWithValues=remplazarValoresTemplate(alumnoLibrePorTP,textoMail,"true".equals(prueba));
 			
-			enviarMail("gonza.delasilva@gmail.com", subject, templateWithValues, true, Notificaciones.OBJ_TIPO_TP, alumnoLibrePorTP.getMatId(), alumnoLibrePorTP.getUserId(), ALERTA_ALU_POR_QUEDAR_LIBRE);
+			enviarMail("gonza.delasilva@gmail.com", subject, templateWithValues, true, Notificaciones.OBJ_TIPO_MATERIA, alumnoLibrePorTP.getMatId(), alumnoLibrePorTP.getUserId(), ALERTA_ALU_POR_QUEDAR_LIBRE);
 			cant++;
 			if(frenar)
 				break;
@@ -150,14 +150,14 @@ public class NotificacionesAlumnos extends Notificaciones{
 	
 	public void test() throws Exception
 	{
-		super.frenar=true;
+//		super.frenar=true;
 //		notificarNuevoTrabajoPractico();
 //		notificarNuevoExamen();
 //		notificarTrabajoPracticoPorVencer();
 //		notificarExamenPorVencer();
 //		notificarTrabajoPracticoVencidos();
 //		notificarExamenVencidos();
-		notificarAlumnosPorQuedarLibresPorTP();
+//		notificarAlumnosPorQuedarLibresPorTP();
 	}
 	
 	public void setNotificacionesAlumnosService(
