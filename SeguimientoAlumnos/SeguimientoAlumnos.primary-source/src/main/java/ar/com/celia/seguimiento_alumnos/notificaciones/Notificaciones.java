@@ -10,6 +10,8 @@ import java.util.Date;
 
 import javax.servlet.ServletContext;
 
+import org.hibernate.exception.ConstraintViolationException;
+
 import ar.com.celia.seguimiento_alumnos.domain.CelAlertaEnviada;
 import ar.com.celia.seguimiento_alumnos.service.CelAlertaEnviadaDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelPropiedadDefinition;
@@ -30,6 +32,7 @@ public class Notificaciones {
 	
 	protected static final String OBJ_TIPO_EXAMEN="mdl_quiz";
 	protected static final String OBJ_TIPO_TP="mdl_assignment";
+	protected static final String OBJ_TIPO_MATERIA="mdl_course";
 	
 	protected static final String ALERTA_NUEVO_EXAMEN="ALU_NUEVO_QUIZ";
 	protected static final String ALERTA_EXAMEN_POR_VENCER="ALU_QUIZ_POR_VENCER";
@@ -59,17 +62,24 @@ public class Notificaciones {
 	
 	public void enviarMail(String mail,String subject,String templateWithValues,boolean registrarEnvio,String obj_tipo,Long obj_id,Long usr_id,String alerta) throws Exception
 	{
-		if(prueba==null ||prueba.equals("true")){
-			steMailService.enviarMail(mail+"algoparaquenollegue", from, replyTo, cc, null, subject, templateWithValues);
+		if("true".equals(prueba)){
+			steMailService.enviarMail("gonza.delasilva@gmail.com", from, replyTo, cc, null, subject, templateWithValues);
 		}
 		else
 		{
 			steMailService.enviarMail(mail, from, replyTo, cc, null, subject, templateWithValues);
 		}
-		
-		if(registrarEnvio)
-			registrarEnvio(obj_tipo,obj_id,usr_id,alerta);
-		
+		try{
+			if(registrarEnvio)
+				registrarEnvio(obj_tipo,obj_id,usr_id,alerta);
+		}catch(Exception exception){
+			if(exception instanceof org.hibernate.exception.ConstraintViolationException){
+				org.hibernate.exception.ConstraintViolationException constraintsViolation = (ConstraintViolationException) exception;
+				System.out.println("Constraint: "+constraintsViolation.getConstraintName()+"\n"
+									+constraintsViolation.getMessage()+"\n"
+									+"SQL: "+constraintsViolation.getSQL());
+			}
+		}
 	}
 	
 	public void registrarEnvio(String obj_tipo,long obj_id,long usr_id,String alerta) throws Exception
@@ -103,7 +113,7 @@ public class Notificaciones {
 		return textoMail;
 	}
 	
-	public static String remplazarValoresTemplate(Object obj,String template) throws Exception
+	public static String remplazarValoresTemplate(Object obj,String template, boolean debug) throws Exception
 	{
 		Field[] atributos=obj.getClass().getDeclaredFields();
 		Method[] methodGet = obj.getClass().getDeclaredMethods();
@@ -126,8 +136,8 @@ public class Notificaciones {
 			else
 				templateWithValues=templateWithValues.replaceAll("##"+atributo.getName()+"##", "");
 		}
-		
-		return templateWithValues;
+				
+		return templateWithValues.replaceAll("##DEBUG##", debug? obj.toString():"" );
 	}
 
 	public ServletContext getServletContext() {

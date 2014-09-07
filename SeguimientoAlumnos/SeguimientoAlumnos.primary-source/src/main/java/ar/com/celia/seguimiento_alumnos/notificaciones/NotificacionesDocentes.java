@@ -1,19 +1,10 @@
 package ar.com.celia.seguimiento_alumnos.notificaciones;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.util.List;
 
-import javax.servlet.ServletContext;
-
-import ar.com.celia.core.business.ContextManagerCore;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasExamenes;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlertasTps;
 import ar.com.celia.seguimiento_alumnos.domain.VwDocentesNoIngresanAMoodle;
-import ar.com.celia.seguimiento_alumnos.service.CelPropiedadDefinition;
 import ar.com.celia.seguimiento_alumnos.service.NotificacionesDocentesDefinition;
 
 
@@ -32,7 +23,7 @@ public class NotificacionesDocentes extends Notificaciones{
 		
 		for(VwDocentesNoIngresanAMoodle docenteQueNoIngresa:docentesQueNoIngresan)
 		{
-			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail);
+			String templateWithValues=remplazarValoresTemplate(docenteQueNoIngresa,textoMail,"true".equals(prueba));
 			enviarMail(docenteQueNoIngresa.getEmail(),subject,templateWithValues,false,null,null,null,null);
 			
 			if(frenar)
@@ -52,7 +43,7 @@ public class NotificacionesDocentes extends Notificaciones{
 
 		for(VwAlertasExamenes notaPendiente:notasPendientes)
 		{
-			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail);
+			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail,"true".equals(prueba));
 			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_EXAMEN,notaPendiente.getQuizid(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_NOTA_PENDIENTE);
 			
 			if(frenar)
@@ -72,7 +63,7 @@ public class NotificacionesDocentes extends Notificaciones{
 
 		for(VwAlertasTps notaPendiente:tpNotasPendientes)
 		{
-			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail);
+			String templateWithValues=remplazarValoresTemplate(notaPendiente,textoMail,"true".equals(prueba));
 			enviarMail(notaPendiente.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_TP,notaPendiente.getAssignmentId(),notaPendiente.getUserid(),Notificaciones.ALERTA_DOC_TP_NOTA_PENDIENTE);
 			if(frenar)
 				break;
@@ -97,7 +88,7 @@ public class NotificacionesDocentes extends Notificaciones{
 
 		for(VwAlertasTps tp:tpsPendientes)
 		{
-			String templateWithValues=remplazarValoresTemplate(tp,textoMail);
+			String templateWithValues=remplazarValoresTemplate(tp,textoMail,"true".equals(prueba));
 			enviarMail(tp.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_TP,tp.getAssignmentId(),tp.getUserid(),Notificaciones.ALERTA_DOC_TP_PENDIENTE_CARGA);
 			if(frenar)
 				break;
@@ -114,9 +105,8 @@ public class NotificacionesDocentes extends Notificaciones{
 		String subject=celPropiedadService.get("mail_doc_examen_pendiente_subida").getProValor();
 		
 
-		for(VwAlertasExamenes examen:examenPendientes)
-		{
-			String templateWithValues=remplazarValoresTemplate(examen,textoMail);
+		for(VwAlertasExamenes examen:examenPendientes) {
+			String templateWithValues=remplazarValoresTemplate(examen,textoMail,"true".equals(prueba));
 			enviarMail(examen.getEmail(),subject,templateWithValues,false,Notificaciones.OBJ_TIPO_EXAMEN,examen.getQuizid(),examen.getUserid(),Notificaciones.ALERTA_DOC_EXAMEN_PENDIENTE_CARGA);
 			if(frenar)
 				break;

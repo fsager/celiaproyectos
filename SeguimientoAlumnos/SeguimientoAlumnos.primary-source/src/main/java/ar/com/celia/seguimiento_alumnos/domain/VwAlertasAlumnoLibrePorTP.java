@@ -28,6 +28,8 @@ public class VwAlertasAlumnoLibrePorTP implements Serializable {
 		
 	private Long perCatId;
 	private Long matId;
+	private String lastname;
+	private String firstname;
 	private VwMateria vwMateria;
 	private Long userId;
 	private String email;
@@ -71,6 +73,24 @@ public class VwAlertasAlumnoLibrePorTP implements Serializable {
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
+
+	@Column(name = "lastname", nullable = false)
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	@Column(name = "firstname", nullable = false)
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 	
 	@Column(name = "email")
 	public String getEmail() {
@@ -108,6 +128,16 @@ public class VwAlertasAlumnoLibrePorTP implements Serializable {
 	public String getNombreMateria(){
 		return vwMateria.getMateria();
 	}
+	
+	@Override
+	public String toString() {
+		return "VwAlertasAlumnoLibrePorTP [perCatId=" + perCatId + ", matId="
+				+ matId + ", lastname=" + lastname + ", firstname=" + firstname
+				+ ", vwMateria=" + vwMateria + ", userId=" + userId
+				+ ", email=" + email + ", cantTp=" + cantTp + ", cantAusente="
+				+ cantAusente + ", cantReprobado=" + cantReprobado + "]";
+	}	
+	
 }
 
 class VwAlertasAlumnoLibrePorTPPk implements Serializable{

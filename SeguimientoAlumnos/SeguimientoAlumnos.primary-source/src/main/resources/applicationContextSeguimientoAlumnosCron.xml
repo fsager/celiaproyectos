@@ -162,7 +162,7 @@
 	<bean id="cronTriggerAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosNuevoTrabajoPractico"/>
 		<!-- OK Fire at 8:00am every day -->
-			<property name="cronExpression" value="0 0 8 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -170,7 +170,7 @@
 	<bean id="cronTriggerAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoPorVencer"/>
 		<!-- OK Fire at 8:20am every day -->
-			<property name="cronExpression" value="0 20 8 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -178,7 +178,7 @@
 	<bean id="cronTriggerAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoVencidos"/>
 		<!-- OK Fire at 8:35am every day -->
-			<property name="cronExpression" value="0 35 8 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -186,7 +186,7 @@
 	<bean id="cronTriggerAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosNuevoExamen"/>
 		<!-- OK Fire at 7:00am every day -->
-			<property name="cronExpression" value="0 0 7 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -194,7 +194,7 @@
 	<bean id="cronTriggerAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosExamenPorVencer"/>
 		<!-- OK Fire at 6:00am every day -->
-			<property name="cronExpression" value="0 0 6 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -202,7 +202,7 @@
 	<bean id="cronTriggerAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosExamenVencidos"/>
 		<!-- OK Fire at 6:30am every day -->
-			<property name="cronExpression" value="0 30 6 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -210,7 +210,7 @@
 	<bean id="cronTriggerAlumnosLibres" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosLibres"/>
 		<!-- OK Fire at 6:45am every day -->
-			<property name="cronExpression" value="0 30 6 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
@@ -218,7 +218,7 @@
 	<bean id="cronTriggerAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosPorQuedarLibresPorTP"/>
 		<!-- OK Fire at 6:45am every day -->
-			<property name="cronExpression" value="0 30 6 ? * *"/>
+			<property name="cronExpression" value="0 32 18 ? * *"/>
 		<!-- Cada 10 segundos -->
 <!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
 	</bean>
