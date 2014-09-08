@@ -1,5 +1,0 @@
-<jboss-web>
-	<security-domain flushOnSessionInvalidation="true">
-		java:/jaas/CeliaPolicy
-	</security-domain>
-</jboss-web>
