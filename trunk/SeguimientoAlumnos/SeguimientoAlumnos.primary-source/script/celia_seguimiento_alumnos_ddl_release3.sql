@@ -125,19 +125,6 @@ from celiacie_moodle2.mdl_assignment a
 ;
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_tps_pendientes_carga` as
-select a.id assignment_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
-where ra.userid=u.id
-and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
-and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
-  from celiacie_moodle2.mdl_assignment a
-  join seguimiento_alumnos.vw_cursos_activos c on c.id = a.course
-where now() between DATE_SUB(FROM_UNIXTIME(timeavailable), INTERVAL 10 DAY) and FROM_UNIXTIME(timeavailable)
-and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no está cargado
-;
-
-
-create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_pendientes_carga` as
 select a.id assignment_id,
 	u.id userid, u.lastname, u.firstname, u.email,
 	c.fullname course_fullname,c.shortname course_shortname,c.category course_category,
@@ -148,6 +135,20 @@ select a.id assignment_id,
   join celiacie_moodle2.mdl_role_assignments ra on ra.contextid = ctx.id and ra.roleid = 3
   join celiacie_moodle2.mdl_user u on u.id = ra.userid
 where now() between DATE_SUB(FROM_UNIXTIME(timeavailable), INTERVAL 10 DAY) and FROM_UNIXTIME(timeavailable)
+and LENGTH(intro) < 95;
+
+
+create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_pendientes_carga` as
+select q.id quiz_id,
+	u.id userid, u.lastname, u.firstname, u.email,
+	c.fullname course_fullname,c.shortname course_shortname,c.category course_category,
+	q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
+  from celiacie_moodle2.mdl_quiz q
+  join seguimiento_alumnos.vw_cursos_activos c on c.id = q.course
+  join celiacie_moodle2.mdl_context ctx on ctx.contextlevel = 50 and ctx.instanceid = c.id
+  join celiacie_moodle2.mdl_role_assignments ra on ra.contextid = ctx.id and ra.roleid = 3
+  join celiacie_moodle2.mdl_user u on u.id = ra.userid
+where now() between DATE_SUB(FROM_UNIXTIME(timeopen), INTERVAL 10 DAY) and FROM_UNIXTIME(timeopen)
 and LENGTH(intro) < 95
 ;
 
