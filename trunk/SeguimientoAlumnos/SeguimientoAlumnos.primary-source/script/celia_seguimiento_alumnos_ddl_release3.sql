@@ -96,28 +96,32 @@ select distinct a.id assignment_id,ue.userid userid, u.lastname, u.firstname, u.
 
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_nota_pendiente` as
-select q.id quiz_id,null userid, (select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
-where ra.userid=u.id
-and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
-and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name, DATE_FORMAT(FROM_UNIXTIME(timeopen),'%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose),'%d/%m/%Y %H:%i:%s') fecha_vencimiento
-  from celiacie_moodle2.mdl_quiz q
+select  distinct q.id quiz_id,
+		u.id userid, u.lastname, u.firstname, u.email,
+		c.fullname course_fullname,c.shortname course_shortname,c.category course_category,
+		q.name quiz_name, DATE_FORMAT(FROM_UNIXTIME(timeopen),'%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose),'%d/%m/%Y %H:%i:%s') fecha_vencimiento
+from celiacie_moodle2.mdl_quiz q	
+  join celiacie_moodle2.mdl_quiz_grades gr on gr.quiz=q.id and (gr.grade <= 0 or gr.grade is null)
   join seguimiento_alumnos.vw_cursos_activos c on c.id = q.course
-where DATE_ADD(FROM_UNIXTIME(timeclose), INTERVAL 4 DAY) < now()
- and exists (select 1 from celiacie_moodle2.mdl_quiz_grades gr where gr.quiz=q.id and gr.grade = 0.00000)
+  join celiacie_moodle2.mdl_context ctx on ctx.contextlevel = 50 and ctx.instanceid = c.id
+  join celiacie_moodle2.mdl_role_assignments ra on ra.contextid = ctx.id and ra.roleid = 3
+  join celiacie_moodle2.mdl_user u on u.id = ra.userid
+ where DATE_ADD(FROM_UNIXTIME(timeclose), INTERVAL 4 DAY) < now()
 ;
 
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_tp_nota_pendiente` as
-select a.id assignment_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
-where ra.userid=u.id
-and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
-and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
-  from celiacie_moodle2.mdl_assignment a
+select  distinct a.id assignment_id,
+		u.id userid, u.lastname, u.firstname, u.email,
+		c.fullname course_fullname,c.shortname course_shortname,c.category course_category,
+		a.name assignment_name, DATE_FORMAT(FROM_UNIXTIME(timeavailable),'%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue),'%d/%m/%Y %H:%i:%s') fecha_vencimiento
+from celiacie_moodle2.mdl_assignment a
+  join celiacie_moodle2.mdl_assignment_submissions asu on asu.assignment=a.id and (asu.grade <= 0 or asu.grade is null)
   join seguimiento_alumnos.vw_cursos_activos c on c.id = a.course
-where DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 4 DAY) < now()
- and exists (select 1 from celiacie_moodle2.mdl_assignment_submissions asu where asu.assignment=a.id and asu.grade = 0)
+  join celiacie_moodle2.mdl_context ctx on ctx.contextlevel = 50 and ctx.instanceid = c.id
+  join celiacie_moodle2.mdl_role_assignments ra on ra.contextid = ctx.id and ra.roleid = 3
+  join celiacie_moodle2.mdl_user u on u.id = ra.userid
+ where DATE_ADD(FROM_UNIXTIME(timedue), INTERVAL 0 DAY) < now()
 ;
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_tps_pendientes_carga` as
@@ -134,15 +138,17 @@ and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no está
 
 
 create or replace view `seguimiento_alumnos`.`vw_alerta_docentes_examenes_pendientes_carga` as
-select q.id quiz_id,null userid,(select u.email from celiacie_moodle2.mdl_role_assignments ra, celiacie_moodle2.mdl_user u
-where ra.userid=u.id
-and contextid = (select id from celiacie_moodle2.mdl_context where contextlevel = 50 and instanceid =c.id)
-and ra.roleid = 3) email,c.fullname course_fullname,c.shortname course_shortname,c.category course_category
-	,q.name quiz_name,DATE_FORMAT(FROM_UNIXTIME(timeopen), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timeclose), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
-  from celiacie_moodle2.mdl_quiz q
-  join seguimiento_alumnos.vw_cursos_activos c on c.id = q.course
-where now() between DATE_SUB(FROM_UNIXTIME(timeopen), INTERVAL 10 DAY) and FROM_UNIXTIME(timeopen)   
-and LENGTH(intro) < 95 -- Si tiene menos de esa longitud debe ser porque no está cargado
+select a.id assignment_id,
+	u.id userid, u.lastname, u.firstname, u.email,
+	c.fullname course_fullname,c.shortname course_shortname,c.category course_category,
+	a.name assignment_name,DATE_FORMAT(FROM_UNIXTIME(timeavailable), '%d/%m/%Y %H:%i:%s') fecha_inicio,DATE_FORMAT(FROM_UNIXTIME(timedue), '%d/%m/%Y %H:%i:%s') fecha_vencimiento
+  from celiacie_moodle2.mdl_assignment a
+  join seguimiento_alumnos.vw_cursos_activos c on c.id = a.course
+  join celiacie_moodle2.mdl_context ctx on ctx.contextlevel = 50 and ctx.instanceid = c.id
+  join celiacie_moodle2.mdl_role_assignments ra on ra.contextid = ctx.id and ra.roleid = 3
+  join celiacie_moodle2.mdl_user u on u.id = ra.userid
+where now() between DATE_SUB(FROM_UNIXTIME(timeavailable), INTERVAL 10 DAY) and FROM_UNIXTIME(timeavailable)
+and LENGTH(intro) < 95
 ;
 
 
