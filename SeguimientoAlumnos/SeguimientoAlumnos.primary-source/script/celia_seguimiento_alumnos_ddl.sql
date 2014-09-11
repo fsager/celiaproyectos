@@ -108,7 +108,7 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
   CREATE TABLE seguimiento_alumnos.cel_interaccion_caso_detalle
    (	ICD_ID bigint default NULL auto_increment primary key, 
 		ICD_RTA_TIPO varchar(250) not null,
-		ICD_OBSERVACIONES varchar(250) null,
+		ICD_OBSERVACIONES varchar(2000) null,
 		CAS_ID bigint not null,
 		IND_ID bigint not null,
     	AUD_FECHA_INS TIMESTAMP not null, 
