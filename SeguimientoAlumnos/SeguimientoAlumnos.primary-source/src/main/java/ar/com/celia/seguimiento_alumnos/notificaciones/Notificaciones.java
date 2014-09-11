@@ -63,12 +63,16 @@ public class Notificaciones {
 	public void enviarMail(String mail,String subject,String templateWithValues,boolean registrarEnvio,String obj_tipo,Long obj_id,Long usr_id,String alerta) throws Exception
 	{
 		if("true".equals(prueba)){
-			steMailService.enviarMail("gonza.delasilva@gmail.com", from, replyTo, cc, null, subject, templateWithValues);
-		}
-		else
-		{
+			try{
+				steMailService.enviarMail("gonza.delasilva@gmail.com", from, replyTo, cc, null, subject, templateWithValues);
+			}catch(Exception e){
+				System.out.println(templateWithValues+"\n********************************************");
+			}
+			return;
+		} else {
 			steMailService.enviarMail(mail, from, replyTo, cc, null, subject, templateWithValues);
 		}
+		
 		try{
 			if(registrarEnvio)
 				registrarEnvio(obj_tipo,obj_id,usr_id,alerta);
