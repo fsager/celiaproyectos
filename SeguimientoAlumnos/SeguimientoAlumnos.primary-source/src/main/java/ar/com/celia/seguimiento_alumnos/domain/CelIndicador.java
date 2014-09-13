@@ -27,7 +27,7 @@ public class CelIndicador implements java.io.Serializable, Comparator<Comparable
 	private String indDescripcion;
 	private Integer indOrder;
 	private String indFuntion;
-	private String indMoreInfoRenderer;
+	private String indMoreInfoZul;
 	private String indMoreInfoClass;
 	private Date audFechaIns;
 	private Date audFechaUpd;
@@ -104,13 +104,13 @@ public class CelIndicador implements java.io.Serializable, Comparator<Comparable
 	}
 
 
-	@Column(name = "ind_moreinfo_renderer", nullable = false, length = 300)
-	public String getIndMoreInfoRenderer() {
-		return indMoreInfoRenderer;
+	@Column(name = "ind_moreinfo_zul", nullable = false, length = 1000)
+	public String getIndMoreInfoZul() {
+		return indMoreInfoZul;
 	}
 	
-	public void setIndMoreInfoRenderer(String indMoreInfoRenderer) {
-		this.indMoreInfoRenderer = indMoreInfoRenderer;
+	public void setIndMoreInfoZul(String indMoreInfoZul) {
+		this.indMoreInfoZul = indMoreInfoZul;
 	}
 	
 	

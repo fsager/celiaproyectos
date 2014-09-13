@@ -61,6 +61,6 @@ public interface CelInteraccionCasoDefinition {
 	 * 
 	 * @param p_domain    p_domain
 	 */
-	public abstract List<CelInteraccionCaso> getInteraccionesPorAlumno(CelInteraccionCaso p_example, String[] falseLazy) throws Exception;
+	public abstract List<CelInteraccionCaso> getInteraccionesPorAlumno(Long aluId, String[] falseLazy) throws Exception;
 
 }

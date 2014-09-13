@@ -50,7 +50,7 @@ public class CelInteraccionCasoService implements CelInteraccionCasoDefinition {
 		return biz.getCantidadContactos(aluId) ;
 	}
 	
-	public List<CelInteraccionCaso> getInteraccionesPorAlumno(CelInteraccionCaso p_example, String[] falseLazy) throws Exception {
-		return biz.getInteraccionesPorAlumno(p_example,falseLazy);
+	public List<CelInteraccionCaso> getInteraccionesPorAlumno(Long aluId, String[] falseLazy) throws Exception {
+		return biz.getInteraccionesPorAlumno(aluId, falseLazy);
 	}
 }
