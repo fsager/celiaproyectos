@@ -3,7 +3,7 @@ alter table cel_indicador add ind_order int not null;
 alter table cel_indicador add ind_function varchar(300);
 
 
-alter table cel_indicador add ind_moreinfo_renderer varchar(300);
+alter table cel_indicador add ind_moreinfo_zul varchar(1000);
 
 alter table cel_indicador add ind_moreinfo_class varchar(300);
 
