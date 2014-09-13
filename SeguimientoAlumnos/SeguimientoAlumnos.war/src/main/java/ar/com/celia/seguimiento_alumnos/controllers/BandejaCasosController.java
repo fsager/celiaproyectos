@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.CreateEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zkmax.zul.Chosenbox;
 import org.zkoss.zul.Button;
@@ -195,42 +196,23 @@ public class BandejaCasosController extends GenericForwardComposer {
         			imgIndicador.setWidth("29px");
         			imgIndicador.setHeight("29px");
         			
-					
         			imgIndicador.addEventListener("onClick",new EventListener<Event>() {
 
 						@Override
 						public void onEvent(Event event) throws Exception {
+							CelIndicador celIndicador = (CelIndicador)cell.getValue();
 							
-							CelIndicador celIndicador=(CelIndicador)cell.getValue();
-							final Window wMoreInfo=new Window();
-							wMoreInfo.setTitle(alumno.getLastname()+", "+alumno.getFirstname()+ " - " +celIndicador.getIndNombre());
-							wMoreInfo.setClosable(true);
-							wMoreInfo.setParent(cell);
-							wMoreInfo.setPosition("center");
-							
-							if(celIndicador.getIndFuntion()!=null){
-								
-								wMoreInfo.setWidth("550px");
-								
-								List masInfo=celIndicadorService.callMoreDetail(alumno.getId(),celIndicador);
-
-								ListModelList lm=new ListModelList(masInfo);
-								
-								Listbox lb=new Listbox();
-								lb.setHeight("500px");
-								lb.setParent(wMoreInfo);
-								lb.setModel(lm);
-								lb.setItemRenderer((ListitemRenderer)Class.forName(celIndicador.getIndMoreInfoRenderer()).newInstance());
+							if (celIndicador.getIndFuntion() != null) {
+							    java.util.Properties params = new java.util.Properties();
+							    params.put("alumno", alumno);
+							    params.put("celIndicador", celIndicador);
+							    String moreInfoZul = celIndicador.getIndMoreInfoZul();
+								Window win = (Window) Executions.createComponents("/celia/" + moreInfoZul, null, params);
+								win.setWidth("550px");
+								win.doHighlighted();
+							} else {
+								Clients.showNotification("No cuenta con información adicional", "error", null, "middle_center", 3000);
 							}
-							else
-							{
-								wMoreInfo.setWidth("200px");
-								Label sinInfoAdicional=new Label("No cuenta con información adicional");
-								sinInfoAdicional.setParent(wMoreInfo);
-							}
-							
-							wMoreInfo.doHighlighted();
-							
 						}
 					}); 
         			
@@ -360,8 +342,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 		btnNuevoContacto.setSclass("tn btn-xs btn-info");
 		btnNuevoContacto.addEventListener("onClick", new EventListener() {
 		    public void onEvent(Event event) throws Exception {
-		    	
-		        abrirVentanDetalle((VwAlumnosActivos)event.getTarget().getAttribute("alumno"));
+		        abrirVentanaDetalle((VwAlumnosActivos)event.getTarget().getAttribute("alumno"));
 		    }
 		});
 		btnNuevoContacto.setParent(hBoxBotones);
@@ -373,7 +354,7 @@ public class BandejaCasosController extends GenericForwardComposer {
     }
     
    
-    public void abrirVentanDetalle(VwAlumnosActivos alumno) throws Exception
+    public void abrirVentanaDetalle(VwAlumnosActivos alumno) throws Exception
     {
 	    java.util.Properties params = new java.util.Properties();
         params.put("alumno", alumno);

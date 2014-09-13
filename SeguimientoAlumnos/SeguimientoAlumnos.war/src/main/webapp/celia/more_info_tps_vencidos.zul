@@ -1,0 +1,19 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk  xmlns="http://www.zkoss.org/2005/zul" 
+		xmlns:ca="client/attribute"
+	 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
+		xmlns:n="native">
+	
+	<window id="wndMoreInfoTpsVencidos" border="normal" closable="true"  width="70%" apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.MoreInfoTPsVencidosVM')" hflex="1" vflex="1">
+		
+		<listbox id="lbTPsVencidos" vflex="1" hflex="1" mold="paging" pagingPosition="top" emptyMessage="El alumno no presenta trabajos prácticos vencidos para el período vigente.">
+			<listhead>
+				<listheader label="Trabajos prácticos vencidos"/>
+			</listhead>
+		</listbox>
+	</window>
+</zk>
