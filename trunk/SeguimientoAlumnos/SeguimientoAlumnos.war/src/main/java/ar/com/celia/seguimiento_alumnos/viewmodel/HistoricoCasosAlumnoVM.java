@@ -27,13 +27,17 @@ import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCaso;
 import ar.com.celia.seguimiento_alumnos.domain.CelInteraccionCasoDetalle;
 import ar.com.celia.seguimiento_alumnos.domain.VwAlumnosActivos;
 import ar.com.celia.seguimiento_alumnos.service.CelDominioDefinition;
+import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDefinition;
 import ar.com.celia.seguimiento_alumnos.service.CelInteraccionCasoDetalleDefinition;
 
 public class HistoricoCasosAlumnoVM {
 
 	private CelInteraccionCasoDetalleDefinition celInteraccionCasoDetalleService = (CelInteraccionCasoDetalleDefinition) ContextManagerCore.getBizObject("celInteraccionCasoDetalleService");
 	
-	private LinkedHashMap<CelInteraccionCaso, List<CelInteraccionCasoDetalle>> hashMapInteraccionCasos = new LinkedHashMap<CelInteraccionCaso, List<CelInteraccionCasoDetalle>>();
+	private CelInteraccionCasoDefinition celInteraccionCasoService = (CelInteraccionCasoDefinition) ContextManagerCore.getBizObject("celInteraccionCasoService");
+	
+	private LinkedHashMap<Long, CelInteraccionCaso> hashMapCasos = new LinkedHashMap<Long, CelInteraccionCaso>();
+	private LinkedHashMap<Long, List<CelInteraccionCasoDetalle>> hashMapInteraccionCasos = new LinkedHashMap<Long, List<CelInteraccionCasoDetalle>>();
 	
 	@Wire
 	private Grid gridHistoricoCasos;
@@ -57,46 +61,38 @@ public class HistoricoCasosAlumnoVM {
 	@AfterCompose
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam("alumno") VwAlumnosActivos alumnoParam) throws Exception {
 		Selectors.wireComponents(view, this, false);
-		List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle = celInteraccionCasoDetalleService.getDetalleInteraccionesPorAlumno(alumnoParam.getId());
 
+		
 		List<CelDominio> lstRespuestasDominio = celDominioService.getDominio("INDICADOR_CASO_RESPUESTA", null);
 
 		for (CelDominio domRespuestasDominio : lstRespuestasDominio) {
 			hashRespuestasDominio.put(domRespuestasDominio.getDomClave(), domRespuestasDominio);	
 		}
-		
-		cargarLbHistorico(lstInteraccionCasoDetalle);
+		cargarLbHistorico(alumnoParam.getId());
 	}
 
 	
-	private void cargarHashMapDetalles(List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle) {
-		hashMapInteraccionCasos = new LinkedHashMap<CelInteraccionCaso, List<CelInteraccionCasoDetalle>>();
-		for (CelInteraccionCasoDetalle casoDetalle : lstInteraccionCasoDetalle) {
-			CelInteraccionCaso key = casoDetalle.getCelInteraccionCaso();
-			if (hashMapInteraccionCasos.containsKey(key)) {
-				List<CelInteraccionCasoDetalle> lstDetalles = hashMapInteraccionCasos.get(key);
-				lstDetalles.add(casoDetalle);
-			} else {
-				List<CelInteraccionCasoDetalle> lstDetalles = new ArrayList<CelInteraccionCasoDetalle>();
-				lstDetalles.add(casoDetalle);
-				hashMapInteraccionCasos.put(key, lstDetalles);
-			}
-		}
-	}
-	
-	
-	private void cargarLbHistorico(List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle) {
-		cargarHashMapDetalles(lstInteraccionCasoDetalle);
+
+	private void cargarLbHistorico(Long aluId) throws Exception {
+		List<CelInteraccionCaso> lstInteraccionesAlumno = celInteraccionCasoService.getInteraccionesPorAlumno(aluId, null);
+
+		List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle = celInteraccionCasoDetalleService.getDetalleInteraccionesPorAlumno(aluId);
+		
+		cargarHashMapDetalles(lstInteraccionesAlumno, lstInteraccionCasoDetalle);
 		Rows rows = new Rows();
 		rows.setParent(gridHistoricoCasos);
 		
-		Iterator<Entry<CelInteraccionCaso, List<CelInteraccionCasoDetalle>>> it = hashMapInteraccionCasos.entrySet().iterator();
+		Iterator<Entry<Long, List<CelInteraccionCasoDetalle>>> it = hashMapInteraccionCasos.entrySet().iterator();
+			
 		while (it.hasNext()) {
-			Entry<CelInteraccionCaso, List<CelInteraccionCasoDetalle>> entry = it.next();
-			String title = entry.getKey().getAudFechaIns().toString().concat(" - ").concat(entry.getKey().getCasObservacionesGrales());
+			Entry<Long, List<CelInteraccionCasoDetalle>> entry = it.next();
+			Long casId = entry.getKey();
+			CelInteraccionCaso celInteraccionCaso = hashMapCasos.get(casId);
+			
+			String title = celInteraccionCaso.getAudFechaIns().toString().concat(" - ").concat(celInteraccionCaso.getCasObservacionesGrales());
 			Group group = new Group(title);
 			group.setParent(rows);
-
+			
 			List<CelInteraccionCasoDetalle> lstDetalles = entry.getValue();
 			for (CelInteraccionCasoDetalle casoDetalle : lstDetalles) {
 				Row row = new Row();
@@ -114,4 +110,23 @@ public class HistoricoCasosAlumnoVM {
 		}
 	}
 	
+	
+	private void cargarHashMapDetalles(List<CelInteraccionCaso> lstInteraccionesAlumno, List<CelInteraccionCasoDetalle> lstInteraccionCasoDetalle) {
+		hashMapInteraccionCasos = new LinkedHashMap<Long, List<CelInteraccionCasoDetalle>>();
+		hashMapCasos = new LinkedHashMap<Long, CelInteraccionCaso>();
+		
+		//Creamos la lista vacía de detalles para cada caso en el HashMap, luego se la completará.
+		for (CelInteraccionCaso celInteraccionCaso : lstInteraccionesAlumno) {
+			Long key = celInteraccionCaso.getCasId();
+			List<CelInteraccionCasoDetalle> lstDetalles = new ArrayList<CelInteraccionCasoDetalle>();
+			hashMapInteraccionCasos.put(key, lstDetalles);
+			hashMapCasos.put(key, celInteraccionCaso);
+		}
+		
+		for (CelInteraccionCasoDetalle casoDetalle : lstInteraccionCasoDetalle) {
+			Long key = casoDetalle.getCelInteraccionCaso().getCasId();
+			List<CelInteraccionCasoDetalle> lstDetalles = hashMapInteraccionCasos.get(key);
+			lstDetalles.add(casoDetalle);
+		}
+	}
 }

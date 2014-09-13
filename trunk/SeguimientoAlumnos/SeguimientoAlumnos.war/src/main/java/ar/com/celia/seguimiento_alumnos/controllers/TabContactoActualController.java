@@ -116,6 +116,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 				Listcell celdaCampoObservaciones=new Listcell();
 				Textbox lstCeldaCampoObservaciones=new Textbox();
 				lstCeldaCampoObservaciones.setRows(2);
+				lstCeldaCampoObservaciones.setMaxlength(2000);
 				lstCeldaCampoObservaciones.setWidth("100%");
 				row.setAttribute("lstCeldaCampoObservaciones", lstCeldaCampoObservaciones);
 				

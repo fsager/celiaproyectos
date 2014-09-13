@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>  
+
+	<!-- Configuración de mail -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"/>
+
+    <bean id="steMailService" class="ar.com.celia.seguimiento_alumnos.notificaciones.SteMailPoolService" lazy-init="true">
+    	<constructor-arg ref="mailSender" />
+		<constructor-arg ref="celPropiedadService" />
+    </bean>
+    
+
+    <!-- Jobs -->
+    <bean id="servletContext" class="org.springframework.web.context.support.ServletContextFactoryBean"/>
+    
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+    
+    <bean id="notificacionesDocentes" class="ar.com.celia.seguimiento_alumnos.notificaciones.NotificacionesDocentes">
+    	<property name="steMailService" ref="steMailService"/>
+		<property name="notificacionesDocentesService" ref="notificacionesDocentesService"/>
+		<property name="celPropiedadService" ref="celPropiedadService"/>
+		<property name="celAlertaEnviadaService" ref="celAlertaEnviadaService"/>		
+		<property name="servletContext" ref="servletContext"/>
+    </bean>
+    
+
+	<bean id="jobDetailDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="notificarNoIngresoAMoodle"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailnDocenteCargaDeNotas" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="notificarCargaDeNotas"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailnDocenteTrabajosPracticosPendientesDeCorreccion" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="notificarTrabajosPracticosPendientesDeCorreccion"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailnDocenteTrabajosPracticosExamenesPendienteDeSubida" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="notificarTrabajosPracticosExamenesPendienteDeSubida"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailnDocenteTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesDocentes"/>
+	  <property name="targetMethod" value="test"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+    <bean id="notificacionesAlumnos" class="ar.com.celia.seguimiento_alumnos.notificaciones.NotificacionesAlumnos">
+    	<property name="steMailService" ref="steMailService"/>
+		<property name="notificacionesAlumnosService" ref="notificacionesAlumnosService"/>
+		<property name="celPropiedadService" ref="celPropiedadService"/>
+		<property name="celAlertaEnviadaService" ref="celAlertaEnviadaService"/>
+		<property name="servletContext" ref="servletContext"/>
+    </bean>
+	
+	<bean id="jobDetailAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarNuevoTrabajoPractico"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarTrabajoPracticoPorVencer"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarTrabajoPracticoVencidos"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarNuevoExamen"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarExamenPorVencer"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarExamenVencidos"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="jobDetailAlumnosLibres" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarLibres"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="notificarAlumnosPorQuedarLibresPorTP"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="jobDetailAlumnosTest" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="notificacionesAlumnos"/>
+	  <property name="targetMethod" value="test"/>
+	  <property name="concurrent" value="false"/>
+	</bean>
+
+	<bean id="cronTriggerDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailDocenteNoIngresaMoodle"/>
+		<!-- OK Cada 2 días -->
+		<property name="cronExpression" value="0 20 0 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerDocenteCargaNotas" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailnDocenteCargaDeNotas"/>
+		<!--OK Fire at 10:15am every day -->
+		<property name="cronExpression" value="0 20 0 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosPendientesDeCorreccion"/>
+		<!-- OK Fire at 11:00am every day -->
+			<property name="cronExpression" value="0 20 0 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
+		<!-- OK Fire at 9:00am every day -->
+			<property name="cronExpression" value="0 0 9 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerDocenteTest" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailnDocenteTest"/>
+		<!-- Cada 10 segundos -->
+		<property name="cronExpression" value="0/10 * * * * ?"/>
+	</bean>
+	
+	
+	
+	<!-- ALUMNOS -->
+	<bean id="cronTriggerAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosNuevoTrabajoPractico"/>
+		<!-- OK Fire at 8:00am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoPorVencer"/>
+		<!-- OK Fire at 8:20am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoVencidos"/>
+		<!-- OK Fire at 8:35am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosNuevoExamen"/>
+		<!-- OK Fire at 7:00am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosExamenPorVencer"/>
+		<!-- OK Fire at 6:00am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosExamenVencidos"/>
+		<!-- OK Fire at 6:30am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosLibres" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosLibres"/>
+		<!-- OK Fire at 6:45am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+	
+	<bean id="cronTriggerAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosPorQuedarLibresPorTP"/>
+		<!-- OK Fire at 6:45am every day -->
+			<property name="cronExpression" value="0 32 18 ? * *"/>
+		<!-- Cada 10 segundos -->
+<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+	</bean>
+
+	<bean id="cronTriggerAlumnosTest" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="jobDetailAlumnosTest"/>
+		<!-- Cada 10 segundos -->
+		<property name="cronExpression" value="0/10 * * * * ?"/>
+	</bean>
+	
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	  <property name="triggers">
+	    <list>
+<!-- 	    	<ref bean="cronTriggerDocenteTest"/> -->
+	    
+	      <ref bean="cronTriggerDocenteNoIngresaMoodle"/>
+	      <ref bean="cronTriggerDocenteCargaNotas"/>
+	      <ref bean="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion"/>
+	      <ref bean="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
+	      
+<!-- 	      <ref bean="cronTriggerAlumnosTest"/> -->
+	      
+	      <ref bean="cronTriggerAlumnosNuevoTrabajoPractico"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoPorVencer"/>
+	      <ref bean="cronTriggerAlumnosTrabajoPracticoVencidos"/>
+	      <ref bean="cronTriggerAlumnosNuevoExamen"/>
+	      <ref bean="cronTriggerAlumnosExamenPorVencer"/>
+	      <ref bean="cronTriggerAlumnosExamenVencidos"/>
+	      <ref bean="cronTriggerAlumnosLibres"/>
+	      <ref bean="cronTriggerAlumnosPorQuedarLibresPorTP"/>
+	      
+	    </list>
+	  </property>
+	</bean>
+
+</beans>
