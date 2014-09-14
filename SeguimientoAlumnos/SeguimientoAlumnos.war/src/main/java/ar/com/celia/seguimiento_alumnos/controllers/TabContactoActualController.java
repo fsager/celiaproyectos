@@ -187,10 +187,12 @@ public class TabContactoActualController extends GenericForwardComposer {
 
 		//Si no hay información cargada para al menos un indicador ni se registran observaciones generales, no se permite insertar.
 		if (lstDetallesPendientes.isEmpty() && tbxObservacionesGenerales.getValue().trim().isEmpty()) {
-			Clients.showNotification("Para registrar el contacto debe cargar algún campo", "error", null, "middle_center", 3000);
+			Clients.showNotification("Para registrar el contacto debe cargar algún campo.", "error", null, "middle_center", 3000);
 			return false;
 		}
  
+		
+		
 		
 		//Guardamos el caso y los detalles asociados al mismo.
 		CelInteraccionCaso cic = new CelInteraccionCaso();
