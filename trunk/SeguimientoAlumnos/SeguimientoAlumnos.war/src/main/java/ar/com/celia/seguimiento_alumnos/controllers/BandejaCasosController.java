@@ -313,6 +313,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 				final Window wMaterias=new Window();
 				wMaterias.setTitle(alumno.getLastname()+", "+alumno.getFirstname());
 				wMaterias.setWidth("300px");
+				wMaterias.setVflex("1");
 				wMaterias.setClosable(true);
 				wMaterias.setParent(wndIndex);
 				wMaterias.setPosition("center");
@@ -324,7 +325,7 @@ public class BandejaCasosController extends GenericForwardComposer {
 				ListModelList lm=new ListModelList(materias);
 				
 				Listbox lb=new Listbox();
-				lb.setHeight("500px");
+				//lb.setHeight("500px");
 				lb.setParent(wMaterias);
 				lb.setModel(lm);
 				
