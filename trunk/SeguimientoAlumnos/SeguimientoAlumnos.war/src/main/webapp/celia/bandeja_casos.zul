@@ -6,25 +6,8 @@
 	 	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
 		xmlns:h="http://www.w3.org/1999/xhtml" xmlns:a="http://www.zkoss.org/2005/zk/annotation"
 		xmlns:n="native">
-	<n:html lang="en">
-	  <n:head>
-	    <n:meta charset="utf-8"/>
-	    <n:meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	    <n:meta name="apple-mobile-web-app-capable" content="yes"/>    
-<!-- 	    <style src="/css/zk.overwrite.css.dsp" ></style>	         -->
-<!-- 		    <style src="/css/bootstrap.css" ></style> -->
-<!-- 		    <style src="/css/bootstrap-responsive.min.css" ></style> -->
-<!-- 		    <style src="/css/google.font.css"></style> -->
-<!-- 		    <style src="/css/font-awesome.min.css" >        </style> -->
-<!-- 		    <style src="/css/ui-lightness/jquery-ui-1.10.0.custom.min.css" ></style> -->
-<!-- 	    <style src="/css/base-admin-3.css" ></style> -->
-<!-- 	    <style src="/css/base-admin-3-responsive.css" ></style> -->
-<!-- 	    <style src="/css/pages/dashboard.css" >   </style> -->
-	    <style src="/css/custom.css" ></style>
-<!-- 	    <style src="/js/plugins/msgGrowl/css/msgGrowl.css"></style> -->
-	  </n:head>
-	</n:html>
-	<window id="wndIndex" border="none" height="100%" width="100%" apply="ar.com.celia.seguimiento_alumnos.controllers.BandejaCasosController">
+
+	<window id="wndIndex" border="none" hflex="1" vflex="" apply="ar.com.celia.seguimiento_alumnos.controllers.BandejaCasosController">
 	<groupbox mold="3d">
 		<caption label="Filtros" style="font-weight:bold;"/>
 		<grid id="gridFiltros">
@@ -55,7 +38,7 @@
 			</rows>
 		</grid>
 	</groupbox>	
-		<listbox id="lstBandejaCasos"  mold="paging" pageSize="4" width="100%" emptyMessage="No se encontraron resultados, para los filtros ingresados.">
+		<listbox id="lstBandejaCasos"  mold="paging" pageSize="4" width="100%" emptyMessage="No se encontraron resultados para los filtros ingresados.">
 			<listhead id="lstHead"/>
 		</listbox>
 	</window>
