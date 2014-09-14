@@ -2,8 +2,10 @@ package ar.com.celia.seguimiento_alumnos.controllers;
 
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabpanel;
 import org.zkoss.zul.Window;
@@ -65,17 +67,24 @@ public class DetalleCasoController extends GenericForwardComposer {
 			params.put("alumno", alumno);
 			Window win = (Window) Executions.createComponents(
 					"/celia/historico_casos_alumno.zul", tbpHistorico, params);
-			
-			//tabContactoActualController=(TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
 	}
 	
 	
 	public void onClick$btnGuardar(Event evt) throws Exception {
-		boolean ok=tabContactoActualController.guardarInteraccion();
-		if(ok){
-			bandejaCasosController.cargarBandeja();
-			wndDetalleCaso.detach();
-		}
+		Messagebox.show("¿Desea guardar la interacción actual?",
+				"Confirmación", Messagebox.OK | Messagebox.CANCEL,
+				Messagebox.QUESTION, new EventListener<Event>() {
+					@Override
+					public void onEvent(Event evt) throws Exception {
+						if (Messagebox.ON_OK.equals(evt.getName())) {
+							boolean ok = tabContactoActualController.guardarInteraccion();
+							if(ok) {
+								bandejaCasosController.cargarBandeja();
+								wndDetalleCaso.detach();
+							}
+						}
+					}
+				});
 	}
 	
 	public void onClick$btnCancelar(Event evt) throws Exception {
