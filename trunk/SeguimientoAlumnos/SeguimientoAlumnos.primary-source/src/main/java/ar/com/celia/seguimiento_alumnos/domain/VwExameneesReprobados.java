@@ -2,14 +2,12 @@ package ar.com.celia.seguimiento_alumnos.domain;
 
 // Generated 06/04/2014 19:30:09 by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 /**
@@ -17,8 +15,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "vw_examenes_reprobados", schema = "seguimiento_alumnos")
+@IdClass(VwExameneesReprobadosPk.class)
 public class VwExameneesReprobados implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5722724165968800944L;
 	private Long quizid;
 	private Long userid;
 	private String courseFullname;
@@ -41,11 +44,11 @@ public class VwExameneesReprobados implements java.io.Serializable {
 		this.quizid = quizid;
 	}
 
+	@Id
 	@Column(name = "userid", nullable = false)
 	public Long getUserid() {
 		return userid;
 	}
-
 	
 	public void setUserid(Long userid) {
 		this.userid = userid;
@@ -95,4 +98,66 @@ public class VwExameneesReprobados implements java.io.Serializable {
 	public void setQuizGrade(Double quizGrade) {
 		this.quizGrade = quizGrade;
 	}
+}
+
+class VwExameneesReprobadosPk implements Serializable{
+
+	private static final long serialVersionUID = 7570780722846840397L;
+	
+	private Long quizid;
+	private Long userid;
+
+	@Id
+	@Column(name = "quiz_id", nullable = false)
+	public Long getQuizid() {
+		return quizid;
+	}
+	
+	public void setQuizid(Long quizid) {
+		this.quizid = quizid;
+	}
+
+	@Id
+	@Column(name = "userid", nullable = false)
+	public Long getUserid() {
+		return userid;
+	}
+
+	
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((quizid == null) ? 0 : quizid.hashCode());
+		result = prime * result + ((userid == null) ? 0 : userid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VwExameneesReprobadosPk other = (VwExameneesReprobadosPk) obj;
+		if (quizid == null) {
+			if (other.quizid != null)
+				return false;
+		} else if (!quizid.equals(other.quizid))
+			return false;
+		if (userid == null) {
+			if (other.userid != null)
+				return false;
+		} else if (!userid.equals(other.userid))
+			return false;
+		return true;
+	}
+	
+	
 }
