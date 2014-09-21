@@ -2,9 +2,12 @@ package ar.com.celia.seguimiento_alumnos.domain;
 
 // Generated 06/04/2014 19:30:09 by Hibernate Tools 3.4.0.CR1
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 /**
@@ -12,6 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "vw_alerta_alumnos_nuevos_tp", schema = "seguimiento_alumnos")
+@IdClass(VwAlertasTpsPk.class)
 public class VwAlertasTps implements java.io.Serializable {
 
 	/**
@@ -45,12 +49,12 @@ public class VwAlertasTps implements java.io.Serializable {
 	public void setAssignmentId(Long assignmentId) {
 		this.assignmentId = assignmentId;
 	}
-
+	
+	@Id
 	@Column(name = "userid", nullable = false)
 	public Long getUserid() {
 		return userid;
 	}
-
 	
 	public void setUserid(Long userid) {
 		this.userid = userid;
@@ -149,5 +153,33 @@ public class VwAlertasTps implements java.io.Serializable {
 				+ ", courseCategory=" + courseCategory + ", assignmentName="
 				+ assignmentName + ", fechaInicio=" + fechaInicio
 				+ ", fechaVencimiento=" + fechaVencimiento + "]";
+	}
+}
+
+class VwAlertasTpsPk implements Serializable{
+
+	private static final long serialVersionUID = 2227490565267607852L;
+	
+	private Long assignmentId;
+	private Long userid;
+	
+	@Id
+	@Column(name = "assignment_id", nullable = false)
+	public Long getAssignmentId() {
+		return assignmentId;
+	}
+		
+	public void setAssignmentId(Long assignmentId) {
+		this.assignmentId = assignmentId;
+	}
+
+	@Id
+	@Column(name = "userid", nullable = false)
+	public Long getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
 }
