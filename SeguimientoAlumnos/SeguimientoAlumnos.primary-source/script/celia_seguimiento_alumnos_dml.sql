@@ -114,7 +114,7 @@ VALUES
 ('GRAL',
 'FECHA_DESDE',
 '01/08/2014',
-'Fecha a partír de la cual se filtran los registros en las consultas');
+'Fecha a partir de la cual se filtran los registros en las consultas');
 
 
 delete from cel_propiedad
@@ -185,7 +185,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.user',
 'MAIL.PROP',
-'notificaciones@celiaeig.com',
+'notificaciones.celia.eig@gmail.com',
 'Usuario para el envio de mails');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -208,7 +208,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.pass',
 'MAIL.PROP',
-'Notas.73',
+'4rp153np7g3Z',
 'Clave de mail');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -219,7 +219,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.host',
 'MAIL.PROP',
-'mail.celiaeig.com',
+'smtp.gmail.com',
 'Host smtp');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -230,7 +230,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail.smtp.port',
 'MAIL.PROP',
-'25',
+'465',
 'Puerto smtp');
 
 
@@ -242,7 +242,7 @@ INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
 VALUES
 ('mail_from',
 'MAIL.PROP',
-'celiacie_admin@celia.com.ar',
+'notificaciones.celia.eig@gmail.com',
 'Mail from');
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
