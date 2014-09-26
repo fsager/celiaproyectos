@@ -120,34 +120,26 @@
 
 	<bean id="cronTriggerDocenteNoIngresaMoodle" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailDocenteNoIngresaMoodle"/>
-		<!-- OK Cada 2 días -->
-		<property name="cronExpression" value="0 20 0 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!--OK Fire at 9:00am every day -->
+		<property name="cronExpression" value="0 0 9 ? * *"/>
 	</bean>
 	
 	<bean id="cronTriggerDocenteCargaNotas" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailnDocenteCargaDeNotas"/>
-		<!--OK Fire at 10:15am every day -->
-		<property name="cronExpression" value="0 20 0 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!--OK Fire at 9:05am every day -->
+		<property name="cronExpression" value="0 5 9 ? * *"/>
 	</bean>
 	
 	<bean id="cronTriggerDocenteTrabajosPracticosPendientesDeCorreccion" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosPendientesDeCorreccion"/>
-		<!-- OK Fire at 11:00am every day -->
-			<property name="cronExpression" value="0 20 0 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!--OK Fire at 9:10am every day -->
+			<property name="cronExpression" value="0 10 9 ? * *"/>
 	</bean>
 	
 	<bean id="cronTriggerDocenteTrabajosPracticosExamenesPendienteDeSubida" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailnDocenteTrabajosPracticosExamenesPendienteDeSubida"/>
-		<!-- OK Fire at 9:00am every day -->
-			<property name="cronExpression" value="0 0 9 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!--OK Fire at 9:15am every day -->
+			<property name="cronExpression" value="0 15 9 ? * *"/>
 	</bean>
 	
 	<bean id="cronTriggerDocenteTest" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -161,66 +153,50 @@
 	<!-- ALUMNOS -->
 	<bean id="cronTriggerAlumnosNuevoTrabajoPractico" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosNuevoTrabajoPractico"/>
-		<!-- OK Fire at 8:00am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:30pm every day -->
+			<property name="cronExpression" value="0 30 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosTrabajoPracticoPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoPorVencer"/>
-		<!-- OK Fire at 8:20am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:35pm every day -->
+			<property name="cronExpression" value="0 35 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosTrabajoPracticoVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosTrabajoPracticoVencidos"/>
-		<!-- OK Fire at 8:35am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:40pm every day -->
+			<property name="cronExpression" value="0 40 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosNuevoExamen" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosNuevoExamen"/>
-		<!-- OK Fire at 7:00am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:45pm every day -->
+			<property name="cronExpression" value="0 45 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosExamenPorVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosExamenPorVencer"/>
-		<!-- OK Fire at 6:00am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:50pm every day -->
+			<property name="cronExpression" value="0 50 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosExamenVencidos" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosExamenVencidos"/>
-		<!-- OK Fire at 6:30am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 6:55pm every day -->
+			<property name="cronExpression" value="0 55 18 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosLibres" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosLibres"/>
-		<!-- OK Fire at 6:45am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 7:00pm every day -->
+			<property name="cronExpression" value="0 0 19 ? * *"/>
 	</bean>
 	
 	<bean id="cronTriggerAlumnosPorQuedarLibresPorTP" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="jobDetailAlumnosPorQuedarLibresPorTP"/>
-		<!-- OK Fire at 6:45am every day -->
-			<property name="cronExpression" value="0 32 18 ? * *"/>
-		<!-- Cada 10 segundos -->
-<!-- 		<property name="cronExpression" value="0/10 * * * * ?"/> -->
+		<!-- OK Fire at 7:05pm every day -->
+			<property name="cronExpression" value="0 5 19 ? * *"/>
 	</bean>
 
 	<bean id="cronTriggerAlumnosTest" class="org.springframework.scheduling.quartz.CronTriggerBean">
