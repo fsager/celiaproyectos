@@ -24,7 +24,6 @@ import ar.com.celia.seguimiento_alumnos.domain.VwEvaluacion;
 import ar.com.celia.seguimiento_alumnos.domain.VwExamen;
 import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwMateria;
-import ar.com.celia.seguimiento_alumnos.domain.VwListadoNotasExamenAlumno;
 import ar.com.celia.seguimiento_alumnos.domain.VwPeriodo;
 import ar.com.celia.seguimiento_alumnos.domain.VwTrabajoPractico;
 
