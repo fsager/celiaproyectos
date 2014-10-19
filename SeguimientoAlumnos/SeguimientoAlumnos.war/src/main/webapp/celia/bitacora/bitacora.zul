@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:ca="client/attribute"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" xmlns:n="native">
+
+	<window id="wndBitacora" border="none" hflex="1" vflex="1" apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.bitacora.BitacoraVM')">
+
+		<groupbox open="true" mold="3d" style="padding:0px;">
+			<caption label="Filtros" style="font-size:14px;font-weight:bold;" image="/img/opt_filter_24.png" />
+			<grid fixedLayout="true" hflex="1">
+				<columns>
+					<column vflex="1"/>
+					<column />
+					<column vflex="1" />
+					<column />
+					<column vflex="1" />
+					<column />
+				</columns>
+				<rows>
+					<row>
+						<label value="Apellido:" style="font-weight:bold;"/>
+						<textbox value="@bind(vm.apellidoAlumnoFiltro)"/>
+
+						<label value="Nombre:" style="font-weight:bold;"/>
+						<textbox value="@bind(vm.nombreAlumnoFiltro)"/>
+					
+						<button label="Filtrar" image="/img/opt_filter_24.png" sclass="btn-primary" onClick="@command('filtrarAlumnos')"/>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+
+		<listbox model="@load(vm.alumnosActivos)" mold="paging" autopaging="true" checkmark="true" vflex="1" selectedItem="@bind(vm.alumnoSeleccionado)">
+			<auxhead>
+		        <auxheader label="Datos del Alumno" colspan="3" align="center" style="font-size:16px;" image="/img/chef.png"/>
+		        <auxheader label="Contacto con el alumno" colspan="3" align="center" style="font-size:16px;" image="/img/chat.png"/>
+			</auxhead>
+
+			<listhead>
+				<listheader label="Apellido" hflex="min" align="left" sort="auto" />
+				<listheader label="Nombre" hflex="min" align="left" sort="auto" />
+				<listheader label="Matrícula" hflex="min" align="left" sort="auto" />
+				<listheader label="Teléfono 1" hflex="min" align="left" sort="auto" />
+				<listheader label="Teléfono 2" hflex="min"  align="left" sort="auto" />
+				<listheader label="Email" hflex="min" align="left" sort="auto" />
+			</listhead>
+
+			<template name="model" var="item">
+				<listitem>
+					<listcell label="@load(item.lastname)"/>
+					<listcell label="@load(item.firstname)"/>
+					<listcell label="@load(item.matricula)"/>
+					<listcell label="@load(item.phone1)"/>
+					<listcell label="@load(item.phone2)"/>
+					<listcell label="@load(item.email)"/>
+				</listitem>
+			</template>
+		</listbox>
+
+		<hlayout>
+			<button id="btnNuevoContacto" label="Nuevo contacto" sclass="btn-primary" image="/img/new.png" onClick="@command('nuevaInteraccion')"/>
+			<button id="btnBitacora" label="Ver Bitácora" sclass="btn-primary" image="/img/bitacora.png"/>
+		</hlayout>
+	</window>
+</zk>

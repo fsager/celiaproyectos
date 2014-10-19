@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:ca="client/attribute"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" xmlns:n="native">
+
+	<window id="wndBitacoraNuevaInteraccion" border="none" apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.bitacora.BitacoraNuevaInteraccionVM')" title="Nueva interacción" hflex="min" vflex="min" closable="true">
+	
+		<grid hflex="min" vflex="min">
+			<columns>
+				<column/>
+				<column/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Alumno:"/>
+					<textbox/>
+				</row>
+				<row>
+					<label value="Origen del contacto:"/>
+					<textbox/>
+				</row>
+				<row>
+					<label value="Motivo del contacto:"/>
+					<textbox/>
+				</row>
+				<row>
+					<label value="Descripción:"/>
+					<textbox rows="2" multiline="true"/>
+				</row>
+ 				<row spans="2" align="center">
+					<button label="Guardar"/>		
+				</row>
+			</rows>
+		</grid>	
+
+	</window>
+</zk>
