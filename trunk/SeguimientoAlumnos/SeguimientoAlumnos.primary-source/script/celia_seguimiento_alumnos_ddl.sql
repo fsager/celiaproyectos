@@ -150,14 +150,28 @@ ALTER TABLE seguimiento_alumnos.cel_interaccion_caso ADD CONSTRAINT CEL_INT_CASO
 		ALE_FECHA_ENVIO_MAIL timestamp not null
    );
 
-ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_ALE_ID FOREIGN KEY (ALE_ID)
-    REFERENCES seguimiento_alumnos.cel_alerta (ALE_ID);
+	ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_ALE_ID FOREIGN KEY (ALE_ID)
+	    REFERENCES seguimiento_alumnos.cel_alerta (ALE_ID);
+	
+	ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_USR_ID FOREIGN KEY (USR_ID)
+	    REFERENCES celiacie_moodle2.mdl_user (ID);
 
-ALTER TABLE seguimiento_alumnos.cel_alerta_notificacion ADD CONSTRAINT CEL_ALN_USR_ID FOREIGN KEY (USR_ID)
-    REFERENCES celiacie_moodle2.mdl_user (ID);
 
+    CREATE TABLE seguimiento_alumnos.cel_bitacora_alumnos
+   (	BTC_ID bigint auto_increment primary key,
+		USR_ID bigint(10) unsigned not null,
+    	BTC_ORIGEN_CONTACTO varchar(100), 
+    	BTC_MOTIVO_CONTACTO varchar(100), 
+		BTC_DESCRIPCION_CONTACTO varchar(4000), 
+    	AUD_FECHA_INS timestamp, 
+    	AUD_FECHA_UPD timestamp, 
+    	AUD_USR_INS varchar(250), 
+    	AUD_USR_UPD varchar(250)
+   );
+
+	ALTER TABLE seguimiento_alumnos.cel_bitacora_alumnos ADD CONSTRAINT CEL_BTC_USR_ID FOREIGN KEY (USR_ID)
+	    REFERENCES celiacie_moodle2.mdl_user (ID);
     
-
     
 -- VIEWS
 CREATE OR REPLACE VIEW `seguimiento_alumnos`.`vw_alumnos_activos` AS
