@@ -71,6 +71,23 @@ public class BitacoraVM {
 	}
 	
 	
+	@Command
+	public void verBitacora() throws Exception {
+		if (alumnoSeleccionado == null) {
+			Clients.showNotification("Debe seleccionar un alumno", "error", null, "middle_center", 2000);
+			return;
+		}
+		
+	    java.util.Properties params = new java.util.Properties();
+        params.put("alumno", alumnoSeleccionado);
+		Window win = (Window) Executions.createComponents("/celia/bitacora/ver_bitacora.zul", null, params);
+		win.setTitle("Bitácora de "+alumnoSeleccionado.getNombreCompleto());
+		win.setWidth("700px");
+		win.setClosable(true);
+		win.doModal();
+	}
+	
+	
 	public List<VwAlumnosActivos> getAlumnosActivos() {
 		return alumnosActivos;
 	}

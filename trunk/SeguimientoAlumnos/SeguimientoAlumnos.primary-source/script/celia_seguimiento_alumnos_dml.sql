@@ -94,7 +94,6 @@ VALUES ('INDICADOR_CASO_RESPUESTA', 'OTRA_RAZON', '0', 'Otra razón', '3');
 
 
 
-
 INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
 VALUES ('TIPO_INTERACCION_CASO', 'EMAIL', '0', 'Interacción vía email', '1');
 
@@ -103,6 +102,31 @@ VALUES ('TIPO_INTERACCION_CASO', 'TELEFONICA', '0', 'Interacción vía telefónica'
 
 INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
 VALUES ('TIPO_INTERACCION_CASO', 'PERSONALMENTE', '0', 'Interacción personal', '3');
+
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.origen.contacto', 'escuela', '0', 'Escuela', '1');
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.origen.contacto', 'alumno', '0', 'Alumno', '2');
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.origen.contacto', 'otro', '0', 'Otro', '3');
+
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.motivo.contacto', 'consulta', '0', 'Consulta', '1');
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.motivo.contacto', 'reclamo', '0', 'Reclamo', '2');
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.motivo.contacto', 'sugerencia', '0', 'Sugerencia', '3');
+
+INSERT INTO `seguimiento_alumnos`.`cel_dominio` (`DOM_DOMINIO`, `DOM_CLAVE`, `DOM_EDITABLE`, `DOM_TEXTO`, `DOM_ORDEN`)
+VALUES ('bitacora.motivo.contacto', 'otro', '0', 'Otro', '4');
+
+
 
 
 INSERT INTO `seguimiento_alumnos`.`cel_propiedad`
@@ -117,7 +141,7 @@ VALUES
 'Fecha a partir de la cual se filtran los registros en las consultas');
 
 
-delete from cel_propiedad
+delete from `seguimiento_alumnos`.`cel_propiedad`
 where pro_tipo = 'MAIL.PROP';
 
 

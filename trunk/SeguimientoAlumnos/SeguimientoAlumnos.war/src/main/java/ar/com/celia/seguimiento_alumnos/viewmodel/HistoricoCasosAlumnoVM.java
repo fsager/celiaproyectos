@@ -62,8 +62,7 @@ public class HistoricoCasosAlumnoVM {
 	public void afterCompose(@ContextParam(ContextType.VIEW) Component view, @ExecutionArgParam("alumno") VwAlumnosActivos alumnoParam) throws Exception {
 		Selectors.wireComponents(view, this, false);
 
-		
-		List<CelDominio> lstRespuestasDominio = celDominioService.getDominio("INDICADOR_CASO_RESPUESTA", null);
+		List<CelDominio> lstRespuestasDominio = celDominioService.getDominio("INDICADOR_CASO_RESPUESTA");
 
 		for (CelDominio domRespuestasDominio : lstRespuestasDominio) {
 			hashRespuestasDominio.put(domRespuestasDominio.getDomClave(), domRespuestasDominio);	

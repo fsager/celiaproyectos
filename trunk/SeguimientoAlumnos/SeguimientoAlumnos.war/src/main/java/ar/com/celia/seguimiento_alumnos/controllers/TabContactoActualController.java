@@ -145,7 +145,7 @@ public class TabContactoActualController extends GenericForwardComposer {
 	
 	
 	public void cargarComboDominio(Listbox listbox, String dominio) throws Exception {
-		List <CelDominio> listDominosRespuestas=celDominioService.getDominio(dominio, null);
+		List <CelDominio> listDominosRespuestas=celDominioService.getDominio(dominio);
 		
 		for (int i = 0; i < listDominosRespuestas.size(); i++) {
 			Listitem li= new Listitem();

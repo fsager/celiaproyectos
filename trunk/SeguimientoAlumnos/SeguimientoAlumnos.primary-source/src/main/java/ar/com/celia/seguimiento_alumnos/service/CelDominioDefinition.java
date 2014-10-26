@@ -54,6 +54,6 @@ public interface CelDominioDefinition {
 	 * 
 	 * @param p_domain    p_domain
 	 */
-	public abstract List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception;
+	public abstract List<CelDominio> getDominio(String p_example) throws Exception;
 
 }

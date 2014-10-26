@@ -38,8 +38,8 @@ public class CelDominioBiz implements CelDominioDefinition {
 		dao.update(p_domain);
 	}
 	
-	public List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception{
-		return dao.getDominio(p_example, falseLazy);
+	public List<CelDominio> getDominio(String p_example) throws Exception{
+		return dao.getDominio(p_example);
 	}
 
 }

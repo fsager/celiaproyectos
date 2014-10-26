@@ -21,6 +21,7 @@ public class DetalleCasoController extends GenericForwardComposer {
 	private Label lblEmail;
 	private Tabpanel tbpContactoActual;
 	private Tabpanel tbpHistorico;
+	private Tabpanel tbpBitacora;
 	private Tab tbHistorico;
 	private Window wndDetalleCaso;
 	private BandejaCasosController bandejaCasosController=null;
@@ -53,10 +54,15 @@ public class DetalleCasoController extends GenericForwardComposer {
 			
 			tabContactoActualController = (TabContactoActualController)win.getAttribute("wdsTabContactoActual$composer");
 	}
+
 	
-	
-	public void onSelect$tbHistorico(Event ev) throws Exception {
-		cargarTabHistorico(alumno);
+	public void cargarTabBitacora(VwAlumnosActivos alumno) throws Exception {
+		tbpBitacora.getChildren().clear();
+		java.util.Properties params = new java.util.Properties();
+		
+		params.put("alumno", alumno);
+		Window win = (Window) Executions.createComponents(
+				"/celia/bitacora/ver_bitacora.zul", tbpBitacora, params);
 	}
 	
 	
@@ -67,6 +73,15 @@ public class DetalleCasoController extends GenericForwardComposer {
 			params.put("alumno", alumno);
 			Window win = (Window) Executions.createComponents(
 					"/celia/historico_casos_alumno.zul", tbpHistorico, params);
+	}
+	
+	
+	public void onSelect$tbHistorico(Event ev) throws Exception {
+		cargarTabHistorico(alumno);
+	}
+	
+	public void onSelect$tbBitacora(Event ev) throws Exception {
+		cargarTabBitacora(alumno);
 	}
 	
 	

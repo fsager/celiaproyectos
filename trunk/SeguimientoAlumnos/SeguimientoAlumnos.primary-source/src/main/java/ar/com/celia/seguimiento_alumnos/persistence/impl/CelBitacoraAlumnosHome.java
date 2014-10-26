@@ -7,23 +7,23 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 import ar.com.celia.seguimiento_alumnos.domain.*;
-import ar.com.celia.seguimiento_alumnos.persistence.CelDominioDao;
+import ar.com.celia.seguimiento_alumnos.persistence.CelBitacoraAlumnosDao;
 import ar.com.celia.common.persistence.util.DAOObject;
 import org.hibernate.criterion.Order;
 import org.hibernate.FetchMode;
 
 
 /**
- * Home object for domain model class CelDominio.
- * @see ar.com.celia.seguimiento_alumnos.persistence.impl.CelDominio
+ * Home object for domain model class CelBitacoraAlumnos.
+ * @see ar.com.celia.seguimiento_alumnos.persistence.impl.CelBitacoraAlumnos
  * @author Hibernate Tools
  */
-public class CelDominioHome extends DAOObject implements CelDominioDao {
+public class CelBitacoraAlumnosHome extends DAOObject implements CelBitacoraAlumnosDao {
 
-    private static final Log log = LogFactory.getLog(CelDominioHome.class);
+    private static final Log log = LogFactory.getLog(CelBitacoraAlumnosHome.class);
     
-    public void insert(CelDominio transientInstance) throws Exception {
-        log.debug("persisting CelDominio instance");
+    public void insert(CelBitacoraAlumnos transientInstance) throws Exception {
+        log.debug("persisting CelBitacoraAlumnos instance");
         try {
             saveObject(transientInstance);
             log.debug("persist successful");
@@ -34,8 +34,8 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public void update(CelDominio transientInstance) throws Exception {
-        log.debug("persisting CelDominio instance");
+    public void update(CelBitacoraAlumnos transientInstance) throws Exception {
+        log.debug("persisting CelBitacoraAlumnos instance");
         try {
             updateObject(transientInstance);
             log.debug("persist successful");
@@ -46,8 +46,8 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public void delete(CelDominio persistentInstance) throws Exception {
-        log.debug("deleting CelDominio instance");
+    public void delete(CelBitacoraAlumnos persistentInstance) throws Exception {
+        log.debug("deleting CelBitacoraAlumnos instance");
         try {
             deleteObject(persistentInstance);
             log.debug("delete successful");
@@ -58,11 +58,11 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public CelDominio get(java.io.Serializable p_Id) throws Exception {
-        log.debug("getting CelDominio instance with id: " + p_Id);
+    public CelBitacoraAlumnos get(java.io.Serializable p_Id) throws Exception {
+        log.debug("getting CelBitacoraAlumnos instance with id: " + p_Id);
         try {
-            CelDominio instance = (CelDominio) getHibernateTemplate()
-                    .get(CelDominio.class, p_Id);
+            CelBitacoraAlumnos instance = (CelBitacoraAlumnos) getHibernateTemplate()
+                    .get(CelBitacoraAlumnos.class, p_Id);
             if (instance==null) {
                 log.debug("get successful, no instance found");
             }
@@ -77,10 +77,10 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public CelDominio get(java.io.Serializable p_Id, String[] falseLazy) throws Exception {
-        log.debug("getting CelDominio instance with id: " + p_Id);
+    public CelBitacoraAlumnos get(java.io.Serializable p_Id, String[] falseLazy) throws Exception {
+        log.debug("getting CelBitacoraAlumnos instance with id: " + p_Id);
         try {
-            Criteria cri = getSession().createCriteria(CelDominio.class);
+            Criteria cri = getSession().createCriteria(CelBitacoraAlumnos.class);
             cri.add(Restrictions.idEq(p_Id));
             
         	if(falseLazy!=null)
@@ -91,7 +91,7 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
             	}
         	}
         	
-            CelDominio instance =(CelDominio)cri.uniqueResult();
+            CelBitacoraAlumnos instance =(CelBitacoraAlumnos)cri.uniqueResult();
             
             if (instance==null) {
                 log.debug("get successful, no instance found");
@@ -107,10 +107,10 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public List<CelDominio> getAll(CelDominio p_example, String[] falseLazy) throws Exception {
-        log.debug("finding CelDominio instance by example");
+    public List<CelBitacoraAlumnos> getAll(CelBitacoraAlumnos p_example, String[] falseLazy) throws Exception {
+        log.debug("finding CelBitacoraAlumnos instance by example");
         try {
-            Criteria cri = getSession().createCriteria(CelDominio.class);
+            Criteria cri = getSession().createCriteria(CelBitacoraAlumnos.class);
             cri.add(Example.create(p_example).enableLike().ignoreCase());
             
             addDependenciesFilters(p_example, cri);
@@ -120,8 +120,8 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
             	}
         	}
         	            
-            cri.addOrder(Order.asc("domId"));
-            List<CelDominio> results = cri.list();
+            cri.addOrder(Order.asc("btcId"));
+            List<CelBitacoraAlumnos> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
         }
@@ -131,16 +131,15 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
         }
     }
     
-    public List<CelDominio> getDominio(String p_example) throws Exception {
-        log.debug("finding CelDominio instance by example");
+    
+    public List<CelBitacoraAlumnos> getBitacoraPorUsrId(Long usrId) throws Exception {
+        log.debug("finding CelBitacoraAlumnos instance by getBitacoraPorUsrId");
         try {
-            Criteria cri = getSession().createCriteria(CelDominio.class);
-            cri.add(Restrictions.eq("domDominio", p_example));
+            Criteria cri = getSession().createCriteria(CelBitacoraAlumnos.class);
+            cri.add(Restrictions.eq("usrId", usrId));
             
-            addDependenciesFilters(p_example, cri);
-        	            
-            cri.addOrder(Order.asc("domId"));
-            List<CelDominio> results = cri.list();
+            cri.addOrder(Order.asc("audFechaIns"));
+            List<CelBitacoraAlumnos> results = cri.list();
             log.debug("find by example successful, result size: " + results.size());
             return results;
         }
@@ -149,5 +148,4 @@ public class CelDominioHome extends DAOObject implements CelDominioDao {
             throw re;
         }
     }
-    
 }
