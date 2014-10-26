@@ -175,6 +175,21 @@
     <bean id="celUsuarioService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelUsuarioService">
         <property name="businessObject" ref="celUsuarioBiz"/>
     </bean>
+    
+	<bean id="celBitacoraAlumnosDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.CelBitacoraAlumnosHome">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="celBitacoraAlumnosBusiness" class="ar.com.celia.seguimiento_alumnos.business.CelBitacoraAlumnosBiz">
+        <property name="dao" ref="celBitacoraAlumnosDao"/>
+    </bean>
+    <bean id="celBitacoraAlumnosBiz" parent="baseTransactionProxy">
+         <property name="target">
+             <ref bean="celBitacoraAlumnosBusiness"/> 
+        </property> 
+    </bean>
+    <bean id="celBitacoraAlumnosService" class="ar.com.celia.seguimiento_alumnos.service.impl.CelBitacoraAlumnosService">
+        <property name="businessObject" ref="celBitacoraAlumnosBiz"/>
+    </bean>
 
     <bean id="vwAlumnosActivosDao" class="ar.com.celia.seguimiento_alumnos.persistence.impl.VwAlumnosActivosHome">
         <property name="sessionFactory" ref="sessionFactory"/>

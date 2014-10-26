@@ -1,6 +1,5 @@
 <?page title="new page title" contentType="text/html;charset=UTF-8"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
-<?component name="general" macroURI="tab_general_cau.zul"?>
 <zk  xmlns="http://www.zkoss.org/2005/zul" 
 		xmlns:ca="client/attribute"
 	 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -36,10 +35,12 @@
 	        <tabs>
 	            <tab label="Contacto Actual" />
 	            <tab id="tbHistorico" label="Histórico" />
+	            <tab id="tbBitacora" label="Bitácora" />
 	        </tabs>
 			 <tabpanels>
 			 	<tabpanel id="tbpContactoActual" />
 	            <tabpanel id="tbpHistorico" />
+	            <tabpanel id="tbpBitacora" />
 	        </tabpanels>
 	    </tabbox>
 	    <h:center>

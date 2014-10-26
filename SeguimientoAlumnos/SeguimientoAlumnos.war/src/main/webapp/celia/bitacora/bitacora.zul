@@ -63,7 +63,7 @@
 
 		<hlayout>
 			<button id="btnNuevoContacto" label="Nuevo contacto" sclass="btn-primary" image="/img/new.png" onClick="@command('nuevaInteraccion')"/>
-			<button id="btnBitacora" label="Ver Bitácora" sclass="btn-primary" image="/img/bitacora.png"/>
+			<button id="btnBitacora" label="Ver Bitácora" sclass="btn-primary" image="/img/bitacora.png" onClick="@command('verBitacora')"/>
 		</hlayout>
 	</window>
 </zk>

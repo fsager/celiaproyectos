@@ -9,30 +9,38 @@
 	<window id="wndBitacoraNuevaInteraccion" border="none" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.bitacora.BitacoraNuevaInteraccionVM')" title="Nueva interacción" hflex="min" vflex="min" closable="true">
 	
-		<grid hflex="min" vflex="min">
+		<grid hflex="min">
 			<columns>
+				<column/>
+				<column/>
 				<column/>
 				<column/>
 			</columns>
 			<rows>
-				<row>
+				<row spans="1,3">
 					<label value="Alumno:"/>
-					<textbox/>
+					<label value="@bind(vm.alumno.nombreCompleto)"/>
 				</row>
 				<row>
 					<label value="Origen del contacto:"/>
-					<textbox/>
-				</row>
-				<row>
+					<combobox model="@load(vm.lstOrigenesContacto)" selectedItem="@bind(vm.origenContactoSelected)" readonly="true">
+						<template name="model" var="item">
+							<comboitem label="@load(item.domTexto)" value="@load(item)" />
+						</template>
+					</combobox>
 					<label value="Motivo del contacto:"/>
-					<textbox/>
+					<combobox model="@load(vm.lstMotivosContacto)" selectedItem="@bind(vm.motivoContactoSelected)" readonly="true">
+						<template name="model" var="item">
+							<comboitem label="@load(item.domTexto)" value="@load(item)" />
+						</template>
+					</combobox>
 				</row>
-				<row>
+				<row spans="1,3">
 					<label value="Descripción:"/>
-					<textbox rows="2" multiline="true"/>
+					<textbox value="@bind(vm.celBitacoraAlumnos.btcDescripcionContacto)" rows="3" multiline="true" constraint="no empty" hflex="1" maxlength="4000"/>
 				</row>
- 				<row spans="2" align="center">
-					<button label="Guardar"/>		
+ 				<row spans="4" align="center">
+					<button label="Guardar" onClick="@command('guardarInteraccion')"/>
 				</row>
 			</rows>
 		</grid>	

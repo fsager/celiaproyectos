@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<zk xmlns="http://www.zkoss.org/2005/zul" xmlns:ca="client/attribute"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd "
+	xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:a="http://www.zkoss.org/2005/zk/annotation" xmlns:n="native">
+
+	<window id="wndVerBitacora" border="none" hflex="max" vflex="max" apply="org.zkoss.bind.BindComposer" 
+		viewModel="@id('vm') @init('ar.com.celia.seguimiento_alumnos.viewmodel.bitacora.VerBitacoraVM')">
+
+		<listbox model="@bind(vm.lstInteraccionesBitacoraAlumno)" vflex="max" hflex="max" mold="paging" pagingPosition="top" pageSize="6" emptyMessage="No hay registros en la bitácora del alumno.">
+				<listhead>
+					<listheader label="Fecha" hflex="min"/>
+					<listheader label="Motivo del contacto" hflex="min"/>
+					<listheader label="Descripción" hflex="1"/>
+					<listheader label="Origen del contacto" hflex="min"/>
+				</listhead>
+				
+				<template name="model" var="item">
+					<listitem>
+						<listcell label="@bind(item.audFechaIns)"/>
+						<listcell label="@bind(vm.hashMapMotivosContacto[item.btcMotivoContacto])"/>
+						<listcell>
+							<textbox value="@bind(item.btcDescripcionContacto)" tooltiptext="@bind(item.btcDescripcionContacto)" rows="4" readonly="true" hflex="1"/>
+						</listcell>
+						 <listcell label="@bind(vm.hashMapOrigenesContacto[item.btcOrigenContacto])"/>
+					</listitem>
+				</template>
+		</listbox>
+
+	</window>
+</zk>

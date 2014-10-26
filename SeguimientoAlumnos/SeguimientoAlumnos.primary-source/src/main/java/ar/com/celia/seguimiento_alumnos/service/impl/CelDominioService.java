@@ -46,7 +46,7 @@ public class CelDominioService implements CelDominioDefinition {
 		biz.update(p_domain);
 	}
 	
-	public List<CelDominio> getDominio(String p_example, String[] falseLazy) throws Exception{
-		return biz.getDominio(p_example,falseLazy);
+	public List<CelDominio> getDominio(String p_example) throws Exception{
+		return biz.getDominio(p_example);
 	}
 }
